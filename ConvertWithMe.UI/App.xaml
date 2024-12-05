@@ -1,0 +1,16 @@
+﻿<Application
+    x:Class="ConvertWithMe.UI.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ConvertWithMe.UI"
+    xmlns:view="clr-namespace:ConvertWithMe.UI.Views"
+    xmlns:viewModel="clr-namespace:ConvertWithMe.UI.ViewModels"
+    StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Views/Styles/ToggleSwitch.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

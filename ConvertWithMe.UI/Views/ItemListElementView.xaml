@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="ConvertWithMe.UI.Views.ItemListElementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ConvertWithMe.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:Background="White">
+    <Grid Height="45">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0" Width="45" Height="45" Source="../Resources/Images/logo_placeholder.png" Margin="0,0,4,0" />
+        <DockPanel Grid.Column="1" Margin="0,0,4,0">
+            <TextBlock DockPanel.Dock="Top" Text="Filename" FontSize="14" FontWeight="SemiBold"/>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Bottom">
+                <TextBlock Text="Duration:" FontSize="12" Margin="0,0,4,0"/>
+                <TextBlock Text="00:00:00" FontSize="12"/>
+                <TextBlock Text="Format:" FontSize="12" Margin="24,0,4,0"/>
+                <TextBlock Text="MP3" FontSize="12"/>
+                <TextBlock Text="Codec:" FontSize="12" Margin="24,0,4,0"/>
+                <TextBlock Text="AAC" FontSize="12"/>
+            </StackPanel>
+        </DockPanel>
+        <Button Grid.Column="2" Width="45" Height="45" Content="Delete"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConvertWithMe.Core.Definitions
+{
+    public static class AudioCodecs
+    {
+        public static AudioCodec flac = new AudioCodec()
+        {
+            codec = Xabe.FFmpeg.AudioCodec.flac,
+            hasVBRSupport = false,
+            hasVariableSampleRate = true,
+            validSampleRates = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000, 176400, 192000, 352800, 384000],
+            validSampleFormats = [SampleFormats.s16, SampleFormats.s32]
+        };
+
+        public static AudioCodec mp3 = new AudioCodec()
+        {
+            codec = Xabe.FFmpeg.AudioCodec.mp3,
+            hasVBRSupport = true,
+            hasVariableSampleRate = false,
+            validSampleRates = [44100, 48000, 32000, 22050, 24000, 16000, 11025, 12000, 8000],
+            validSampleFormats = [SampleFormats.s32p, SampleFormats.flt, SampleFormats.s16p]
+        };
+
+        public static AudioCodec vorbis = new AudioCodec()
+        {
+            codec = Xabe.FFmpeg.AudioCodec.vorbis,
+            hasVBRSupport = false,
+            hasVariableSampleRate = true,
+            validSampleRates = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000, 176400, 192000, 352800, 384000],
+            validSampleFormats = [SampleFormats.fltp]
+        };
+
+        public static AudioCodec wmav2 = new AudioCodec()
+        {
+            codec = Xabe.FFmpeg.AudioCodec.wmav2,
+            hasVBRSupport = false,
+            hasVariableSampleRate = true,
+            validSampleRates = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000, 176400, 192000, 352800, 384000],
+            validSampleFormats = [SampleFormats.fltp]
+        };
+
+        public static AudioCodec opus = new AudioCodec()
+        {
+            codec = Xabe.FFmpeg.AudioCodec.libopus,
+            hasVBRSupport = true,
+            hasVariableSampleRate = false,
+            validSampleRates = [48000, 24000, 16000, 12000, 8000],
+            validSampleFormats = [SampleFormats.flt, SampleFormats.s16]
+        };
+
+        public static AudioCodec aac = new AudioCodec()
+        {
+            codec = Xabe.FFmpeg.AudioCodec.aac,
+            hasVBRSupport = false,
+            hasVariableSampleRate = false,
+            validSampleRates = [96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350],
+            validSampleFormats = [SampleFormats.fltp]
+        };
+    }
+}
