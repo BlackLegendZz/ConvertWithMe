@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConvertWithMe.UI.ViewModels
 {
-    partial class SettingsViewModel : ObservableObject, IViewModel
+    partial class SettingsViewModel : ObservableObject
     {
         [ObservableProperty]
         private bool displayMetadata = true;
