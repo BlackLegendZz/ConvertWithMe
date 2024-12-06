@@ -8,6 +8,7 @@ namespace ConvertWithMe.Core.Definitions
         { 
             codec = Xabe.FFmpeg.VideoCodec.mpeg1video, 
             hasVBRSupport = false,
+            hasQualitySupport = false,
             validPixelFormats = [PixelFormat.yuv420p]
         };
 
@@ -15,6 +16,7 @@ namespace ConvertWithMe.Core.Definitions
         {
             codec = Xabe.FFmpeg.VideoCodec.mpeg2video,
             hasVBRSupport = false,
+            hasQualitySupport = false,
             validPixelFormats = [PixelFormat.yuv420p, PixelFormat.yuv422p]
         };
 
@@ -22,6 +24,7 @@ namespace ConvertWithMe.Core.Definitions
         {
             codec = Xabe.FFmpeg.VideoCodec.mpeg4,
             hasVBRSupport = false,
+            hasQualitySupport = false,
             validPixelFormats = [PixelFormat.yuv420p]
         };
 
@@ -29,6 +32,7 @@ namespace ConvertWithMe.Core.Definitions
         {
             codec = Xabe.FFmpeg.VideoCodec.libx264,
             hasVBRSupport = true,
+            hasQualitySupport = true,
             validPixelFormats = [
                 PixelFormat.yuv420p, PixelFormat.yuv422p, PixelFormat.yuv444p,              // limited range
                 PixelFormat.yuvj420p, PixelFormat.yuvj422p, PixelFormat.yuvj444p,           // full range
@@ -40,6 +44,7 @@ namespace ConvertWithMe.Core.Definitions
         {
             codec = Xabe.FFmpeg.VideoCodec.hevc,
             hasVBRSupport = true,
+            hasQualitySupport = true,
             validPixelFormats = [
                 PixelFormat.yuv420p, PixelFormat.yuv422p, PixelFormat.yuv444p,              // limited range
                 PixelFormat.yuvj420p, PixelFormat.yuvj422p, PixelFormat.yuvj444p,           // full range
@@ -52,6 +57,7 @@ namespace ConvertWithMe.Core.Definitions
         {
             codec = Xabe.FFmpeg.VideoCodec.flv1,
             hasVBRSupport = false,
+            hasQualitySupport = false,
             validPixelFormats = [PixelFormat.yuv420p]
         };
 
@@ -59,6 +65,7 @@ namespace ConvertWithMe.Core.Definitions
         {
             codec = Xabe.FFmpeg.VideoCodec.wmv2,
             hasVBRSupport = false,
+            hasQualitySupport = false,
             validPixelFormats = [PixelFormat.yuv420p]
         };
     }

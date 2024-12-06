@@ -1,6 +1,4 @@
-﻿using System.Windows.Navigation;
-
-namespace ConvertWithMe.Core.Definitions
+﻿namespace ConvertWithMe.Core.Definitions
 {
     public static class AudioFormats
     {
