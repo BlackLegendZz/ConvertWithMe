@@ -1,9 +1,12 @@
 ﻿using Xabe.FFmpeg;
+using ConvertWithMe.Core.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xabe.FFmpeg.Events;
+using System.Windows.Documents;
 
 namespace ConvertWithMe.Core
 {
@@ -15,18 +18,170 @@ namespace ConvertWithMe.Core
             FFmpeg.SetExecutablesPath(ApplicationPaths.FFmpeg);
         }
 
-        private async Task ConvertWithOptions(string fileSrc, string fileDest)
+        public async Task ConvertToAudio(
+            string src, string dest, 
+            Definitions.Format format, 
+            Definitions.AudioCodec aCodec, 
+            int bitrate, int sampleRate, 
+            SampleFormat sFormat, 
+            ConversionProgressEventHandler progressCallback
+            )
         {
-            string args = $"-i \"{fileSrc}\" \"{fileDest}\"";
-            IConversion conversion = FFmpeg.Conversions.New();
-            conversion.OnProgress += Conversion_OnProgress;
-            //conversion.SetPixelFormat()
-            await conversion.Start(args);
+            if (!format.audioCodecs.Contains(aCodec))
+            {
+                throw new ArgumentException("Format doesnt support the provided audio codec.");
+            }
+
+            if (!aCodec.validSampleRates.Contains(sampleRate) && !aCodec.hasVariableSampleRate)
+            {
+                throw new ArgumentException($"Audio codec only supports the following sample rates: {aCodec.validSampleRates}.");
+            }
+
+            //if (!aCodec.validSampleFormats.Contains(sFormat))
+            //{
+            //    throw new ArgumentException("Audio codec doesnt support the provided sample Format.");
+            //}
+
+            IMediaInfo mediaInfo = await FFmpeg.GetMediaInfo(src);
+            IAudioStream? audioStream = mediaInfo.AudioStreams.FirstOrDefault();
+
+            if (audioStream == null)
+            {
+                throw new ArgumentNullException($"No audiostreams could be found in {src}.");
+            }
+
+            audioStream = audioStream
+                .SetCodec(aCodec.codec)
+                .SetSampleRate(sampleRate)
+                .SetBitrate(bitrate);
+
+            IConversion conversion = FFmpeg.Conversions.New()
+                .AddStream(audioStream)
+                .AddParameter("")
+                .SetOutput($"{dest}.{format.extension}");
+
+            conversion.OnProgress += progressCallback;
+
+            try
+            {
+                await conversion.Start();
+            }
+            finally
+            {
+                conversion.OnProgress -= progressCallback;
+            }
         }
 
-        private void Conversion_OnProgress(object sender, Xabe.FFmpeg.Events.ConversionProgressEventArgs args)
+        public async Task ConvertToVideo(
+            string src, string dest, 
+            Definitions.Format format, 
+            Definitions.VideoCodec vCodec, 
+            Definitions.AudioCodec aCodec, 
+            int vBitrate, int aBitrate, 
+            int frameRate, int sampleRate,
+            int width, int height,
+            EncodingMode encodingMode, 
+            PixelFormat pFormat, 
+            SampleFormat sFormat,
+            ConversionPreset quailityPreset,
+            ConversionProgressEventHandler progressCallback
+            )
         {
-            throw new NotImplementedException();
+            if (!format.audioCodecs.Contains(aCodec))
+            {
+                throw new ArgumentException("Format doesnt support the provided audio codec.");
+            }
+
+            if (!format.videoCodecs.Contains(vCodec))
+            {
+                throw new ArgumentException("Format doesnt support the provided video codec.");
+            }
+
+            if (!aCodec.validSampleRates.Contains(sampleRate) && !aCodec.hasVariableSampleRate)
+            {
+                throw new ArgumentException($"Audio codec only supports the following sample rates: {aCodec.validSampleRates}.");
+            }
+
+            //if (!aCodec.validSampleFormats.Contains(sFormat))
+            //{
+            //    throw new ArgumentException("Audio codec doesnt support the provided sample Format.");
+            //}
+
+            if (encodingMode == EncodingMode.VBR && !vCodec.hasVBRSupport)
+            {
+                throw new ArgumentException("Video codec doesnt support VBR.");
+            }
+
+            if (encodingMode == EncodingMode.VBR && (vBitrate < 0 || vBitrate > 50))
+            {
+                throw new ArgumentException($"The CRF has to be between 0 and 50. It is {vBitrate}");
+            }
+
+            if (!vCodec.validPixelFormats.Contains(pFormat))
+            {
+                throw new ArgumentException("Video Codec doesnt support the provided pixel Format.");
+            }
+
+            IMediaInfo mediaInfo = await FFmpeg.GetMediaInfo(src);
+            IAudioStream? audioStream = mediaInfo.AudioStreams.FirstOrDefault();
+            IVideoStream? videoStream = mediaInfo.VideoStreams.FirstOrDefault();
+
+            if (audioStream == null)
+            {
+                // Some videos dont have an audio.
+                // TODO: Log status and send to UI (somehow lol)
+            }
+            if (videoStream == null)
+            {
+                throw new ArgumentNullException($"No videostreams could be found in {src}.");
+            }
+
+            audioStream = audioStream?
+                .SetCodec(aCodec.codec)
+                .SetSampleRate(sampleRate)
+                .SetBitrate(aBitrate);
+
+            videoStream = videoStream
+                .SetCodec(vCodec.codec)
+                .SetFramerate(frameRate)
+                .SetSize(width, height);
+
+
+            IConversion conversion = FFmpeg.Conversions.New()
+                .AddStream(videoStream)
+                .SetPixelFormat(pFormat)
+                .SetOutput(dest);
+
+            if (audioStream != null)
+            {
+                conversion = conversion.AddStream(audioStream);
+            }
+
+            switch (encodingMode)
+            {
+                case EncodingMode.VBR:
+                    conversion = conversion.AddParameter($"-crf {vBitrate}", ParameterPosition.PostInput);
+                    break;
+                case EncodingMode.CBR:
+                    conversion = conversion.SetVideoBitrate(vBitrate); 
+                    break;
+            }
+
+            if (vCodec.hasQualitySupport)
+            {
+                conversion = conversion.SetPreset(quailityPreset);
+            }
+
+            conversion.OnProgress += progressCallback;
+
+            try
+            {
+                await conversion.Start();
+            }
+            finally
+            {
+                conversion.OnProgress -= progressCallback;
+            }
         }
     }
 }
