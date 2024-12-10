@@ -23,7 +23,7 @@ namespace ConvertWithMe.Core
             Definitions.Format format, 
             Definitions.AudioCodec aCodec, 
             int bitrate, int sampleRate, 
-            SampleFormat sFormat, 
+            //SampleFormat sFormat, 
             ConversionProgressEventHandler progressCallback
             )
         {
@@ -82,7 +82,7 @@ namespace ConvertWithMe.Core
             int width, int height,
             EncodingMode encodingMode, 
             PixelFormat pFormat, 
-            SampleFormat sFormat,
+            //SampleFormat sFormat,
             ConversionPreset quailityPreset,
             ConversionProgressEventHandler progressCallback
             )
