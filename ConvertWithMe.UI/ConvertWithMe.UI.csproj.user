@@ -7,13 +7,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\ItemListElementView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\ItemListView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Views\MetadataView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -21,13 +15,7 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ItemListElementView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\ItemListView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\MetadataView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Styles\ToggleSwitch.xaml">
