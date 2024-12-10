@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using ConvertWithMe.Core.Definitions;
 
 namespace ConvertWithMe.UI.Models
 {
-    class SettingsAudio
+    public class SettingsAudio
     {
+        public Format format;
+        public AudioCodec codec { get; set; }
+        public int bitrate { get; set; }
+        public int sampleRate { get; set; }
+        
     }
 }
