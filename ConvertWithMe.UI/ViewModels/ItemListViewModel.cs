@@ -4,6 +4,7 @@ using ConvertWithMe.Core;
 using ConvertWithMe.UI.Models;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.IO;
 using Xabe.FFmpeg;
 
 namespace ConvertWithMe.UI.ViewModels
@@ -38,7 +39,7 @@ namespace ConvertWithMe.UI.ViewModels
                 {
                     string filename = dialog.FileNames[i];
                     // Skip existing files
-                    if (fileItems.Where(x => x.SettingsFile.FileSrc.FullName.Equals(filename)).Any()) { continue; }
+                    if (fileItems.Where(x => Path.Combine(x.SettingsFile.DirSrc, x.SettingsFile.FilenameSrc).Equals(filename)).Any()) { continue; }
 
                     SettingsFile settingsFile = new SettingsFile(filename, filename);
                     IMediaInfo mediaInfo = await FFmpeg.GetMediaInfo(filename);
@@ -60,7 +61,7 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void RemoveItem(string fileSrc)
         {
-            FileItem? toRemove = fileItems.Where(x => x.SettingsFile.FileSrc.FullName.Equals(fileSrc)).FirstOrDefault();
+            FileItem? toRemove = fileItems.Where(x => Path.Combine(x.SettingsFile.DirSrc, x.SettingsFile.FilenameSrc).Equals(fileSrc)).FirstOrDefault();
             if (toRemove == null)
             {
                 throw new KeyNotFoundException($"No element with path {fileSrc}");
@@ -68,6 +69,18 @@ namespace ConvertWithMe.UI.ViewModels
             fileItems.Remove(toRemove);
         }
 
+        [RelayCommand]
+        public void SelectedItemChanged(string fileSrc)
+        {
+            FileItem? selectedItem = fileItems.Where(x => Path.Combine(x.SettingsFile.DirSrc, x.SettingsFile.FilenameSrc).Equals(fileSrc)).FirstOrDefault();
+            if (selectedItem == null)
+            {
+                throw new KeyNotFoundException($"No element with path {fileSrc}");
+            }
+            /* TODO
+             * Settings des Items an das Settings ViewModel übergeben
+             */
+        }
         private SettingsMetadata ReadMetadata(string file)
         {
             throw new NotImplementedException();
