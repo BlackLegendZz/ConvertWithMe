@@ -70,7 +70,8 @@
                         <TextBox
                             Grid.Row="0"
                             Grid.Column="1"
-                            Margin="8,0,0,6" />
+                            Margin="8,0,0,6"
+                            Text="{Binding SettingsFile.FilenameDest}" />
                         <DockPanel
                             Grid.Row="1"
                             Grid.Column="1"
@@ -78,9 +79,14 @@
                             <Button
                                 Width="50"
                                 Height="25"
+                                Command="{Binding UpdateDestinationCommand}"
                                 Content="Browse"
                                 DockPanel.Dock="Right" />
-                            <TextBox Margin="8,0" DockPanel.Dock="Left" />
+                            <TextBox
+                                Margin="8,0"
+                                DockPanel.Dock="Left"
+                                IsReadOnly="True"
+                                Text="{Binding SettingsFile.DirDest}" />
                         </DockPanel>
                     </Grid>
                 </StackPanel>
@@ -324,11 +330,11 @@
                                 <ComboBox Grid.Row="0" Grid.Column="1" />
                                 <ComboBox Grid.Row="1" Grid.Column="1" />
                                 <DockPanel Grid.Row="3" Grid.Column="1">
-                                    <TextBlock DockPanel.Dock="Right" Text="{Binding EncodingQualityVideo}" />
+                                    <TextBlock DockPanel.Dock="Right" Text="xxx" />
                                     <Slider
                                         DockPanel.Dock="Left"
                                         Minimum="0"
-                                        Value="{Binding EncodingQualityVideo}" />
+                                        Value="0" />
                                 </DockPanel>
                             </Grid>
                         </StackPanel>
@@ -444,11 +450,11 @@
                                 <ComboBox Grid.Row="0" Grid.Column="1" />
                                 <ComboBox Grid.Row="1" Grid.Column="1" />
                                 <DockPanel Grid.Row="3" Grid.Column="1">
-                                    <TextBlock DockPanel.Dock="Right" Text="{Binding EncodingQualityAudio}" />
+                                    <TextBlock DockPanel.Dock="Right" Text="xxx" />
                                     <Slider
                                         DockPanel.Dock="Left"
                                         Minimum="0"
-                                        Value="{Binding EncodingQualityAudio}" />
+                                        Value="0" />
                                 </DockPanel>
                             </Grid>
                         </StackPanel>

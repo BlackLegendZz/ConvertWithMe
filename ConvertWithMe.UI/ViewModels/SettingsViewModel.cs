@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
+using ConvertWithMe.UI.Models;
+using Microsoft.Win32;
 
 namespace ConvertWithMe.UI.ViewModels
 {
@@ -25,14 +23,40 @@ namespace ConvertWithMe.UI.ViewModels
         private bool displayAudio = false;
 
         [ObservableProperty]
-        private uint encodingQualityVideo = 0;
+        private SettingsFile? settingsFile;
 
         [ObservableProperty]
-        private uint encodingQualityAudio = 0;
+        private SettingsMetadata? settingsMetadata;
+
+        [ObservableProperty]
+        private SettingsVideo? settingVideo;
+
+        [ObservableProperty]
+        private SettingsAudio? settingsAudio;
+
+        [RelayCommand]
+        public void UpdateDestination()
+        {
+            OpenFolderDialog dialog = new OpenFolderDialog()
+            {
+                Multiselect = false,
+                DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+            };
+            if (dialog.ShowDialog() ?? false)
+            {
+                settingsFile.DirDest = dialog.SafeFolderName;
+            }
+        }
+
+        [RelayCommand]
+        public void UpdateFilename()
+        {
+
+        }
 
         public SettingsViewModel()
         {
-            
+
         }
     }
 }
