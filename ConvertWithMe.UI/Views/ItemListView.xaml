@@ -61,67 +61,68 @@
             Grid.Row="2"
             Margin="0,8,0,0"
             ItemsSource="{Binding FileItems}">
-            <ItemsControl.Resources>
-                <Style TargetType="local:ItemListElementView">
-                    <Setter Property="Margin" Value="0,0,0,4" />
-                </Style>
-            </ItemsControl.Resources>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid Height="45" Margin="0,0,0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Image
-                            Grid.Column="0"
-                            Width="45"
-                            Height="45"
-                            Margin="0,0,4,0"
-                            Source="../Resources/Images/logo_placeholder.png" />
-                        <DockPanel Grid.Column="1" Margin="0,0,4,0">
-                            <TextBlock
-                                DockPanel.Dock="Top"
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Text="{Binding SettingsFile.FileSrc.Name}" />
-                            <StackPanel
-                                VerticalAlignment="Bottom"
-                                DockPanel.Dock="Bottom"
-                                Orientation="Horizontal">
+                    <RadioButton
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        GroupName="Items">
+                        <Grid Height="45" Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Image
+                                Grid.Column="0"
+                                Width="45"
+                                Height="45"
+                                Margin="0,0,4,0"
+                                Source="../Resources/Images/logo_placeholder.png" />
+                            <DockPanel Grid.Column="1" Margin="0,0,4,0">
                                 <TextBlock
-                                    Margin="0,0,4,0"
-                                    FontSize="12"
-                                    Text="{Binding Duration, StringFormat=Time: {0:hh\\:mm\\:ss}}" />
-                                <TextBlock
-                                    Margin="24,0,4,0"
-                                    FontSize="12"
-                                    Text="{Binding PrimaryAudioStream.Codec, StringFormat=Audio Codec: {0}}" />
-                                <TextBlock
-                                    Margin="24,0,4,0"
-                                    FontSize="12"
-                                    Text="{Binding PrimaryAudioStream.SampleRate, StringFormat=Sample Rate: {0}}" />
-                                <TextBlock
-                                    Margin="24,0,4,0"
-                                    FontSize="12"
-                                    Text="{Binding PrimaryVideoStream.Codec, StringFormat=Video Codec: {0}}"
-                                    Visibility="{Binding VideoStreamIsCover, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                <TextBlock
-                                    Margin="24,0,4,0"
-                                    FontSize="12"
-                                    Text="{Binding PrimaryVideoStream.Bitrate, StringFormat=Bitrate: {0}}"
-                                    Visibility="{Binding VideoStreamIsCover, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                            </StackPanel>
-                        </DockPanel>
-                        <Button
-                            Grid.Column="2"
-                            Width="45"
-                            Height="45"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.RemoveItemCommand}"
-                            CommandParameter="{Binding SettingsFile.FileSrc.FullName}"
-                            Content="Delete" />
-                    </Grid>
+                                    DockPanel.Dock="Top"
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    Text="{Binding SettingsFile.FileSrc.Name}" />
+                                <StackPanel
+                                    VerticalAlignment="Bottom"
+                                    DockPanel.Dock="Bottom"
+                                    Orientation="Horizontal">
+                                    <TextBlock
+                                        Margin="0,0,4,0"
+                                        FontSize="12"
+                                        Text="{Binding Duration, StringFormat=Time: {0:hh\\:mm\\:ss}}" />
+                                    <TextBlock
+                                        Margin="24,0,4,0"
+                                        FontSize="12"
+                                        Text="{Binding PrimaryAudioStream.Codec, StringFormat=Audio Codec: {0}}" />
+                                    <TextBlock
+                                        Margin="24,0,4,0"
+                                        FontSize="12"
+                                        Text="{Binding PrimaryAudioStream.SampleRate, StringFormat=Sample Rate: {0}}" />
+                                    <TextBlock
+                                        Margin="24,0,4,0"
+                                        FontSize="12"
+                                        Text="{Binding PrimaryVideoStream.Codec, StringFormat=Video Codec: {0}}"
+                                        Visibility="{Binding VideoStreamIsCover, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    <TextBlock
+                                        Margin="24,0,4,0"
+                                        FontSize="12"
+                                        Text="{Binding PrimaryVideoStream.Bitrate, StringFormat=Bitrate: {0}}"
+                                        Visibility="{Binding VideoStreamIsCover, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                </StackPanel>
+                            </DockPanel>
+                            <Button
+                                Grid.Column="2"
+                                Width="45"
+                                Height="45"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.RemoveItemCommand}"
+                                CommandParameter="{Binding SettingsFile.FileSrc.FullName}"
+                                Content="Delete" />
+                        </Grid>
+                    </RadioButton>
+
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
