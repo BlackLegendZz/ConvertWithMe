@@ -1,6 +1,4 @@
 ﻿using ConvertWithMe.Core;
-using ConvertWithMe.UI.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Windows;
 
