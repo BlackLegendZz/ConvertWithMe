@@ -71,7 +71,7 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Margin="8,0,0,6"
-                            Text="{Binding SettingsFile.FilenameDest}" />
+                            Text="{Binding SFile.FilenameDest}" />
                         <DockPanel
                             Grid.Row="1"
                             Grid.Column="1"
@@ -86,7 +86,7 @@
                                 Margin="8,0"
                                 DockPanel.Dock="Left"
                                 IsReadOnly="True"
-                                Text="{Binding SettingsFile.DirDest}" />
+                                Text="{Binding SFile.DirDest}" />
                         </DockPanel>
                     </Grid>
                 </StackPanel>
@@ -156,10 +156,23 @@
                             Text="Cover"
                             Visibility="Collapsed" />
 
-                        <TextBox Grid.Row="0" Grid.Column="1" />
-                        <TextBox Grid.Row="1" Grid.Column="1" />
-                        <TextBox Grid.Row="2" Grid.Column="1" />
-                        <TextBox Grid.Row="3" Grid.Column="1" />
+                        <TextBox
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding SMetadata.Title}" />
+                        <TextBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Text="{Binding SMetadata.Artist}" />
+                        <TextBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Text="{Binding SMetadata.Album}" />
+                        <TextBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Text="{Binding SMetadata.AlbumArtist}" />
+                        <!--  TODO: Add list of genres and function to update the setting on a change  -->
                         <ComboBox
                             Grid.Row="4"
                             Grid.Column="1"
@@ -169,12 +182,14 @@
                             Grid.Row="5"
                             Grid.Column="1"
                             Width="120"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            Text="{Binding SMetadata.Year}" />
                         <TextBox
                             Grid.Row="6"
                             Grid.Column="1"
                             Width="120"
-                            HorizontalAlignment="Left" />
+                            HorizontalAlignment="Left"
+                            Text="{Binding SMetadata.Tracknumber}" />
                         <StackPanel
                             Grid.Row="7"
                             Grid.Column="1"
@@ -240,7 +255,7 @@
                                     Grid.Row="0"
                                     Grid.Column="0"
                                     Text="Preset" />
-
+                                <!--  TODO: Add list of presets  -->
                                 <ComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
@@ -277,7 +292,7 @@
                                     Grid.Row="2"
                                     Grid.Column="0"
                                     Text="Framerate" />
-
+                                <!--  TODO: Add list of formats  -->
                                 <ComboBox Grid.Row="0" Grid.Column="1" />
                                 <Grid Grid.Row="1" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
@@ -285,14 +300,18 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" />
+                                    <TextBox Grid.Column="0" Text="{Binding SVideo.Width}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="8,0,8,6"
                                         HorizontalAlignment="Center"
                                         Text="X" />
-                                    <TextBox Grid.Column="2" Margin="0,0,0,6" />
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="0,0,0,6"
+                                        Text="{Binding SVideo.Height}" />
                                 </Grid>
+                                <!--  TODO: Add list of framerates  -->
                                 <ComboBox Grid.Row="3" Grid.Column="1" />
                             </Grid>
                         </StackPanel>
@@ -326,15 +345,16 @@
                                     Grid.Row="2"
                                     Grid.Column="0"
                                     Text="Target Bitrate" />
-
+                                <!--  TODO: Add list of encoding profiles  -->
                                 <ComboBox Grid.Row="0" Grid.Column="1" />
+                                <!--  TODO: Add list of bitrate encodings  -->
                                 <ComboBox Grid.Row="1" Grid.Column="1" />
                                 <DockPanel Grid.Row="3" Grid.Column="1">
-                                    <TextBlock DockPanel.Dock="Right" Text="xxx" />
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding SVideo.Bitrate}" />
                                     <Slider
                                         DockPanel.Dock="Left"
                                         Minimum="0"
-                                        Value="0" />
+                                        Value="{Binding SVideo.Bitrate}" />
                                 </DockPanel>
                             </Grid>
                         </StackPanel>
@@ -386,6 +406,7 @@
                                     Grid.Column="0"
                                     Text="Preset" />
 
+                                <!--  TODO: Add list of codecs  -->
                                 <ComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
@@ -412,7 +433,7 @@
                                     Grid.Row="0"
                                     Grid.Column="0"
                                     Text="Format" />
-
+                                <!--  TODO: Add list of formats  -->
                                 <ComboBox Grid.Row="0" Grid.Column="1" />
                             </Grid>
                         </StackPanel>
@@ -441,20 +462,15 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="0"
-                                    Text="Channels" />
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="0"
                                     Text="Target Bitrate" />
-
                                 <ComboBox Grid.Row="0" Grid.Column="1" />
-                                <ComboBox Grid.Row="1" Grid.Column="1" />
-                                <DockPanel Grid.Row="3" Grid.Column="1">
-                                    <TextBlock DockPanel.Dock="Right" Text="xxx" />
+
+                                <DockPanel Grid.Row="1" Grid.Column="1">
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding SAudio.Bitrate}" />
                                     <Slider
                                         DockPanel.Dock="Left"
                                         Minimum="0"
-                                        Value="0" />
+                                        Value="{Binding SAudio.Bitrate}" />
                                 </DockPanel>
                             </Grid>
                         </StackPanel>
