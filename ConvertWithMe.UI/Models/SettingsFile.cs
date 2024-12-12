@@ -1,13 +1,18 @@
-﻿using System.IO;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.IO;
 
 namespace ConvertWithMe.UI.Models
 {
-    public sealed class SettingsFile
+    public partial class SettingsFile : ObservableObject, ISettings
     {
         public string FilenameSrc {  get; init; }
         public string DirSrc { get; init; }
-        public string FilenameDest { get; set; }
-        public string DirDest { get; set; }
+
+        [ObservableProperty]
+        private string filenameDest = string.Empty;
+
+        [ObservableProperty]
+        private string dirDest = string.Empty;
 
 
         public SettingsFile(string src, string dest)

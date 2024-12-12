@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConvertWithMe.UI.Models
 {
-    public sealed class SettingsMetadata
+    public sealed class SettingsMetadata : ISettings
     {
         public string Title { get; set; } = string.Empty;
         public string Artist { get; set; } = string.Empty;
