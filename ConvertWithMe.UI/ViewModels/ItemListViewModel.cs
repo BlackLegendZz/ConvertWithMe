@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using ConvertWithMe.Core;
+using ConvertWithMe.UI.Messengers;
 using ConvertWithMe.UI.Models;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
@@ -9,7 +11,7 @@ using Xabe.FFmpeg;
 
 namespace ConvertWithMe.UI.ViewModels
 {
-    partial class ItemListViewModel : ObservableObject
+    partial class ItemListViewModel : ObservableObject, IViewModel
     {
 
         private ObservableCollection<FileItem> fileItems;
@@ -59,27 +61,33 @@ namespace ConvertWithMe.UI.ViewModels
         }
 
         [RelayCommand]
-        public void RemoveItem(string fileSrc)
+        public void RemoveItem(SettingsFile fileSettings)
         {
-            FileItem? toRemove = fileItems.Where(x => Path.Combine(x.SettingsFile.DirSrc, x.SettingsFile.FilenameSrc).Equals(fileSrc)).FirstOrDefault();
+            string fileToDelete = Path.Combine(fileSettings.DirSrc, fileSettings.FilenameSrc);
+            FileItem? toRemove = fileItems.Where(x => Path.Combine(x.SettingsFile.DirSrc, x.SettingsFile.FilenameSrc).Equals(fileToDelete)).FirstOrDefault();
             if (toRemove == null)
             {
-                throw new KeyNotFoundException($"No element with path {fileSrc}");
+                throw new KeyNotFoundException($"No element with path {fileToDelete}");
             }
             fileItems.Remove(toRemove);
+            
+            // Clear the Settings
+            WeakReferenceMessenger.Default.Send(new TransferSettingsMessage(null));
+
         }
 
         [RelayCommand]
-        public void SelectedItemChanged(string fileSrc)
+        public void SelectedItemChanged(SettingsFile fileSettings)
         {
-            FileItem? selectedItem = fileItems.Where(x => Path.Combine(x.SettingsFile.DirSrc, x.SettingsFile.FilenameSrc).Equals(fileSrc)).FirstOrDefault();
+            string selectedFile = Path.Combine(fileSettings.DirSrc, fileSettings.FilenameSrc);
+            FileItem? selectedItem = fileItems.Where(x => Path.Combine(x.SettingsFile.DirSrc, x.SettingsFile.FilenameSrc).Equals(selectedFile)).FirstOrDefault();
             if (selectedItem == null)
             {
-                throw new KeyNotFoundException($"No element with path {fileSrc}");
+                throw new KeyNotFoundException($"No element with path {selectedFile}");
             }
-            /* TODO
-             * Settings des Items an das Settings ViewModel übergeben
-             */
+            
+            // Send Settings to Settings ViewModel
+            WeakReferenceMessenger.Default.Send(new TransferSettingsMessage(fileSettings));
         }
         private SettingsMetadata ReadMetadata(string file)
         {
