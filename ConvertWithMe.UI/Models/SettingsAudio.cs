@@ -3,12 +3,12 @@ using ConvertWithMe.Core.Definitions;
 
 namespace ConvertWithMe.UI.Models
 {
-    public class SettingsAudio
+    public class SettingsAudio : ISettings
     {
-        public Format format;
-        public AudioCodec codec { get; set; }
-        public int bitrate { get; set; }
-        public int sampleRate { get; set; }
+        public Format Format;
+        public AudioCodec Codec { get; set; }
+        public int Bitrate { get; set; }
+        public int SampleRate { get; set; }
         
     }
 }

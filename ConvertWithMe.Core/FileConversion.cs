@@ -32,9 +32,9 @@ namespace ConvertWithMe.Core
                 throw new ArgumentException("Format doesnt support the provided audio codec.");
             }
 
-            if (!aCodec.validSampleRates.Contains(sampleRate) && !aCodec.hasVariableSampleRate)
+            if (!aCodec.ValidSampleRates.Contains(sampleRate) && !aCodec.HasVariableSampleRate)
             {
-                throw new ArgumentException($"Audio codec only supports the following sample rates: {aCodec.validSampleRates}.");
+                throw new ArgumentException($"Audio codec only supports the following sample rates: {aCodec.ValidSampleRates}.");
             }
 
             //if (!aCodec.validSampleFormats.Contains(sFormat))
@@ -51,7 +51,7 @@ namespace ConvertWithMe.Core
             }
 
             audioStream = audioStream
-                .SetCodec(aCodec.codec)
+                .SetCodec(aCodec.Codec)
                 .SetSampleRate(sampleRate)
                 .SetBitrate(bitrate);
 
@@ -97,9 +97,9 @@ namespace ConvertWithMe.Core
                 throw new ArgumentException("Format doesnt support the provided video codec.");
             }
 
-            if (!aCodec.validSampleRates.Contains(sampleRate) && !aCodec.hasVariableSampleRate)
+            if (!aCodec.ValidSampleRates.Contains(sampleRate) && !aCodec.HasVariableSampleRate)
             {
-                throw new ArgumentException($"Audio codec only supports the following sample rates: {aCodec.validSampleRates}.");
+                throw new ArgumentException($"Audio codec only supports the following sample rates: {aCodec.ValidSampleRates}.");
             }
 
             //if (!aCodec.validSampleFormats.Contains(sFormat))
@@ -107,7 +107,7 @@ namespace ConvertWithMe.Core
             //    throw new ArgumentException("Audio codec doesnt support the provided sample Format.");
             //}
 
-            if (encodingMode == EncodingMode.VBR && !vCodec.hasVBRSupport)
+            if (encodingMode == EncodingMode.VBR && !vCodec.HasVBRSupport)
             {
                 throw new ArgumentException("Video codec doesnt support VBR.");
             }
@@ -117,7 +117,7 @@ namespace ConvertWithMe.Core
                 throw new ArgumentException($"The CRF has to be between 0 and 50. It is {vBitrate}");
             }
 
-            if (!vCodec.validPixelFormats.Contains(pFormat))
+            if (!vCodec.ValidPixelFormats.Contains(pFormat))
             {
                 throw new ArgumentException("Video Codec doesnt support the provided pixel Format.");
             }
@@ -137,12 +137,12 @@ namespace ConvertWithMe.Core
             }
 
             audioStream = audioStream?
-                .SetCodec(aCodec.codec)
+                .SetCodec(aCodec.Codec)
                 .SetSampleRate(sampleRate)
                 .SetBitrate(aBitrate);
 
             videoStream = videoStream
-                .SetCodec(vCodec.codec)
+                .SetCodec(vCodec.Codec)
                 .SetFramerate(frameRate)
                 .SetSize(width, height);
 
@@ -167,7 +167,7 @@ namespace ConvertWithMe.Core
                     break;
             }
 
-            if (vCodec.hasQualitySupport)
+            if (vCodec.HasQualitySupport)
             {
                 conversion = conversion.SetPreset(quailityPreset);
             }

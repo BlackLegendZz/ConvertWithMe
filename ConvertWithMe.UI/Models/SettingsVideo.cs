@@ -9,17 +9,17 @@ using Xabe.FFmpeg;
 
 namespace ConvertWithMe.UI.Models
 {
-    public sealed class SettingsVideo
+    public sealed class SettingsVideo : ISettings
     {
-        public Core.Definitions.Format format  {get; set; }
-        public Core.Definitions.VideoCodec codec { get; set; }
-        public int bitrate { get; set; }
-        public int frameRate { get; set; }
-        public int sampleRate { get; set; }
-        public int width { get; set; }
-        public int height { get; set; }
-        public EncodingMode encodingMode { get; set; }
-        public PixelFormat pFormat { get; set; }
-        public ConversionPreset quailityPreset { get; set; }
+        public Core.Definitions.Format Format  {get; set; }
+        public Core.Definitions.VideoCodec Codec { get; set; }
+        public int Bitrate { get; set; }
+        public int FrameRate { get; set; }
+        public int SampleRate { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public EncodingMode EncodingMode { get; set; }
+        public PixelFormat PFormat { get; set; }
+        public ConversionPreset QuailityPreset { get; set; }
     }
 }
