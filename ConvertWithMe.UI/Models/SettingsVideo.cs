@@ -11,11 +11,10 @@ namespace ConvertWithMe.UI.Models
 {
     public sealed class SettingsVideo : ISettings
     {
-        public Core.Definitions.Format Format  {get; set; }
+        public Core.Definitions.Format Format  { get; set; }
         public Core.Definitions.VideoCodec Codec { get; set; }
         public int Bitrate { get; set; }
         public int FrameRate { get; set; }
-        public int SampleRate { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public EncodingMode EncodingMode { get; set; }
