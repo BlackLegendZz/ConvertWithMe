@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using ConvertWithMe.Core.Definitions;
 using ConvertWithMe.UI.Messengers;
 using ConvertWithMe.UI.Models;
 using Microsoft.Win32;
-using System.CodeDom;
+using System.Collections.ObjectModel;
 
 namespace ConvertWithMe.UI.ViewModels
 {
@@ -37,8 +38,35 @@ namespace ConvertWithMe.UI.ViewModels
         [ObservableProperty]
         private SettingsAudio? sAudio;
 
-		public SettingsViewModel()
+        [ObservableProperty]
+        private Preset selectedPreset;
+        
+        [ObservableProperty]
+        private Format selectedVideoFormat;
+
+        [ObservableProperty]
+        private Format selectedAudioFormat;
+
+        private ObservableCollection<Preset> presetList;
+        public IEnumerable<Preset> PresetList => presetList;
+        public IEnumerable<Format> AvailableVideoFormats { 
+            get
+            {
+                return VideoFormats.AvailableVideoFormats;
+            } 
+        }
+        public IEnumerable<Format> AvailableAudioFormats
+        {
+            get
+            {
+                return AudioFormats.AvailableAudioFormats;
+            }
+        }
+
+        public SettingsViewModel()
 		{
+
+            presetList = new ObservableCollection<Preset>(Presets.AllPresets);
             WeakReferenceMessenger.Default.Register<TransferSettingsMessage>(this, (r, m) => {
                 ISettings? settings = m.Value;
                
@@ -80,6 +108,8 @@ namespace ConvertWithMe.UI.ViewModels
 		[RelayCommand]
         public void UpdateDestination()
         {
+            if (SFile == null) {  return; }
+
             OpenFolderDialog dialog = new OpenFolderDialog()
             {
                 Multiselect = false,
@@ -91,7 +121,14 @@ namespace ConvertWithMe.UI.ViewModels
             }
         }
 
-
+        [RelayCommand]
+        public void UpdateSettings()
+        {
+            SAudio = SelectedPreset.SettingsAudio;
+            SVideo = SelectedPreset.SettingsVideo;
+            SelectedAudioFormat = SAudio.Format;
+            SelectedVideoFormat = SVideo.Format;
+        }
 
         [RelayCommand]
         public void UpdateFilename()

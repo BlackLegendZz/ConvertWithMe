@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:ConvertWithMe.UI.Views.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:ConvertWithMe.UI.ViewModels"
     d:Background="White"
@@ -52,6 +53,8 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -66,6 +69,14 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             Text="Location" />
+                        <TextBlock
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Text="Preset" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Text="Format" />
 
                         <TextBox
                             Grid.Row="0"
@@ -88,6 +99,24 @@
                                 IsReadOnly="True"
                                 Text="{Binding SFile.DirDest}" />
                         </DockPanel>
+                        <ComboBox
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            DisplayMemberPath="Name"
+                            ItemsSource="{Binding PresetList}"
+                            SelectedItem="{Binding SelectedPreset}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding UpdateSettingsCommand}" PassEventArgsToCommand="False" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
+                        <ComboBox
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            DisplayMemberPath="Extension"
+                            ItemsSource="{Binding AvailableVideoFormats, Mode=OneWay}"
+                            SelectedItem="{Binding SelectedVideoFormat}" />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -215,53 +244,37 @@
             <!--  Video  -->
             <Border>
                 <StackPanel Orientation="Vertical">
-                    <DockPanel LastChildFill="False">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
                         <CheckBox
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            DockPanel.Dock="Left"
                             IsChecked="{Binding DisplayVideo}" />
                         <TextBlock
+                            Grid.Column="1"
                             Margin="0"
-                            DockPanel.Dock="Left"
                             FontWeight="Bold"
                             Text="Video" />
+                        <Label
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            Content="Export Video" />
                         <CheckBox
-                            DockPanel.Dock="Right"
+                            Grid.Column="3"
                             IsChecked="{Binding ConvertVideo}"
                             Style="{StaticResource ToggleButton}" />
-                    </DockPanel>
+                    </Grid>
                     <StackPanel
                         Margin="0,12,0,0"
                         IsEnabled="{Binding ConvertVideo}"
                         Orientation="Vertical"
                         Visibility="{Binding DisplayVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
-
-                        <!--  General Settings  -->
-                        <StackPanel Margin="0,0,0,8" Orientation="Vertical">
-                            <TextBlock
-                                Margin="0,0,0,6"
-                                FontWeight="Bold"
-                                Text="General Settings" />
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Text="Preset" />
-                                <!--  TODO: Add list of presets  -->
-                                <ComboBox
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Margin="8,0,0,0" />
-                            </Grid>
-                        </StackPanel>
 
                         <!--  Video Settings  -->
                         <StackPanel Margin="0,0,0,8" Orientation="Vertical">
@@ -292,8 +305,12 @@
                                     Grid.Row="2"
                                     Grid.Column="0"
                                     Text="Framerate" />
-                                <!--  TODO: Add list of formats  -->
-                                <ComboBox Grid.Row="0" Grid.Column="1" />
+                                <ComboBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    DisplayMemberPath="Extension"
+                                    ItemsSource="{Binding AvailableVideoFormats, Mode=OneWay}"
+                                    SelectedItem="{Binding SelectedVideoFormat}" />
                                 <Grid Grid.Row="1" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -321,9 +338,10 @@
                             <TextBlock
                                 Margin="0,0,0,6"
                                 FontWeight="Bold"
-                                Text="Encoding Settings" />
+                                Text="Video Codec Settings" />
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -336,19 +354,29 @@
                                 <TextBlock
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Text="Encoding Profile" />
+                                    Text="Video Codec" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="0"
-                                    Text="Bitrate Encoding" />
+                                    Text="Encoding Profile" />
                                 <TextBlock
                                     Grid.Row="2"
                                     Grid.Column="0"
+                                    Text="Bitrate Encoding" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
                                     Text="Target Bitrate" />
+                                <!--  TODO: Add list of codecs  -->
+                                <ComboBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    DisplayMemberPath="Name"
+                                    ItemsSource="{Binding SelectedVideoFormat.VideoCodecs}" />
                                 <!--  TODO: Add list of encoding profiles  -->
-                                <ComboBox Grid.Row="0" Grid.Column="1" />
-                                <!--  TODO: Add list of bitrate encodings  -->
                                 <ComboBox Grid.Row="1" Grid.Column="1" />
+                                <!--  TODO: Add list of bitrate encodings  -->
+                                <ComboBox Grid.Row="2" Grid.Column="1" />
                                 <DockPanel Grid.Row="3" Grid.Column="1">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding SVideo.Bitrate}" />
                                     <Slider
@@ -365,61 +393,44 @@
             <!--  Audio  -->
             <Border>
                 <StackPanel Orientation="Vertical">
-                    <DockPanel LastChildFill="False">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
                         <CheckBox
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            DockPanel.Dock="Left"
                             IsChecked="{Binding DisplayAudio}" />
                         <TextBlock
+                            Grid.Column="1"
                             Margin="0"
-                            DockPanel.Dock="Left"
                             FontWeight="Bold"
                             Text="Audio" />
+                        <Label
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            Content="Export Audio" />
                         <CheckBox
-                            DockPanel.Dock="Right"
+                            Grid.Column="3"
                             IsChecked="{Binding ConvertAudio}"
                             Style="{StaticResource ToggleButton}" />
-                    </DockPanel>
+                    </Grid>
                     <StackPanel
                         Margin="0,12,0,0"
                         IsEnabled="{Binding ConvertAudio}"
                         Orientation="Vertical"
                         Visibility="{Binding DisplayAudio, Converter={StaticResource BooleanToVisibilityConverter}}">
 
-                        <!--  General Settings  -->
-                        <StackPanel Margin="0,0,0,8" Orientation="Vertical">
-                            <TextBlock
-                                Margin="0,0,0,6"
-                                FontWeight="Bold"
-                                Text="General Settings" />
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Text="Preset" />
-
-                                <!--  TODO: Add list of codecs  -->
-                                <ComboBox
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    Margin="8,0,0,0" />
-                            </Grid>
-                        </StackPanel>
-
                         <!--  Audio Settings  -->
                         <StackPanel Margin="0,0,0,8" Orientation="Vertical">
                             <TextBlock
                                 Margin="0,0,0,6"
                                 FontWeight="Bold"
-                                Text="Audio Settings" />
+                                Text="Audio Format Settings" />
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -432,9 +443,13 @@
                                 <TextBlock
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Text="Format" />
-                                <!--  TODO: Add list of formats  -->
-                                <ComboBox Grid.Row="0" Grid.Column="1" />
+                                    Text="Audio Format" />
+                                <ComboBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    DisplayMemberPath="Extension"
+                                    ItemsSource="{Binding AvailableAudioFormats, Mode=OneWay}"
+                                    SelectedItem="{Binding SelectedAudioFormat}" />
                             </Grid>
                         </StackPanel>
 
@@ -443,7 +458,7 @@
                             <TextBlock
                                 Margin="0,0,0,6"
                                 FontWeight="Bold"
-                                Text="Encoding Settings" />
+                                Text="Audio Codec Settings" />
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -458,14 +473,23 @@
                                 <TextBlock
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Text="Sample Rate" />
+                                    Text="Audio Codec" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="0"
+                                    Text="Sample Rate" />
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
                                     Text="Target Bitrate" />
-                                <ComboBox Grid.Row="0" Grid.Column="1" />
 
-                                <DockPanel Grid.Row="1" Grid.Column="1">
+                                <ComboBox
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    DisplayMemberPath="Name"
+                                    ItemsSource="{Binding SelectedAudioFormat.AudioCodecs}" />
+                                <ComboBox Grid.Row="1" Grid.Column="1" />
+                                <DockPanel Grid.Row="2" Grid.Column="1">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding SAudio.Bitrate}" />
                                     <Slider
                                         DockPanel.Dock="Left"
