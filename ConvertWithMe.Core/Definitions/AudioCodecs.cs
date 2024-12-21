@@ -4,6 +4,7 @@
     {
         public static AudioCodec flac = new AudioCodec()
         {
+            Name = "FLAC",
             Codec = Xabe.FFmpeg.AudioCodec.flac,
             //hasVBRSupport = false,
             HasVariableSampleRate = true,
@@ -13,6 +14,7 @@
 
         public static AudioCodec mp3 = new AudioCodec()
         {
+            Name = "MP3",
             Codec = Xabe.FFmpeg.AudioCodec.mp3,
             //hasVBRSupport = true,
             HasVariableSampleRate = false,
@@ -22,6 +24,7 @@
 
         public static AudioCodec vorbis = new AudioCodec()
         {
+            Name = "Vorbis/ogg",
             Codec = Xabe.FFmpeg.AudioCodec.vorbis,
             //hasVBRSupport = false,
             HasVariableSampleRate = true,
@@ -31,6 +34,7 @@
 
         public static AudioCodec wmav2 = new AudioCodec()
         {
+            Name = "WMA",
             Codec = Xabe.FFmpeg.AudioCodec.wmav2,
             //hasVBRSupport = false,
             HasVariableSampleRate = true,
@@ -40,6 +44,7 @@
 
         public static AudioCodec opus = new AudioCodec()
         {
+            Name = "Opus",
             Codec = Xabe.FFmpeg.AudioCodec.libopus,
             //hasVBRSupport = true,
             HasVariableSampleRate = false,
@@ -49,6 +54,7 @@
 
         public static AudioCodec aac = new AudioCodec()
         {
+            Name = "AAC",
             Codec = Xabe.FFmpeg.AudioCodec.aac,
             //hasVBRSupport = false,
             HasVariableSampleRate = false,

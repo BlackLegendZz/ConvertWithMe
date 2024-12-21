@@ -4,39 +4,45 @@
     {
         public static Format mp3 = new Format()
         {
-            videoCodecs = [],
-            audioCodecs = [AudioCodecs.mp3],
-            extension = "mp3"
+            VideoCodecs = [],
+            AudioCodecs = [AudioCodecs.mp3],
+            Extension = "mp3"
         };
 
         public static Format aac = new Format()
         {
-            videoCodecs = [],
-            audioCodecs = [AudioCodecs.aac],
-            extension = "aac"
+            VideoCodecs = [],
+            AudioCodecs = [AudioCodecs.aac],
+            Extension = "aac"
         };
 
         public static Format flac = new Format()
         {
-            videoCodecs = [],
-            audioCodecs = [AudioCodecs.flac],
-            extension = "flac"
+            VideoCodecs = [],
+            AudioCodecs = [AudioCodecs.flac],
+            Extension = "flac"
         };
 
         public static Format m4a = new Format()
         {
-            videoCodecs = [],
-            audioCodecs = [AudioCodecs.aac],
-            extension = "m4a"
+            VideoCodecs = [],
+            AudioCodecs = [AudioCodecs.aac],
+            Extension = "m4a"
         };
 
         public static Format ogg = new Format()
         {
-            videoCodecs = [],
-            audioCodecs = [AudioCodecs.vorbis, AudioCodecs.opus, AudioCodecs.flac],
-            extension = "ogg"
+            VideoCodecs = [],
+            AudioCodecs = [AudioCodecs.vorbis, AudioCodecs.opus, AudioCodecs.flac],
+            Extension = "ogg"
+        };
+        public static Format wma = new Format()
+        {
+            VideoCodecs = [],
+            AudioCodecs = [AudioCodecs.wmav2],
+            Extension = "wma"
         };
 
-
+        public static Format[] AvailableAudioFormats = [mp3, aac, flac, m4a, ogg, wma];
     }
 }

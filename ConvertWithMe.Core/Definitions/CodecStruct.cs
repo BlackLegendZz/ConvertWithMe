@@ -20,6 +20,7 @@
     public enum EncodingMode { VBR, CBR };
     public readonly struct VideoCodec
     {
+        public string Name { get; init; }
         public Xabe.FFmpeg.VideoCodec Codec { get; init; }
         public bool HasVBRSupport { get; init; }
         public bool HasQualitySupport { get; init; }
@@ -28,6 +29,7 @@
 
     public readonly struct AudioCodec
     {
+        public string Name { get; init; }
         public Xabe.FFmpeg.AudioCodec Codec { get; init; }
         public int[] ValidSampleRates { get; init; }
         //public SampleFormat[] validSampleFormats { get; init; }

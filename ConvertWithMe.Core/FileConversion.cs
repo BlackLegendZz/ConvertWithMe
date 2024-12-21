@@ -27,7 +27,7 @@ namespace ConvertWithMe.Core
             ConversionProgressEventHandler progressCallback
             )
         {
-            if (!format.audioCodecs.Contains(aCodec))
+            if (!format.AudioCodecs.Contains(aCodec))
             {
                 throw new ArgumentException("Format doesnt support the provided audio codec.");
             }
@@ -58,7 +58,7 @@ namespace ConvertWithMe.Core
             IConversion conversion = FFmpeg.Conversions.New()
                 .AddStream(audioStream)
                 .AddParameter("")
-                .SetOutput($"{dest}.{format.extension}");
+                .SetOutput($"{dest}.{format.Extension}");
 
             conversion.OnProgress += progressCallback;
 
@@ -87,12 +87,12 @@ namespace ConvertWithMe.Core
             ConversionProgressEventHandler progressCallback
             )
         {
-            if (!format.audioCodecs.Contains(aCodec))
+            if (!format.AudioCodecs.Contains(aCodec))
             {
                 throw new ArgumentException("Format doesnt support the provided audio codec.");
             }
 
-            if (!format.videoCodecs.Contains(vCodec))
+            if (!format.VideoCodecs.Contains(vCodec))
             {
                 throw new ArgumentException("Format doesnt support the provided video codec.");
             }
