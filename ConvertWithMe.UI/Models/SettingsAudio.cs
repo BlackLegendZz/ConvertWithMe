@@ -1,12 +1,13 @@
 ﻿
+using CommunityToolkit.Mvvm.ComponentModel;
 using ConvertWithMe.Core.Definitions;
 
 namespace ConvertWithMe.UI.Models
 {
-    public class SettingsAudio : ISettings
+    public partial class SettingsAudio : ObservableObject, ISettings
     {
-        public Format Format;
-        public AudioCodec Codec { get; set; }
+        [ObservableProperty]
+        private AudioCodec codec;
         public int Bitrate { get; set; }
         public int SampleRate { get; set; }
         

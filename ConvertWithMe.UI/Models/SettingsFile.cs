@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using ConvertWithMe.Core.Definitions;
 using System.IO;
 
 namespace ConvertWithMe.UI.Models
@@ -7,6 +8,12 @@ namespace ConvertWithMe.UI.Models
     {
         public string FilenameSrc {  get; init; }
         public string DirSrc { get; init; }
+
+        [ObservableProperty]
+        private Preset preset = new Preset() { Name = string.Empty };
+
+        [ObservableProperty]
+        private Format format = new Format() { Extension = string.Empty };
 
         [ObservableProperty]
         private string filenameDest = string.Empty;

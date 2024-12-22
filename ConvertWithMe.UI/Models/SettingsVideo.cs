@@ -1,4 +1,5 @@
-﻿using ConvertWithMe.Core.Definitions;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using ConvertWithMe.Core.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ using Xabe.FFmpeg;
 
 namespace ConvertWithMe.UI.Models
 {
-    public sealed class SettingsVideo : ISettings
+    public partial class SettingsVideo : ObservableObject, ISettings
     {
-        public Core.Definitions.Format Format  { get; set; }
-        public Core.Definitions.VideoCodec Codec { get; set; }
+        [ObservableProperty]
+        private Core.Definitions.VideoCodec codec;
         public int Bitrate { get; set; }
         public int FrameRate { get; set; }
         public int Width { get; set; }

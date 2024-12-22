@@ -11,6 +11,7 @@ namespace ConvertWithMe.UI
     public struct Preset
     {
         public string Name { get; init; }
+        public Format Format { get; init; }
         public SettingsAudio SettingsAudio { get; init; }
         public SettingsVideo SettingsVideo { get; init; }
     }
@@ -19,9 +20,9 @@ namespace ConvertWithMe.UI
         public static Preset p1 = new Preset()
         {
             Name = "Windows Media High Quality",
+            Format = VideoFormats.wmv,
             SettingsVideo = new SettingsVideo()
             {
-                Format = VideoFormats.wmv,
                 Codec = VideoCodecs.wmv,
                 Bitrate = 20000,
                 FrameRate = -1,
@@ -33,7 +34,6 @@ namespace ConvertWithMe.UI
             },
             SettingsAudio = new SettingsAudio() 
             {
-                Format = AudioFormats.wma,
                 Codec = AudioCodecs.wmav2,
                 Bitrate = 320000,
                 SampleRate = 48000
@@ -43,9 +43,9 @@ namespace ConvertWithMe.UI
         public static Preset p2 = new Preset()
         {
             Name = "Full HD High Quality",
+            Format = VideoFormats.mp4,
             SettingsVideo = new SettingsVideo()
             {
-                Format = VideoFormats.mp4,
                 Codec = VideoCodecs.h264,
                 Bitrate = 15,
                 FrameRate = -1,
@@ -57,7 +57,6 @@ namespace ConvertWithMe.UI
             },
             SettingsAudio = new SettingsAudio()
             {
-                Format = AudioFormats.aac,
                 Codec = AudioCodecs.aac,
                 Bitrate = 320000,
                 SampleRate = 48000
@@ -67,9 +66,9 @@ namespace ConvertWithMe.UI
         public static Preset p3 = new Preset()
         {
             Name = "Full HD High Quality (NVEC)",
+            Format = VideoFormats.mp4,
             SettingsVideo = new SettingsVideo()
             {
-                Format = VideoFormats.mp4,
                 Codec = VideoCodecs.h265,
                 Bitrate = 15,
                 FrameRate = -1,
@@ -81,7 +80,6 @@ namespace ConvertWithMe.UI
             },
             SettingsAudio = new SettingsAudio()
             {
-                Format = AudioFormats.aac,
                 Codec = AudioCodecs.aac,
                 Bitrate = 320000,
                 SampleRate = 48000
@@ -91,9 +89,9 @@ namespace ConvertWithMe.UI
         public static Preset p4 = new Preset()
         {
             Name = "HD High Quality",
+            Format = VideoFormats.mp4,
             SettingsVideo = new SettingsVideo()
             {
-                Format = VideoFormats.mp4,
                 Codec = VideoCodecs.h264,
                 Bitrate = 15,
                 FrameRate = -1,
@@ -105,7 +103,6 @@ namespace ConvertWithMe.UI
             },
             SettingsAudio = new SettingsAudio()
             {
-                Format = AudioFormats.aac,
                 Codec = AudioCodecs.aac,
                 Bitrate = 320000,
                 SampleRate = 48000
@@ -115,9 +112,10 @@ namespace ConvertWithMe.UI
         public static Preset p5 = new Preset()
         {
             Name = "HD High Quality (NVEC)",
+            Format = VideoFormats.mp4,
             SettingsVideo = new SettingsVideo()
             {
-                Format = VideoFormats.mp4,
+
                 Codec = VideoCodecs.h264,
                 Bitrate = 15,
                 FrameRate = -1,
@@ -129,13 +127,16 @@ namespace ConvertWithMe.UI
             },
             SettingsAudio = new SettingsAudio()
             {
-                Format = AudioFormats.aac,
                 Codec = AudioCodecs.aac,
                 Bitrate = 320000,
                 SampleRate = 48000
             }
         };
 
-        public static Preset[] AllPresets = [p1, p2, p3, p4, p5];
+        public static Preset custom = new Preset()
+        {
+            Name = "Custom",
+        };
+        public static Preset[] AllPresets = [p1, p2, p3, p4, p5, custom];
     }
 }
