@@ -118,7 +118,7 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             DisplayMemberPath="Extension"
-                            ItemsSource="{Binding AvailableFormats, Mode=OneWay}"
+                            ItemsSource="{Binding AvailableFormats}"
                             SelectedItem="{Binding SFile.Format}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged">
@@ -326,8 +326,12 @@
                                         Margin="0,0,0,6"
                                         Text="{Binding SVideo.Height}" />
                                 </Grid>
-                                <!--  TODO: Add list of framerates  -->
-                                <ComboBox Grid.Row="1" Grid.Column="1" />
+                                <ComboBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Padding="0"
+                                    ItemsSource="{Binding Framrates}"
+                                    SelectedItem="{Binding SVideo.FrameRate}" />
                             </Grid>
                         </StackPanel>
 
@@ -356,26 +360,38 @@
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="0"
-                                    Text="Encoding Profile" />
+                                    Text="Bitrate Encoding" />
                                 <TextBlock
                                     Grid.Row="2"
                                     Grid.Column="0"
-                                    Text="Bitrate Encoding" />
+                                    Text="Encoding Profile"
+                                    Visibility="{Binding SVideo.Codec.HasVBRSupport, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 <TextBlock
                                     Grid.Row="3"
                                     Grid.Column="0"
                                     Text="Target Bitrate" />
-                                <!--  TODO: Add list of codecs  -->
                                 <ComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     DisplayMemberPath="Name"
                                     ItemsSource="{Binding SFile.Format.VideoCodecs}"
-                                    SelectedItem="{Binding SVideo.Codec}" />
-                                <!--  TODO: Add list of encoding profiles  -->
-                                <ComboBox Grid.Row="1" Grid.Column="1" />
-                                <!--  TODO: Add list of bitrate encodings  -->
-                                <ComboBox Grid.Row="2" Grid.Column="1" />
+                                    SelectedItem="{Binding SVideo.Codec}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding VideoCodecChangedCommand}" PassEventArgsToCommand="True" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
+                                <ComboBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    ItemsSource="{Binding EncodingProfiles}"
+                                    SelectedItem="{Binding SVideo.EncodingMode}" />
+                                <ComboBox
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    ItemsSource="{Binding QualityPresets}"
+                                    Visibility="{Binding SVideo.Codec.HasVBRSupport, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 <DockPanel Grid.Row="3" Grid.Column="1">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding SVideo.Bitrate}" />
                                     <Slider
@@ -460,7 +476,11 @@
                                     DisplayMemberPath="Name"
                                     ItemsSource="{Binding SFile.Format.AudioCodecs}"
                                     SelectedItem="{Binding SAudio.Codec}" />
-                                <ComboBox Grid.Row="1" Grid.Column="1" />
+                                <ComboBox
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    ItemsSource="{Binding SAudio.Codec.ValidSampleRates}"
+                                    SelectedItem="{Binding SAudio.SampleRate}" />
                                 <DockPanel Grid.Row="2" Grid.Column="1">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding SAudio.Bitrate}" />
                                     <Slider

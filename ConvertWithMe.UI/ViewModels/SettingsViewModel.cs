@@ -5,8 +5,8 @@ using ConvertWithMe.Core.Definitions;
 using ConvertWithMe.UI.Messengers;
 using ConvertWithMe.UI.Models;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using Xabe.FFmpeg;
 
 namespace ConvertWithMe.UI.ViewModels
 {
@@ -46,9 +46,12 @@ namespace ConvertWithMe.UI.ViewModels
         [NotifyPropertyChangedFor(nameof(AvailableFormats))]
         private bool isAudioFile;
 
+        private ObservableCollection<EncodingMode> encodingProfiles = new ObservableCollection<EncodingMode>(Enum.GetValues(typeof(EncodingMode)).Cast<EncodingMode>());
+        public IEnumerable<EncodingMode> EncodingProfiles => encodingProfiles;
+
         private ObservableCollection<Preset> presetList;
         public IEnumerable<Preset> PresetList => presetList;
-        public IEnumerable<Format> AvailableFormats { 
+        public IEnumerable<Core.Definitions.Format> AvailableFormats { 
             get
             {
                 if (IsAudioFile)
@@ -61,7 +64,10 @@ namespace ConvertWithMe.UI.ViewModels
                 }
             } 
         }
-        
+        public IEnumerable<int> Framrates => [24, 25, 30, 60];
+        public IEnumerable<ConversionPreset> QualityPresets => Enum.GetValues(typeof(ConversionPreset)).Cast<ConversionPreset>();
+        private bool presetManuallyChanged;
+
         public SettingsViewModel()
 		{
             SFile = new SettingsFile(string.Empty, string.Empty);
@@ -92,6 +98,16 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void PresetChanged()
         {
+            if (SFile.Preset.SettingsVideo == null)
+            {
+                return;
+            }
+            if (SFile.Preset.SettingsAudio == null)
+            {
+                return;
+            }
+
+            presetManuallyChanged = true;
             SAudio.SampleRate = SFile.Preset.SettingsAudio.SampleRate;
             SAudio.Codec = SFile.Preset.SettingsAudio.Codec;
             SAudio.Bitrate = SFile.Preset.SettingsAudio.Bitrate;
@@ -111,15 +127,33 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void FormatChanged()
         {
+            IsVideoFormatSelected = SFile.Format.VideoCodecs.Length > 0;
+
+            if (presetManuallyChanged)
+            {
+                presetManuallyChanged = false;
+                return;
+            }
+
+            SFile.Preset = Presets.custom;
             SVideo.Codec = SFile.Format.VideoCodecs.FirstOrDefault();
             SAudio.Codec = SFile.Format.AudioCodecs.FirstOrDefault();
-            IsVideoFormatSelected = SFile.Format.VideoCodecs.Length > 0;
         }
 
         [RelayCommand]
-        public void UpdateFilename()
+        public void VideoCodecChanged()
         {
-
+            if (SVideo.Codec.HasVBRSupport)
+            {
+                if (!encodingProfiles.Contains(EncodingMode.VBR))
+                {
+                    encodingProfiles.Add(EncodingMode.VBR);
+                }
+            }
+            else
+            {
+                encodingProfiles.Remove(EncodingMode.VBR);
+            }
         }
 
         private void UpdateTransferredSettings(object recipient, TransferSettingsMessage message)
