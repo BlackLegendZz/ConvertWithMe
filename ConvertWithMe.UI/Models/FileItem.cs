@@ -17,16 +17,15 @@ namespace ConvertWithMe.UI.Models
         public IAudioStream? PrimaryAudioStream { get; set; }
         public IVideoStream? PrimaryVideoStream { get; set; }
 
-        // Dont display  videostream infos if the stream is just a cover
-        public bool VideoStreamIsCover
+        public bool IsAudioFile
         {
             get
             {
                 if (PrimaryVideoStream != null)
                 {
-                    return PrimaryVideoStream.Codec != VideoCodec.mjpeg.ToString();
+                    return PrimaryVideoStream.Codec == VideoCodec.mjpeg.ToString();
                 }
-                return false;
+                return true;
             }
         }
         public TimeSpan Duration
