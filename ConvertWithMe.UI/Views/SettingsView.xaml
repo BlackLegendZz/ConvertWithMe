@@ -14,6 +14,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InvertBooleanConverter x:Key="InvertBooleanConverter" />
     </UserControl.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">
@@ -72,7 +73,7 @@
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
-                            Text="Preset" />
+                            Text="Video Preset" />
                         <TextBlock
                             Grid.Row="3"
                             Grid.Column="0"
@@ -86,6 +87,7 @@
                         <DockPanel
                             Grid.Row="1"
                             Grid.Column="1"
+                            Margin="0,0,0,6"
                             LastChildFill="True">
                             <Button
                                 Width="50"
@@ -103,11 +105,12 @@
                             Grid.Row="2"
                             Grid.Column="1"
                             DisplayMemberPath="Name"
+                            IsEnabled="{Binding IsAudioFile, Converter={StaticResource InvertBooleanConverter}}"
                             ItemsSource="{Binding PresetList}"
-                            SelectedItem="{Binding SelectedPreset}">
+                            SelectedItem="{Binding SFile.Preset}">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding UpdateSettingsCommand}" PassEventArgsToCommand="False" />
+                                    <i:InvokeCommandAction Command="{Binding PresetChangedCommand}" PassEventArgsToCommand="False" />
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </ComboBox>
@@ -115,8 +118,14 @@
                             Grid.Row="3"
                             Grid.Column="1"
                             DisplayMemberPath="Extension"
-                            ItemsSource="{Binding AvailableVideoFormats, Mode=OneWay}"
-                            SelectedItem="{Binding SelectedVideoFormat}" />
+                            ItemsSource="{Binding AvailableFormats, Mode=OneWay}"
+                            SelectedItem="{Binding SFile.Format}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <i:InvokeCommandAction Command="{Binding FormatChangedCommand}" PassEventArgsToCommand="False" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ComboBox>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -243,7 +252,7 @@
 
             <!--  Video  -->
             <Border>
-                <StackPanel Orientation="Vertical">
+                <StackPanel IsEnabled="{Binding IsVideoFormatSelected}" Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -286,7 +295,6 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
@@ -296,22 +304,12 @@
                                 <TextBlock
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Text="Format" />
+                                    Text="Resolution" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="0"
-                                    Text="Resolution" />
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Grid.Column="0"
                                     Text="Framerate" />
-                                <ComboBox
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    DisplayMemberPath="Extension"
-                                    ItemsSource="{Binding AvailableVideoFormats, Mode=OneWay}"
-                                    SelectedItem="{Binding SelectedVideoFormat}" />
-                                <Grid Grid.Row="1" Grid.Column="1">
+                                <Grid Grid.Row="0" Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
@@ -329,7 +327,7 @@
                                         Text="{Binding SVideo.Height}" />
                                 </Grid>
                                 <!--  TODO: Add list of framerates  -->
-                                <ComboBox Grid.Row="3" Grid.Column="1" />
+                                <ComboBox Grid.Row="1" Grid.Column="1" />
                             </Grid>
                         </StackPanel>
 
@@ -372,7 +370,8 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     DisplayMemberPath="Name"
-                                    ItemsSource="{Binding SelectedVideoFormat.VideoCodecs}" />
+                                    ItemsSource="{Binding SFile.Format.VideoCodecs}"
+                                    SelectedItem="{Binding SVideo.Codec}" />
                                 <!--  TODO: Add list of encoding profiles  -->
                                 <ComboBox Grid.Row="1" Grid.Column="1" />
                                 <!--  TODO: Add list of bitrate encodings  -->
@@ -425,34 +424,6 @@
                         Orientation="Vertical"
                         Visibility="{Binding DisplayAudio, Converter={StaticResource BooleanToVisibilityConverter}}">
 
-                        <!--  Audio Settings  -->
-                        <StackPanel Margin="0,0,0,8" Orientation="Vertical">
-                            <TextBlock
-                                Margin="0,0,0,6"
-                                FontWeight="Bold"
-                                Text="Audio Format Settings" />
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock
-                                    Grid.Row="0"
-                                    Grid.Column="0"
-                                    Text="Audio Format" />
-                                <ComboBox
-                                    Grid.Row="0"
-                                    Grid.Column="1"
-                                    DisplayMemberPath="Extension"
-                                    ItemsSource="{Binding AvailableAudioFormats, Mode=OneWay}"
-                                    SelectedItem="{Binding SelectedAudioFormat}" />
-                            </Grid>
-                        </StackPanel>
-
                         <!--  Ecoding Settings  -->
                         <StackPanel Margin="0,0,0,8" Orientation="Vertical">
                             <TextBlock
@@ -487,7 +458,8 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     DisplayMemberPath="Name"
-                                    ItemsSource="{Binding SelectedAudioFormat.AudioCodecs}" />
+                                    ItemsSource="{Binding SFile.Format.AudioCodecs}"
+                                    SelectedItem="{Binding SAudio.Codec}" />
                                 <ComboBox Grid.Row="1" Grid.Column="1" />
                                 <DockPanel Grid.Row="2" Grid.Column="1">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding SAudio.Bitrate}" />
