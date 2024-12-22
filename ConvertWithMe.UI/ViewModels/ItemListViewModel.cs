@@ -87,7 +87,7 @@ namespace ConvertWithMe.UI.ViewModels
             }
             
             // Send Settings to Settings ViewModel
-            WeakReferenceMessenger.Default.Send(new TransferSettingsMessage(fileSettings));
+            WeakReferenceMessenger.Default.Send(new TransferSettingsMessage(selectedItem));
         }
         private SettingsMetadata ReadMetadata(string file)
         {
