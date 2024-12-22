@@ -8,8 +8,10 @@ namespace ConvertWithMe.UI.Models
     {
         [ObservableProperty]
         private AudioCodec codec;
-        public int Bitrate { get; set; }
-        public int SampleRate { get; set; }
+        [ObservableProperty]
+        private int bitrate;
+        [ObservableProperty]
+        private int sampleRate;
         
     }
 }
