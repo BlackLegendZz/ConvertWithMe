@@ -14,12 +14,19 @@ namespace ConvertWithMe.UI.Models
     {
         [ObservableProperty]
         private Core.Definitions.VideoCodec codec;
-        public int Bitrate { get; set; }
-        public int FrameRate { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public EncodingMode EncodingMode { get; set; }
-        public PixelFormat PFormat { get; set; }
-        public ConversionPreset QuailityPreset { get; set; }
+        [ObservableProperty]
+        private int bitrate;
+        [ObservableProperty]
+        private int frameRate;
+        [ObservableProperty]
+        private int width;
+        [ObservableProperty]
+        private int height;
+        [ObservableProperty]
+        private EncodingMode encodingMode = EncodingMode.CBR;
+        [ObservableProperty]
+        private PixelFormat pFormat = PixelFormat.yuv420p;
+        [ObservableProperty]
+        private ConversionPreset quailityPreset = ConversionPreset.Medium;
     }
 }
