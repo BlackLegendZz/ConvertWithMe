@@ -5,6 +5,7 @@ using ConvertWithMe.Core.Definitions;
 using ConvertWithMe.UI.Messengers;
 using ConvertWithMe.UI.Models;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 
 namespace ConvertWithMe.UI.ViewModels
@@ -27,85 +28,52 @@ namespace ConvertWithMe.UI.ViewModels
         private bool displayAudio = false;
 
         [ObservableProperty]
-        private SettingsFile? sFile;
+        private SettingsFile sFile;
 
         [ObservableProperty]
-        private SettingsMetadata? sMetadata;
+        private SettingsMetadata sMetadata;
 
         [ObservableProperty]
-        private SettingsVideo? sVideo;
+        private SettingsVideo sVideo;
 
         [ObservableProperty]
-        private SettingsAudio? sAudio;
+        private SettingsAudio sAudio;
 
         [ObservableProperty]
-        private Preset selectedPreset;
-        
-        [ObservableProperty]
-        private Format selectedVideoFormat;
+        private bool isVideoFormatSelected;
 
         [ObservableProperty]
-        private Format selectedAudioFormat;
+        [NotifyPropertyChangedFor(nameof(AvailableFormats))]
+        private bool isAudioFile;
 
         private ObservableCollection<Preset> presetList;
         public IEnumerable<Preset> PresetList => presetList;
-        public IEnumerable<Format> AvailableVideoFormats { 
+        public IEnumerable<Format> AvailableFormats { 
             get
             {
-                return VideoFormats.AvailableVideoFormats;
+                if (IsAudioFile)
+                {
+                    return AudioFormats.AvailableAudioFormats;
+                }
+                else
+                {
+                    return VideoFormats.AvailableVideoFormats.Concat(AudioFormats.AvailableAudioFormats);
+                }
             } 
         }
-        public IEnumerable<Format> AvailableAudioFormats
-        {
-            get
-            {
-                return AudioFormats.AvailableAudioFormats;
-            }
-        }
-
+        
         public SettingsViewModel()
 		{
+            SFile = new SettingsFile(string.Empty, string.Empty);
+            SMetadata = new SettingsMetadata();
+            SVideo = new SettingsVideo();
+            SAudio = new SettingsAudio();
 
             presetList = new ObservableCollection<Preset>(Presets.AllPresets);
-            WeakReferenceMessenger.Default.Register<TransferSettingsMessage>(this, (r, m) => {
-                ISettings? settings = m.Value;
-               
-                if (settings == null)
-                {
-                    SFile = null;
-                    SMetadata = null;
-                    SVideo = null;
-                    SAudio = null;
-                    return;
-                }
-                Type sType = settings.GetType();
-
-                if (sType == typeof(SettingsFile))
-                {
-                    SFile = settings as SettingsFile;
-                    return;
-                }
-                if (sType == typeof(SettingsMetadata))
-                {
-                    SMetadata = settings as SettingsMetadata;
-                    return;
-                }
-                if (sType == typeof(SettingsVideo))
-                {
-                    SVideo = settings as SettingsVideo;
-                    return;
-                }
-                if (sType == typeof(SettingsAudio))
-                {
-                    SAudio = settings as SettingsAudio;
-                    return;
-                }
-
-                throw new ArgumentException($"The provided settings class of type {sType.FullName} is invalid.");
-            });
+            WeakReferenceMessenger.Default.Register<TransferSettingsMessage>(this, UpdateTransferredSettings);
 		}
 
-		[RelayCommand]
+        [RelayCommand]
         public void UpdateDestination()
         {
             if (SFile == null) {  return; }
@@ -122,12 +90,30 @@ namespace ConvertWithMe.UI.ViewModels
         }
 
         [RelayCommand]
-        public void UpdateSettings()
+        public void PresetChanged()
         {
-            SAudio = SelectedPreset.SettingsAudio;
-            SVideo = SelectedPreset.SettingsVideo;
-            SelectedAudioFormat = SAudio.Format;
-            SelectedVideoFormat = SVideo.Format;
+            SAudio.SampleRate = SFile.Preset.SettingsAudio.SampleRate;
+            SAudio.Codec = SFile.Preset.SettingsAudio.Codec;
+            SAudio.Bitrate = SFile.Preset.SettingsAudio.Bitrate;
+
+            SVideo.Bitrate = SFile.Preset.SettingsAudio.Bitrate;
+            SVideo.PFormat = SFile.Preset.SettingsVideo.PFormat;
+            SVideo.Codec = SFile.Preset.SettingsVideo.Codec;
+            SVideo.EncodingMode = SFile.Preset.SettingsVideo.EncodingMode;
+            SVideo.FrameRate = SFile.Preset.SettingsVideo.FrameRate;
+            SVideo.QuailityPreset = SFile.Preset.SettingsVideo.QuailityPreset;
+            SVideo.Height = SFile.Preset.SettingsVideo.Height;
+            SVideo.Width = SFile.Preset.SettingsVideo.Width;
+
+            SFile.Format = SFile.Preset.Format;
+        }
+
+        [RelayCommand]
+        public void FormatChanged()
+        {
+            SVideo.Codec = SFile.Format.VideoCodecs.FirstOrDefault();
+            SAudio.Codec = SFile.Format.AudioCodecs.FirstOrDefault();
+            IsVideoFormatSelected = SFile.Format.VideoCodecs.Length > 0;
         }
 
         [RelayCommand]
@@ -136,6 +122,33 @@ namespace ConvertWithMe.UI.ViewModels
 
         }
 
+        private void UpdateTransferredSettings(object recipient, TransferSettingsMessage message)
+        {
+            FileItem? fileItem = message.Value;
 
+            if (fileItem == null)
+            {
+                SFile = new SettingsFile(string.Empty, string.Empty);
+                SMetadata = new SettingsMetadata();
+                SVideo = new SettingsVideo();
+                SAudio = new SettingsAudio();
+                IsAudioFile = false;
+                return;
+            }
+            IsAudioFile = fileItem.IsAudioFile;
+
+            SFile = fileItem.SettingsFile;
+            if (!IsAudioFile && SFile.Preset.Name == string.Empty)
+            {
+                SFile.Preset = PresetList.FirstOrDefault();
+            }
+            //if (IsAudioFile && SFile.Format.Extension == string.Empty)
+            //{
+            //    SFile.Format = AvailableFormats.FirstOrDefault();
+            //}
+            SMetadata = fileItem.SettingsMetadata;
+            SVideo = fileItem.SettingsVideo;
+            SAudio = fileItem.SettingsAudio;
+        }
     }
 }
