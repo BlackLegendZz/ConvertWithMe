@@ -15,8 +15,12 @@
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertBooleanConverter x:Key="InvertBooleanConverter" />
+        <converters:ValueConverterGroup x:Key="InvertAndVisibilityConverter">
+            <converters:InvertBooleanConverter />
+            <converters:BooleanToVisibilityConverter />
+        </converters:ValueConverterGroup>
     </UserControl.Resources>
-    <Grid>
+    <Grid IsEnabled="{Binding IsFileSelected}">
         <StackPanel Orientation="Vertical">
             <StackPanel.Resources>
                 <Style TargetType="Border">
@@ -252,7 +256,7 @@
 
             <!--  Video  -->
             <Border>
-                <StackPanel IsEnabled="{Binding IsVideoFormatSelected}" Orientation="Vertical">
+                <StackPanel IsEnabled="{Binding IsAudioFile, Converter={StaticResource InvertBooleanConverter}}" Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -369,7 +373,13 @@
                                 <TextBlock
                                     Grid.Row="3"
                                     Grid.Column="0"
-                                    Text="Target Bitrate" />
+                                    Text="Target Bitrate"
+                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    Text="Quality"
+                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 <ComboBox
                                     Grid.Row="0"
                                     Grid.Column="1"
@@ -386,16 +396,36 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     ItemsSource="{Binding EncodingProfiles}"
-                                    SelectedItem="{Binding SVideo.EncodingMode}" />
+                                    SelectedItem="{Binding SVideo.EncodingMode}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding EncodingProfileChangedCommand}" PassEventArgsToCommand="True" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
                                 <ComboBox
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     ItemsSource="{Binding QualityPresets}"
                                     Visibility="{Binding SVideo.Codec.HasVBRSupport, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                <DockPanel Grid.Row="3" Grid.Column="1">
+                                <DockPanel
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding SVideo.Bitrate}" />
                                     <Slider
                                         DockPanel.Dock="Left"
+                                        Minimum="0"
+                                        Value="{Binding SVideo.Bitrate}" />
+                                </DockPanel>
+                                <DockPanel
+                                    Grid.Row="3"
+                                    Grid.Column="1"
+                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding SVideo.Bitrate}" />
+                                    <Slider
+                                        DockPanel.Dock="Left"
+                                        Maximum="30"
                                         Minimum="0"
                                         Value="{Binding SVideo.Bitrate}" />
                                 </DockPanel>
@@ -475,12 +505,24 @@
                                     Grid.Column="1"
                                     DisplayMemberPath="Name"
                                     ItemsSource="{Binding SFile.Format.AudioCodecs}"
-                                    SelectedItem="{Binding SAudio.Codec}" />
+                                    SelectedItem="{Binding SAudio.Codec}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding AudioCodecChangedCommand}" PassEventArgsToCommand="True" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
                                 <ComboBox
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     ItemsSource="{Binding SAudio.Codec.ValidSampleRates}"
-                                    SelectedItem="{Binding SAudio.SampleRate}" />
+                                    SelectedItem="{Binding SAudio.SampleRate}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding SampleRateChangedCommand}" PassEventArgsToCommand="True" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </ComboBox>
                                 <DockPanel Grid.Row="2" Grid.Column="1">
                                     <TextBlock DockPanel.Dock="Right" Text="{Binding SAudio.Bitrate}" />
                                     <Slider

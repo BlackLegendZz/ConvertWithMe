@@ -16,10 +16,10 @@ namespace ConvertWithMe.UI.ViewModels
         private bool displayMetadata = true;
 
         [ObservableProperty]
-        private bool displayVideo = true;
+        private bool displayVideo = false;
 
         [ObservableProperty]
-        private bool convertVideo = true;
+        private bool convertVideo = false;
 
         [ObservableProperty]
         private bool convertAudio = false;
@@ -40,11 +40,14 @@ namespace ConvertWithMe.UI.ViewModels
         private SettingsAudio sAudio;
 
         [ObservableProperty]
-        private bool isVideoFormatSelected;
-
-        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(AvailableFormats))]
         private bool isAudioFile;
+
+        [ObservableProperty]
+        private bool isVBRSelected = false;
+
+        [ObservableProperty]
+        private bool isFileSelected = false;
 
         private ObservableCollection<EncodingMode> encodingProfiles = new ObservableCollection<EncodingMode>(Enum.GetValues(typeof(EncodingMode)).Cast<EncodingMode>());
         public IEnumerable<EncodingMode> EncodingProfiles => encodingProfiles;
@@ -67,6 +70,7 @@ namespace ConvertWithMe.UI.ViewModels
         public IEnumerable<int> Framrates => [24, 25, 30, 60];
         public IEnumerable<ConversionPreset> QualityPresets => Enum.GetValues(typeof(ConversionPreset)).Cast<ConversionPreset>();
         private bool presetManuallyChanged;
+        private bool isInitialisingFile = false;
 
         public SettingsViewModel()
 		{
@@ -95,6 +99,8 @@ namespace ConvertWithMe.UI.ViewModels
             }
         }
 
+        #region Combobox Triggers
+
         [RelayCommand]
         public void PresetChanged()
         {
@@ -107,7 +113,6 @@ namespace ConvertWithMe.UI.ViewModels
                 return;
             }
 
-            presetManuallyChanged = true;
             SAudio.SampleRate = SFile.Preset.SettingsAudio.SampleRate;
             SAudio.Codec = SFile.Preset.SettingsAudio.Codec;
             SAudio.Bitrate = SFile.Preset.SettingsAudio.Bitrate;
@@ -127,15 +132,26 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void FormatChanged()
         {
-            IsVideoFormatSelected = SFile.Format.VideoCodecs.Length > 0;
-
-            if (presetManuallyChanged)
+            if (SFile.Preset.Format.Equals(SFile.Format))
             {
-                presetManuallyChanged = false;
                 return;
             }
-
+            if (AudioFormats.AvailableAudioFormats.Contains(SFile.Format))
+            {
+                ConvertVideo = false;
+                DisplayVideo = false;
+                ConvertAudio = true;
+                DisplayAudio = true;
+            }
+            else
+            {
+                ConvertVideo = true;
+                DisplayVideo = true;
+                ConvertAudio = true;
+                DisplayAudio = true;
+            }
             SFile.Preset = Presets.custom;
+
             SVideo.Codec = SFile.Format.VideoCodecs.FirstOrDefault();
             SAudio.Codec = SFile.Format.AudioCodecs.FirstOrDefault();
         }
@@ -154,12 +170,66 @@ namespace ConvertWithMe.UI.ViewModels
             {
                 encodingProfiles.Remove(EncodingMode.VBR);
             }
+
+            if (SFile.Preset.Equals(Presets.custom) || SFile.Preset.Name == "")
+            {
+                return;
+            }
+            if (!isInitialisingFile && !SFile.Preset.SettingsVideo.Codec.Equals(SVideo.Codec))
+            {
+                SFile.Preset = Presets.custom;
+            }
         }
+
+        [RelayCommand]
+        public void AudioCodecChanged()
+        {
+            // Only do this for the audio part of a video file
+            if (IsAudioFile)
+            {
+                return;
+            }
+            if (!isInitialisingFile && !SFile.Preset.SettingsAudio.Codec.Equals(SAudio.Codec))
+            {
+                SFile.Preset = Presets.custom;
+            }
+        }
+
+        [RelayCommand]
+        public void SampleRateChanged()
+        {
+            // Only do this for the audio part of a video file
+            if (IsAudioFile)
+            {
+                return;
+            }
+            if (!isInitialisingFile && SFile.Preset.SettingsAudio.SampleRate != SAudio.SampleRate)
+            {
+                SFile.Preset = Presets.custom;
+            }
+        }
+
+        [RelayCommand]
+        public void EncodingProfileChanged()
+        {
+            IsVBRSelected = SVideo.EncodingMode == EncodingMode.VBR;
+
+            if (SFile.Preset.Equals(Presets.custom) || SFile.Preset.Name == "")
+            {
+                return;
+            }
+            if (!isInitialisingFile && !SFile.Preset.SettingsVideo.EncodingMode.Equals(SVideo.EncodingMode))
+            {
+                SFile.Preset = Presets.custom;
+            }
+        }
+
+        #endregion
 
         private void UpdateTransferredSettings(object recipient, TransferSettingsMessage message)
         {
             FileItem? fileItem = message.Value;
-
+            isInitialisingFile = true;
             if (fileItem == null)
             {
                 SFile = new SettingsFile(string.Empty, string.Empty);
@@ -167,6 +237,7 @@ namespace ConvertWithMe.UI.ViewModels
                 SVideo = new SettingsVideo();
                 SAudio = new SettingsAudio();
                 IsAudioFile = false;
+                IsFileSelected = false;
                 return;
             }
             IsAudioFile = fileItem.IsAudioFile;
@@ -176,13 +247,26 @@ namespace ConvertWithMe.UI.ViewModels
             {
                 SFile.Preset = PresetList.FirstOrDefault();
             }
-            //if (IsAudioFile && SFile.Format.Extension == string.Empty)
-            //{
-            //    SFile.Format = AvailableFormats.FirstOrDefault();
-            //}
             SMetadata = fileItem.SettingsMetadata;
             SVideo = fileItem.SettingsVideo;
             SAudio = fileItem.SettingsAudio;
+
+            IsFileSelected = true;
+            if (IsAudioFile)
+            {
+                ConvertAudio = true;
+                DisplayAudio = true;
+                ConvertVideo = false;
+                DisplayVideo = false;
+            }
+            else
+            {
+                ConvertVideo = true;
+                DisplayVideo = true;
+                ConvertAudio = true;
+                DisplayAudio = true;
+            }
+            isInitialisingFile = false;
         }
     }
 }
