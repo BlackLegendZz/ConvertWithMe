@@ -17,7 +17,7 @@ namespace ConvertWithMe.UI.Models
         [ObservableProperty]
         private int bitrate;
         [ObservableProperty]
-        private int frameRate;
+        private float frameRate;
         [ObservableProperty]
         private int width;
         [ObservableProperty]

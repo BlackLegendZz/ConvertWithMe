@@ -407,6 +407,7 @@
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     ItemsSource="{Binding QualityPresets}"
+                                    SelectedItem="{Binding SVideo.QuailityPreset}"
                                     Visibility="{Binding SVideo.Codec.HasVBRSupport, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                 <DockPanel
                                     Grid.Row="3"

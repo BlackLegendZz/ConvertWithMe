@@ -49,11 +49,14 @@ namespace ConvertWithMe.UI.ViewModels
         [ObservableProperty]
         private bool isFileSelected = false;
 
-        private ObservableCollection<EncodingMode> encodingProfiles = new ObservableCollection<EncodingMode>(Enum.GetValues(typeof(EncodingMode)).Cast<EncodingMode>());
+        private ObservableCollection<EncodingMode> encodingProfiles;
         public IEnumerable<EncodingMode> EncodingProfiles => encodingProfiles;
-
         private ObservableCollection<Preset> presetList;
         public IEnumerable<Preset> PresetList => presetList;
+        private float[] initialFramrates = [24, 25, 30, 60];
+        private ObservableCollection<float> framerates;
+        public IEnumerable<float> Framrates => framerates;
+
         public IEnumerable<Core.Definitions.Format> AvailableFormats { 
             get
             {
@@ -67,19 +70,21 @@ namespace ConvertWithMe.UI.ViewModels
                 }
             } 
         }
-        public IEnumerable<int> Framrates => [24, 25, 30, 60];
         public IEnumerable<ConversionPreset> QualityPresets => Enum.GetValues(typeof(ConversionPreset)).Cast<ConversionPreset>();
-        private bool presetManuallyChanged;
         private bool isInitialisingFile = false;
 
         public SettingsViewModel()
 		{
+
             SFile = new SettingsFile(string.Empty, string.Empty);
             SMetadata = new SettingsMetadata();
             SVideo = new SettingsVideo();
             SAudio = new SettingsAudio();
 
+            encodingProfiles = new ObservableCollection<EncodingMode>(Enum.GetValues(typeof(EncodingMode)).Cast<EncodingMode>());
+            framerates = new ObservableCollection<float>(initialFramrates);
             presetList = new ObservableCollection<Preset>(Presets.AllPresets);
+
             WeakReferenceMessenger.Default.Register<TransferSettingsMessage>(this, UpdateTransferredSettings);
 		}
 
@@ -121,22 +126,31 @@ namespace ConvertWithMe.UI.ViewModels
             SVideo.PFormat = SFile.Preset.SettingsVideo.PFormat;
             SVideo.Codec = SFile.Preset.SettingsVideo.Codec;
             SVideo.EncodingMode = SFile.Preset.SettingsVideo.EncodingMode;
-            SVideo.FrameRate = SFile.Preset.SettingsVideo.FrameRate;
-            SVideo.QuailityPreset = SFile.Preset.SettingsVideo.QuailityPreset;
-            SVideo.Height = SFile.Preset.SettingsVideo.Height;
-            SVideo.Width = SFile.Preset.SettingsVideo.Width;
 
+            // Override the original Framerate. Otherwise use the native framrate
+            if (SFile.Preset.SettingsVideo.FrameRate != -1)
+            {
+                SVideo.FrameRate = SFile.Preset.SettingsVideo.FrameRate;
+            }
+            SVideo.QuailityPreset = SFile.Preset.SettingsVideo.QuailityPreset;
+
+            // Override the original height. Otherwise use the native height
+            if (SFile.Preset.SettingsVideo.Height != -1)
+            {
+                SVideo.Height = SFile.Preset.SettingsVideo.Height;
+            }
+            // Override the original width. Otherwise use the native with
+            if (SFile.Preset.SettingsVideo.Width != -1)
+            {
+                SVideo.Width = SFile.Preset.SettingsVideo.Width;
+            }
             SFile.Format = SFile.Preset.Format;
         }
 
         [RelayCommand]
         public void FormatChanged()
         {
-            if (SFile.Preset.Format.Equals(SFile.Format))
-            {
-                return;
-            }
-            if (AudioFormats.AvailableAudioFormats.Contains(SFile.Format))
+            if (IsAudioFile)
             {
                 ConvertVideo = false;
                 DisplayVideo = false;
@@ -145,14 +159,20 @@ namespace ConvertWithMe.UI.ViewModels
             }
             else
             {
+                if (SFile.Preset.Format.Equals(SFile.Format))
+                {
+                    return;
+                }
                 ConvertVideo = true;
                 DisplayVideo = true;
                 ConvertAudio = true;
                 DisplayAudio = true;
-            }
-            SFile.Preset = Presets.custom;
 
-            SVideo.Codec = SFile.Format.VideoCodecs.FirstOrDefault();
+                // The format has been changed and is not part of the preset so the user currently works with custom settings.
+                SFile.Preset = Presets.custom;
+                SVideo.Codec = SFile.Format.VideoCodecs.FirstOrDefault();
+            }
+
             SAudio.Codec = SFile.Format.AudioCodecs.FirstOrDefault();
         }
 
@@ -242,14 +262,19 @@ namespace ConvertWithMe.UI.ViewModels
             }
             IsAudioFile = fileItem.IsAudioFile;
 
-            SFile = fileItem.SettingsFile;
-            if (!IsAudioFile && SFile.Preset.Name == string.Empty)
+            if (!IsAudioFile && fileItem.SettingsFile.Preset.Name == string.Empty)
             {
-                SFile.Preset = PresetList.FirstOrDefault();
+                fileItem.SettingsFile.Preset = PresetList.FirstOrDefault();
             }
             SMetadata = fileItem.SettingsMetadata;
             SVideo = fileItem.SettingsVideo;
             SAudio = fileItem.SettingsAudio;
+            SFile = fileItem.SettingsFile;
+
+            if (fileItem.SettingsFile.Preset.Equals(SFile.Preset))
+            {
+                PresetChanged();
+            }
 
             IsFileSelected = true;
             if (IsAudioFile)
@@ -266,6 +291,33 @@ namespace ConvertWithMe.UI.ViewModels
                 ConvertAudio = true;
                 DisplayAudio = true;
             }
+
+            // Update the initial framrate of the video
+            if (!IsAudioFile && fileItem.PrimaryVideoStream != null)
+            {
+                float fr = (float)fileItem.PrimaryVideoStream.Framerate;
+                if (!initialFramrates.Contains(fr))
+                {
+                    // Update the first entry of the list (aka the framerate of the video)
+                    // or add it if it doesnt exist
+                    if (framerates.Count > initialFramrates.Length)
+                    {
+                        framerates[0] = fr;
+                    }
+                    else
+                    {
+                        framerates.Insert(0, fr);
+                    }
+                }
+                else
+                {
+                    if (framerates.Count > initialFramrates.Length)
+                    {
+                        framerates.RemoveAt(0);
+                    }
+                }
+            }
+
             isInitialisingFile = false;
         }
     }
