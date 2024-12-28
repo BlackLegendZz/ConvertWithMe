@@ -56,7 +56,7 @@ namespace ConvertWithMe.UI.ViewModels
                         );
 
                     // Set the current resolution and framrate for video files.
-                    if (item.PrimaryVideoStream != null && item.PrimaryVideoStream.Codec != VideoCodec.mjpeg.ToString())
+                    if (item.PrimaryVideoStream != null && !item.IsAudioFile)
                     {
                         item.SettingsVideo.Width = item.PrimaryVideoStream.Width;
                         item.SettingsVideo.Height = item.PrimaryVideoStream.Height;
