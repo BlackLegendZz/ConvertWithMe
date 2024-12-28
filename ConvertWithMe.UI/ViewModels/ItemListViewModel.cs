@@ -55,6 +55,14 @@ namespace ConvertWithMe.UI.ViewModels
                         mediaInfo.VideoStreams.FirstOrDefault()
                         );
 
+                    // Set the current resolution and framrate for video files.
+                    if (item.PrimaryVideoStream != null && item.PrimaryVideoStream.Codec != VideoCodec.mjpeg.ToString())
+                    {
+                        item.SettingsVideo.Width = item.PrimaryVideoStream.Width;
+                        item.SettingsVideo.Height = item.PrimaryVideoStream.Height;
+                        item.SettingsVideo.FrameRate = (float)item.PrimaryVideoStream.Framerate;
+                    }
+
                     fileItems.Add(item);
                 }
             }
