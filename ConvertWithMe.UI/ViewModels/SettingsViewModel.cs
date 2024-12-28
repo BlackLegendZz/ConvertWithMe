@@ -49,6 +49,9 @@ namespace ConvertWithMe.UI.ViewModels
         [ObservableProperty]
         private bool isFileSelected = false;
 
+        [ObservableProperty]
+        private string qualityHint = "";
+
         private ObservableCollection<EncodingMode> encodingProfiles;
         public IEnumerable<EncodingMode> EncodingProfiles => encodingProfiles;
         private ObservableCollection<Preset> presetList;
@@ -122,7 +125,7 @@ namespace ConvertWithMe.UI.ViewModels
             SAudio.Codec = SFile.Preset.SettingsAudio.Codec;
             SAudio.Bitrate = SFile.Preset.SettingsAudio.Bitrate;
 
-            SVideo.Bitrate = SFile.Preset.SettingsAudio.Bitrate;
+            SVideo.Bitrate = SFile.Preset.SettingsVideo.Bitrate;
             SVideo.PFormat = SFile.Preset.SettingsVideo.PFormat;
             SVideo.Codec = SFile.Preset.SettingsVideo.Codec;
             SVideo.EncodingMode = SFile.Preset.SettingsVideo.EncodingMode;
@@ -246,6 +249,44 @@ namespace ConvertWithMe.UI.ViewModels
 
         #endregion
 
+        #region Slider Triggers
+
+        [RelayCommand]
+        public void QualitySliderChanged()
+        {
+            if (SVideo.Bitrate == 0)
+            {
+                QualityHint = "(Lossless)";
+                return;
+            }
+            if (SVideo.Bitrate > 0 && SVideo.Bitrate <= 10)
+            {
+                QualityHint = "(Quasi lossless)";
+                return;
+            }
+            if (SVideo.Bitrate > 10 && SVideo.Bitrate <= 15)
+            {
+                QualityHint = "(Very high quality)";
+                return;
+            }
+            if (SVideo.Bitrate > 15 && SVideo.Bitrate <= 20)
+            {
+                QualityHint = "(High quality)";
+                return;
+            }
+            if (SVideo.Bitrate > 20 && SVideo.Bitrate <= 25)
+            {
+                QualityHint = "(Medium quality)";
+                return;
+            }
+            if (SVideo.Bitrate > 25 && SVideo.Bitrate <= 30)
+            {
+                QualityHint = "(Low quality)";
+                return;
+            }
+        }
+
+        #endregion
         private void UpdateTransferredSettings(object recipient, TransferSettingsMessage message)
         {
             FileItem? fileItem = message.Value;
