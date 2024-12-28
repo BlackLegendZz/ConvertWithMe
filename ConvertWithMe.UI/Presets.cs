@@ -24,7 +24,7 @@ namespace ConvertWithMe.UI
             SettingsVideo = new SettingsVideo()
             {
                 Codec = VideoCodecs.wmv,
-                Bitrate = 20000,
+                Bitrate = 20,
                 FrameRate = -1,
                 Width = -1,
                 Height = -1,
@@ -35,7 +35,7 @@ namespace ConvertWithMe.UI
             SettingsAudio = new SettingsAudio() 
             {
                 Codec = AudioCodecs.wmav2,
-                Bitrate = 320000,
+                Bitrate = 320,
                 SampleRate = 48000
             }
         };
@@ -58,7 +58,7 @@ namespace ConvertWithMe.UI
             SettingsAudio = new SettingsAudio()
             {
                 Codec = AudioCodecs.aac,
-                Bitrate = 320000,
+                Bitrate = 320,
                 SampleRate = 48000
             }
         };
@@ -81,7 +81,7 @@ namespace ConvertWithMe.UI
             SettingsAudio = new SettingsAudio()
             {
                 Codec = AudioCodecs.aac,
-                Bitrate = 320000,
+                Bitrate = 320,
                 SampleRate = 48000
             }
         };
@@ -104,7 +104,7 @@ namespace ConvertWithMe.UI
             SettingsAudio = new SettingsAudio()
             {
                 Codec = AudioCodecs.aac,
-                Bitrate = 320000,
+                Bitrate = 320,
                 SampleRate = 48000
             }
         };
@@ -128,7 +128,7 @@ namespace ConvertWithMe.UI
             SettingsAudio = new SettingsAudio()
             {
                 Codec = AudioCodecs.aac,
-                Bitrate = 320000,
+                Bitrate = 320,
                 SampleRate = 48000
             }
         };
