@@ -12,6 +12,8 @@ namespace ConvertWithMe.UI.ViewModels
 {
     partial class SettingsViewModel : ObservableObject, IViewModel
     {
+        #region VARS
+
         [ObservableProperty]
         private bool displayMetadata = true;
 
@@ -41,7 +43,10 @@ namespace ConvertWithMe.UI.ViewModels
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(AvailableFormats))]
+        [NotifyPropertyChangedFor(nameof(CanConvertVideo))]
         private bool isAudioFile;
+
+        public bool CanConvertVideo => !(IsAudioFile || AudioFormats.AvailableAudioFormats.Contains(SFile.Format));
 
         [ObservableProperty]
         private bool isVBRSelected = false;
@@ -75,6 +80,8 @@ namespace ConvertWithMe.UI.ViewModels
         }
         public IEnumerable<ConversionPreset> QualityPresets => Enum.GetValues(typeof(ConversionPreset)).Cast<ConversionPreset>();
         private bool isInitialisingFile = false;
+
+        #endregion
 
         public SettingsViewModel()
 		{
@@ -112,40 +119,41 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void PresetChanged()
         {
-            if (SFile.Preset.SettingsVideo == null)
-            {
-                return;
-            }
-            if (SFile.Preset.SettingsAudio == null)
+            if (SFile.Preset.SettingsVideo == null && SFile.Preset.SettingsAudio == null)
             {
                 return;
             }
 
-            SAudio.SampleRate = SFile.Preset.SettingsAudio.SampleRate;
-            SAudio.Codec = SFile.Preset.SettingsAudio.Codec;
-            SAudio.Bitrate = SFile.Preset.SettingsAudio.Bitrate;
-
-            SVideo.Bitrate = SFile.Preset.SettingsVideo.Bitrate;
-            SVideo.PFormat = SFile.Preset.SettingsVideo.PFormat;
-            SVideo.Codec = SFile.Preset.SettingsVideo.Codec;
-            SVideo.EncodingMode = SFile.Preset.SettingsVideo.EncodingMode;
-
-            // Override the original Framerate. Otherwise use the native framrate
-            if (SFile.Preset.SettingsVideo.FrameRate != -1)
+            if (SFile.Preset.SettingsAudio != null)
             {
-                SVideo.FrameRate = SFile.Preset.SettingsVideo.FrameRate;
+                SAudio.SampleRate = SFile.Preset.SettingsAudio.SampleRate;
+                SAudio.Codec = SFile.Preset.SettingsAudio.Codec;
+                SAudio.Bitrate = SFile.Preset.SettingsAudio.Bitrate;
             }
-            SVideo.QuailityPreset = SFile.Preset.SettingsVideo.QuailityPreset;
 
-            // Override the original height. Otherwise use the native height
-            if (SFile.Preset.SettingsVideo.Height != -1)
+            if (SFile.Preset.SettingsVideo != null)
             {
-                SVideo.Height = SFile.Preset.SettingsVideo.Height;
-            }
-            // Override the original width. Otherwise use the native with
-            if (SFile.Preset.SettingsVideo.Width != -1)
-            {
-                SVideo.Width = SFile.Preset.SettingsVideo.Width;
+                SVideo.Bitrate = SFile.Preset.SettingsVideo.Bitrate;
+                SVideo.PFormat = SFile.Preset.SettingsVideo.PFormat;
+                SVideo.Codec = SFile.Preset.SettingsVideo.Codec;
+                SVideo.EncodingMode = SFile.Preset.SettingsVideo.EncodingMode;
+                // Override the original Framerate. Otherwise use the native framrate
+                if (SFile.Preset.SettingsVideo.FrameRate != -1)
+                {
+                    SVideo.FrameRate = SFile.Preset.SettingsVideo.FrameRate;
+                }
+                SVideo.QuailityPreset = SFile.Preset.SettingsVideo.QuailityPreset;
+
+                // Override the original height. Otherwise use the native height
+                if (SFile.Preset.SettingsVideo.Height != -1)
+                {
+                    SVideo.Height = SFile.Preset.SettingsVideo.Height;
+                }
+                // Override the original width. Otherwise use the native with
+                if (SFile.Preset.SettingsVideo.Width != -1)
+                {
+                    SVideo.Width = SFile.Preset.SettingsVideo.Width;
+                }
             }
             SFile.Format = SFile.Preset.Format;
         }
@@ -153,7 +161,8 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void FormatChanged()
         {
-            if (IsAudioFile)
+            OnPropertyChanged(nameof(CanConvertVideo)); // Manually tell UI that the variable updated
+            if (!CanConvertVideo)
             {
                 ConvertVideo = false;
                 DisplayVideo = false;
@@ -177,6 +186,15 @@ namespace ConvertWithMe.UI.ViewModels
             }
 
             SAudio.Codec = SFile.Format.AudioCodecs.FirstOrDefault();
+            if (SAudio.Codec.ValidSampleRates.Contains(48000))
+            {
+                SAudio.SampleRate = 48000;
+            }
+            else
+            {
+                SAudio.SampleRate = SAudio.Codec.ValidSampleRates.FirstOrDefault();
+            }
+            SAudio.Bitrate = 320;
         }
 
         [RelayCommand]
@@ -207,8 +225,28 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void AudioCodecChanged()
         {
+            // Set the Sample Rate to 48k (as it is the normally used one)
+            // or the highest one available, in case the currently selected
+            // Sample Rate is notsupported by the codec.
+            if (!SAudio.Codec.ValidSampleRates.Contains(SAudio.SampleRate))
+            {
+                if (SAudio.Codec.ValidSampleRates.Contains(48000))
+                {
+                    SAudio.SampleRate = 48000;
+                }
+                else
+                {
+                    SAudio.SampleRate = SAudio.Codec.ValidSampleRates.FirstOrDefault();
+                }
+                
+            }
             // Only do this for the audio part of a video file
             if (IsAudioFile)
+            {
+                return;
+            }
+
+            if (SFile.Preset.Equals(Presets.custom) || SFile.Preset.Name == "")
             {
                 return;
             }
@@ -223,6 +261,11 @@ namespace ConvertWithMe.UI.ViewModels
         {
             // Only do this for the audio part of a video file
             if (IsAudioFile)
+            {
+                return;
+            }
+
+            if (SFile.Preset.Equals(Presets.custom) || SFile.Preset.Name == "")
             {
                 return;
             }
@@ -307,18 +350,32 @@ namespace ConvertWithMe.UI.ViewModels
             {
                 fileItem.SettingsFile.Preset = PresetList.FirstOrDefault();
             }
+            if (IsAudioFile && fileItem.SettingsFile.Format.Extension == string.Empty)
+            {
+                fileItem.SettingsFile.Format = AvailableFormats.FirstOrDefault();
+            }
+
             SMetadata = fileItem.SettingsMetadata;
             SVideo = fileItem.SettingsVideo;
             SAudio = fileItem.SettingsAudio;
             SFile = fileItem.SettingsFile;
 
-            if (fileItem.SettingsFile.Preset.Equals(SFile.Preset))
+            // Update the preset of the video file manually, in case its similar to the 
+            // preset of the currently selected file, since that doesnt trigger the function
+            if (!IsAudioFile && fileItem.SettingsFile.Preset.Equals(SFile.Preset))
             {
                 PresetChanged();
             }
 
+            // Same thing for the format but this time its exclusive to the audio file
+            // as for video files the PresetChanged() function already sets every field
+            if (IsAudioFile && fileItem.SettingsFile.Format.Equals(SFile.Format))
+            {
+                FormatChanged();
+            }
+
             IsFileSelected = true;
-            if (IsAudioFile)
+            if (!CanConvertVideo)
             {
                 ConvertAudio = true;
                 DisplayAudio = true;
