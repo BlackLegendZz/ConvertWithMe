@@ -8,8 +8,9 @@
             Codec = Xabe.FFmpeg.AudioCodec.flac,
             //hasVBRSupport = false,
             HasVariableSampleRate = true,
-            ValidSampleRates = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000, 176400, 192000, 352800, 384000],
-            //validSampleFormats = [SampleFormat.s16, SampleFormat.s32]
+            ValidSampleRates = [384000, 352800, 192000, 176400, 96000, 88200, 48000, 44100, 32000, 22050, 16000, 11025, 8000],
+            //validSampleFormats = [SampleFormat.s16, SampleFormat.s32],
+            IsLossless = true,
         };
 
         public static AudioCodec mp3 = new AudioCodec()
@@ -18,8 +19,9 @@
             Codec = Xabe.FFmpeg.AudioCodec.mp3,
             //hasVBRSupport = true,
             HasVariableSampleRate = false,
-            ValidSampleRates = [44100, 48000, 32000, 22050, 24000, 16000, 11025, 12000, 8000],
-            //validSampleFormats = [SampleFormat.s32p, SampleFormat.flt, SampleFormat.s16p]
+            ValidSampleRates = [48000, 44100, 32000, 22050, 24000, 16000, 11025, 12000, 8000],
+            //validSampleFormats = [SampleFormat.s32p, SampleFormat.flt, SampleFormat.s16p],
+            IsLossless = false,
         };
 
         public static AudioCodec vorbis = new AudioCodec()
@@ -28,8 +30,9 @@
             Codec = Xabe.FFmpeg.AudioCodec.vorbis,
             //hasVBRSupport = false,
             HasVariableSampleRate = true,
-            ValidSampleRates = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000, 176400, 192000, 352800, 384000],
-            //validSampleFormats = [SampleFormat.fltp]
+            ValidSampleRates = [384000, 352800, 192000, 176400, 96000, 88200, 48000, 44100, 32000, 22050, 16000, 11025, 8000],
+            //validSampleFormats = [SampleFormat.fltp],
+            IsLossless = false,
         };
 
         public static AudioCodec wmav2 = new AudioCodec()
@@ -38,8 +41,9 @@
             Codec = Xabe.FFmpeg.AudioCodec.wmav2,
             //hasVBRSupport = false,
             HasVariableSampleRate = true,
-            ValidSampleRates = [8000, 11025, 16000, 22050, 32000, 44100, 48000, 88200, 96000, 176400, 192000, 352800, 384000],
-            //validSampleFormats = [SampleFormat.fltp]
+            ValidSampleRates = [384000, 352800, 192000, 176400, 96000, 88200, 48000, 44100, 32000, 22050, 16000, 11025, 8000],
+            //validSampleFormats = [SampleFormat.fltp],
+            IsLossless = false,
         };
 
         public static AudioCodec opus = new AudioCodec()
@@ -49,7 +53,8 @@
             //hasVBRSupport = true,
             HasVariableSampleRate = false,
             ValidSampleRates = [48000, 24000, 16000, 12000, 8000],
-            //validSampleFormats = [SampleFormat.flt, SampleFormat.s16]
+            //validSampleFormats = [SampleFormat.flt, SampleFormat.s16],
+            IsLossless = false,
         };
 
         public static AudioCodec aac = new AudioCodec()
@@ -59,7 +64,8 @@
             //hasVBRSupport = false,
             HasVariableSampleRate = false,
             ValidSampleRates = [96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350],
-            //validSampleFormats = [SampleFormat.fltp]
+            //validSampleFormats = [SampleFormat.fltp],
+            IsLossless = false,
         };
     }
 }

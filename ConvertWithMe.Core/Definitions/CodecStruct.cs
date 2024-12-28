@@ -35,5 +35,6 @@
         //public SampleFormat[] validSampleFormats { get; init; }
         public bool HasVariableSampleRate { get; init; }
         //public bool hasVBRSupport { get; init; }
+        public bool IsLossless { get; init; }
     }
 }
