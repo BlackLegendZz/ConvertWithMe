@@ -23,7 +23,7 @@ namespace ConvertWithMe.UI.Models
             {
                 if (PrimaryVideoStream != null)
                 {
-                    return PrimaryVideoStream.Codec == VideoCodec.mjpeg.ToString();
+                    return PrimaryVideoStream.Codec == VideoCodec.mjpeg.ToString() || PrimaryVideoStream.Codec == VideoCodec.png.ToString();
                 }
                 return true;
             }
