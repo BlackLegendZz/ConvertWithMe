@@ -123,10 +123,34 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Command="{Binding ConvertFilesCommand}" Content="Convert" />
-            <ProgressBar Width="100" Value="{Binding ProgressPercentage}" />
-            <TextBlock VerticalAlignment="Stretch" Text="{Binding ProgressMessage}" />
-        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ProgressBar
+                Grid.Column="0"
+                Width="100"
+                Margin="0,0,4,0"
+                Visibility="{Binding IsConverting, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Value="{Binding ProgressPercentage}" />
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Stretch"
+                Text="{Binding ProgressPercentage, StringFormat={}{0} %}"
+                Visibility="{Binding IsConverting, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Button
+                Grid.Column="3"
+                Command="{Binding ConvertFilesCommand}"
+                Content="Convert"
+                Visibility="{Binding IsConverting, Converter={StaticResource InvertAndVisibilityConverter}}" />
+            <Button
+                Grid.Column="3"
+                Command="{Binding CancelConversionCommand}"
+                Content="Cancel"
+                Visibility="{Binding IsConverting, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Grid>
     </Grid>
 </UserControl>

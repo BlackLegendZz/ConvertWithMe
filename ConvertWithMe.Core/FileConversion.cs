@@ -1,12 +1,7 @@
 ﻿using Xabe.FFmpeg;
 using ConvertWithMe.Core.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xabe.FFmpeg.Events;
-using System.Windows.Documents;
+using System.IO;
 
 namespace ConvertWithMe.Core
 {
@@ -24,7 +19,8 @@ namespace ConvertWithMe.Core
             Definitions.AudioCodec aCodec, 
             int bitrate, int sampleRate, 
             //SampleFormat sFormat, 
-            ConversionProgressEventHandler progressCallback
+            ConversionProgressEventHandler progressCallback,
+            CancellationToken cancellationToken
             )
         {
             if (!format.AudioCodecs.Contains(aCodec))
@@ -53,23 +49,14 @@ namespace ConvertWithMe.Core
             audioStream = audioStream
                 .SetCodec(aCodec.Codec)
                 .SetSampleRate(sampleRate)
-                .SetBitrate(bitrate);
+                .SetBitrate(bitrate * 1000); // add the factor again which we previously removed 
 
             IConversion conversion = FFmpeg.Conversions.New()
+                .AddParameter("-hide_banner")
                 .AddStream(audioStream)
-                .AddParameter("")
                 .SetOutput($"{dest}.{format.Extension}");
 
-            conversion.OnProgress += progressCallback;
-
-            try
-            {
-                await conversion.Start();
-            }
-            finally
-            {
-                conversion.OnProgress -= progressCallback;
-            }
+            await startConversionAsync(conversion, dest, progressCallback, cancellationToken);
         }
 
         public async Task ConvertToVideo(
@@ -84,7 +71,8 @@ namespace ConvertWithMe.Core
             PixelFormat pFormat, 
             //SampleFormat sFormat,
             ConversionPreset quailityPreset,
-            ConversionProgressEventHandler progressCallback
+            ConversionProgressEventHandler progressCallback,
+            CancellationToken cancellationToken
             )
         {
             if (!format.AudioCodecs.Contains(aCodec))
@@ -139,7 +127,7 @@ namespace ConvertWithMe.Core
             audioStream = audioStream?
                 .SetCodec(aCodec.Codec)
                 .SetSampleRate(sampleRate)
-                .SetBitrate(aBitrate);
+                .SetBitrate(aBitrate * 1000); // add the factor again which we previously removed 
 
             videoStream = videoStream
                 .SetCodec(vCodec.Codec)
@@ -148,6 +136,7 @@ namespace ConvertWithMe.Core
 
 
             IConversion conversion = FFmpeg.Conversions.New()
+                .AddParameter("-hide_banner")
                 .AddStream(videoStream)
                 .SetPixelFormat(pFormat)
                 .SetOutput(dest);
@@ -163,7 +152,7 @@ namespace ConvertWithMe.Core
                     conversion = conversion.AddParameter($"-crf {vBitrate}", ParameterPosition.PostInput);
                     break;
                 case EncodingMode.CBR:
-                    conversion = conversion.SetVideoBitrate(vBitrate); 
+                    conversion = conversion.SetVideoBitrate(vBitrate * 1000000); // add the factor again which we previously removed 
                     break;
             }
 
@@ -172,11 +161,32 @@ namespace ConvertWithMe.Core
                 conversion = conversion.SetPreset(quailityPreset);
             }
 
-            conversion.OnProgress += progressCallback;
+            await startConversionAsync(conversion, dest, progressCallback, cancellationToken);
+        }
 
+        private async Task startConversionAsync(IConversion conversion, string dest, ConversionProgressEventHandler progressCallback, CancellationToken cancellationToken)
+        {
+            conversion.OnProgress += progressCallback;
             try
             {
-                IConversionResult result = await conversion.Start();
+                IConversionResult result = await conversion.Start(cancellationToken);
+            }
+            catch (Xabe.FFmpeg.Exceptions.ConversionException e)
+            {
+                //TODO
+            }
+            catch (OperationCanceledException)
+            {
+                if (File.Exists(dest))
+                {
+                    // File is still being used by ffmpeg
+                    // Wait for a while and then delete it without interrupting the current thread.
+                    await Task.Run(() =>
+                    {
+                        Thread.Sleep(3000);
+                        File.Delete(dest);
+                    });
+                }
             }
             finally
             {

@@ -8,6 +8,8 @@ using ConvertWithMe.UI.Models;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Events;
 
@@ -23,7 +25,14 @@ namespace ConvertWithMe.UI.ViewModels
         private string progressMessage = string.Empty;
 
         [ObservableProperty]
-        private float progressPercentage;
+        private float progressPercentage = 0f;
+
+        [ObservableProperty]
+        private bool isConverting = false;
+
+        private string[] audiofileFormats = ["*.aac", "*.flac", "*.m4a", "*.mp3", "*.ogg", "*.opus", "*.wav", "*.wma", "*.webm"];
+        private string[] videofileFormats = ["*.avm", "*.avi", "*.flv", "*.mp4", "*.m4v", "*.mkv", "*.mov", "*.mpg", "*.mpeg", "*.qt", "*.webm", "*.wmv"];
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
         public ItemListViewModel()
         {
@@ -38,10 +47,12 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public async Task AddFiles()
         {
+            string[] f = ["All supported files"];
             OpenFileDialog dialog = new OpenFileDialog() 
             { 
                 Multiselect = true,
                 DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Filter = $"All valid Files|{string.Join(';', audiofileFormats.Concat(videofileFormats).ToArray())}|Audio Files|{string.Join(';', audiofileFormats)}|Video Files|{string.Join(';', videofileFormats)}"
             };
             if (dialog.ShowDialog() ?? false)
             {
@@ -108,6 +119,9 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public async Task ConvertFilesAsync()
         {
+            IsConverting = true;
+            cancellationTokenSource = new CancellationTokenSource();    // new token
+
             FileConversion fc = new FileConversion();
             for (int i = 0; i < fileItems.Count; i++)
             {
@@ -120,7 +134,8 @@ namespace ConvertWithMe.UI.ViewModels
                         fileItems[i].SettingsAudio.Codec,
                         fileItems[i].SettingsAudio.Bitrate,
                         fileItems[i].SettingsAudio.SampleRate,
-                        ConversionProgress
+                        ConversionProgress,
+                        cancellationTokenSource.Token
                         );
                 }
                 else
@@ -140,16 +155,24 @@ namespace ConvertWithMe.UI.ViewModels
                         fileItems[i].SettingsVideo.EncodingMode,
                         PixelFormat.yuv420p,
                         fileItems[i].SettingsVideo.QuailityPreset,
-                        ConversionProgress
+                        ConversionProgress,
+                        cancellationTokenSource.Token
                         );
                 }
                 ProgressPercentage = 0;
             }
+            IsConverting = false;
+        }
+
+        [RelayCommand]
+        public void CancelConversion()
+        {
+            cancellationTokenSource.Cancel();
         }
 
         private void ConversionProgress(object sender, ConversionProgressEventArgs args)
         {
-            ProgressPercentage = args.Percent;
+            ProgressPercentage = (float)Math.Round(100f*args.Duration.TotalSeconds/args.TotalLength.TotalSeconds, 2);
         }
 
         private SettingsMetadata ReadMetadata(string file)
