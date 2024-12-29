@@ -14,6 +14,11 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:ValueConverterGroup x:Key="InvertAndVisibilityConverter">
+            <converters:InvertBooleanConverter />
+            <converters:BooleanToVisibilityConverter />
+        </converters:ValueConverterGroup>
+        <converters:DivideConverter x:Key="DivideConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -41,25 +46,10 @@
                 DockPanel.Dock="Right" />
         </DockPanel>
 
-        <!--  Navigation  -->
-        <StackPanel
-            Grid.Row="1"
-            Margin="0,12,0,0"
-            Orientation="Horizontal">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Margin" Value="0,0,16,0" />
-                </Style>
-            </StackPanel.Resources>
-            <Button Content="All Files" />
-            <Button Content="Audio Files" />
-            <Button Content="Video Files" />
-        </StackPanel>
-
         <!--  Element List  -->
         <ItemsControl
             Grid.Row="2"
-            Margin="0,8,0,0"
+            Margin="0,12,0,0"
             ItemsSource="{Binding FileItems}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -106,13 +96,17 @@
                                     <TextBlock
                                         Margin="24,0,4,0"
                                         FontSize="12"
-                                        Text="{Binding PrimaryVideoStream.Codec, StringFormat=Video Codec: {0}}"
-                                        Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        Text="{Binding PrimaryAudioStream.Bitrate, Converter={StaticResource DivideConverter}, ConverterParameter=1000, StringFormat=Audio Bitrate: {0} KBit/s}" />
                                     <TextBlock
                                         Margin="24,0,4,0"
                                         FontSize="12"
-                                        Text="{Binding PrimaryVideoStream.Bitrate, StringFormat=Bitrate: {0}}"
-                                        Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        Text="{Binding PrimaryVideoStream.Codec, StringFormat=Video Codec: {0}}"
+                                        Visibility="{Binding IsAudioFile, Converter={StaticResource InvertAndVisibilityConverter}}" />
+                                    <TextBlock
+                                        Margin="24,0,4,0"
+                                        FontSize="12"
+                                        Text="{Binding PrimaryVideoStream.Bitrate, Converter={StaticResource DivideConverter}, ConverterParameter=1000000, StringFormat=Video Bitrate: {0} MBit/s}"
+                                        Visibility="{Binding IsAudioFile, Converter={StaticResource InvertAndVisibilityConverter}}" />
                                 </StackPanel>
                             </DockPanel>
                             <Button
