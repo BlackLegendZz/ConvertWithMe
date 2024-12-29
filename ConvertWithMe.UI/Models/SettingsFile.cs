@@ -25,7 +25,7 @@ namespace ConvertWithMe.UI.Models
         public SettingsFile(string src, string dest)
         {
             FilenameSrc = Path.GetFileName(src);
-            FilenameDest = Path.GetFileName(dest);
+            FilenameDest = Path.GetFileNameWithoutExtension(dest);
 
             DirSrc = Path.GetDirectoryName(src) ?? string.Empty;
             DirDest = Path.GetDirectoryName(dest) ?? string.Empty;
