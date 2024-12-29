@@ -233,6 +233,10 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void AudioCodecChanged()
         {
+            if (SAudio.Codec.Name == null)
+            {
+                return;
+            }
             // Set the Sample Rate to 48k (as it is the normally used one)
             // or the highest one available, in case the currently selected
             // Sample Rate is notsupported by the codec.
@@ -337,6 +341,31 @@ namespace ConvertWithMe.UI.ViewModels
             }
         }
 
+        [RelayCommand]
+        public void VideoBitrateChanged()
+        {
+            if (SFile.Preset.Equals(Presets.custom) || SFile.Preset.Name == "")
+            {
+                return;
+            }
+            if (!isInitialisingFile && !SFile.Preset.SettingsVideo.Bitrate.Equals(SVideo.Bitrate))
+            {
+                SFile.Preset = Presets.custom;
+            }
+        }
+
+        [RelayCommand]
+        public void AudioBitrateChanged()
+        {
+            if (SFile.Preset.Equals(Presets.custom) || SFile.Preset.Name == "")
+            {
+                return;
+            }
+            if (!isInitialisingFile && !SFile.Preset.SettingsAudio.Bitrate.Equals(SAudio.Bitrate))
+            {
+                SFile.Preset = Presets.custom;
+            }
+        }
         #endregion
 
         #region key down events
@@ -393,6 +422,12 @@ namespace ConvertWithMe.UI.ViewModels
                 IsFileSelected = false;
                 return;
             }
+            if (fileItem.SettingsFile.Equals(SFile))
+            {
+                isInitialisingFile = false;
+                return;
+            }
+
             IsAudioFile = fileItem.IsAudioFile;
 
             if (!IsAudioFile && fileItem.SettingsFile.Preset.Name == string.Empty)

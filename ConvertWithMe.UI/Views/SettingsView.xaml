@@ -154,7 +154,7 @@
             </Border>
 
             <!--  Metadata  -->
-            <Border>
+            <Border Visibility="Collapsed">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <CheckBox VerticalAlignment="Center" IsChecked="{Binding DisplayMetadata}" />
@@ -392,7 +392,7 @@
                                 <TextBlock
                                     Grid.Row="3"
                                     Grid.Column="0"
-                                    Text="Bitrate (Mb/s)"
+                                    Text="Bitrate (MBit/s)"
                                     Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}" />
                                 <TextBlock
                                     Grid.Row="3"
@@ -444,6 +444,7 @@
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="ValueChanged">
                                                 <i:InvokeCommandAction Command="{Binding QualitySliderChangedCommand}" />
+                                                <i:InvokeCommandAction Command="{Binding VideoBitrateChangedCommand}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Slider>
@@ -489,6 +490,9 @@
                                             <i:KeyTrigger Key="Enter">
                                                 <i:InvokeCommandAction Command="{Binding DisableManualVBitrateEditCommand}" />
                                             </i:KeyTrigger>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding VideoBitrateChangedCommand}" />
+                                            </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </TextBox>
                                 </Grid>
@@ -561,7 +565,7 @@
                                 <TextBlock
                                     Grid.Row="2"
                                     Grid.Column="0"
-                                    Text="Bitrate (Kb/s)"
+                                    Text="Bitrate (KBit/s)"
                                     Visibility="{Binding SAudio.Codec.IsLossless, Converter={StaticResource InvertAndVisibilityConverter}}" />
 
                                 <ComboBox
@@ -602,7 +606,13 @@
                                         Minimum="8"
                                         TickFrequency="30"
                                         Ticks="8, 16, 24, 32, 40, 48, 56, 64, 96, 112, 128, 160, 192, 224, 256, 320"
-                                        Value="{Binding SAudio.Bitrate}" />
+                                        Value="{Binding SAudio.Bitrate}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <i:InvokeCommandAction Command="{Binding AudioBitrateChangedCommand}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0"
@@ -629,6 +639,9 @@
                                             <i:KeyTrigger Key="Enter">
                                                 <i:InvokeCommandAction Command="{Binding DisableManualABitrateEditCommand}" PassEventArgsToCommand="True" />
                                             </i:KeyTrigger>
+                                            <i:EventTrigger EventName="TextChanged">
+                                                <i:InvokeCommandAction Command="{Binding AudioBitrateChangedCommand}" />
+                                            </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </TextBox>
                                 </Grid>
