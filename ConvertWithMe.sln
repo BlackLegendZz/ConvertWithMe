@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertWithMe.Core", "Conve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertWithMe.UI", "ConvertWithMe.UI\ConvertWithMe.UI.csproj", "{25F4DE0E-9E5F-44F1-B32A-46345F48E51E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiguringXabeFFmpeg", "FiguringXabeFFmpeg\FiguringXabeFFmpeg.csproj", "{DD021EAE-C795-48CB-B75A-3B109490A88F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,14 +31,6 @@ Global
 		{25F4DE0E-9E5F-44F1-B32A-46345F48E51E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{25F4DE0E-9E5F-44F1-B32A-46345F48E51E}.Release|x64.ActiveCfg = Release|x64
 		{25F4DE0E-9E5F-44F1-B32A-46345F48E51E}.Release|x64.Build.0 = Release|x64
-		{DD021EAE-C795-48CB-B75A-3B109490A88F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD021EAE-C795-48CB-B75A-3B109490A88F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD021EAE-C795-48CB-B75A-3B109490A88F}.Debug|x64.ActiveCfg = Debug|x64
-		{DD021EAE-C795-48CB-B75A-3B109490A88F}.Debug|x64.Build.0 = Debug|x64
-		{DD021EAE-C795-48CB-B75A-3B109490A88F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD021EAE-C795-48CB-B75A-3B109490A88F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD021EAE-C795-48CB-B75A-3B109490A88F}.Release|x64.ActiveCfg = Release|x64
-		{DD021EAE-C795-48CB-B75A-3B109490A88F}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
