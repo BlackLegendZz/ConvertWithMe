@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConvertWithMe.UI.ViewModels
 {
-    class MainWindowViewModel : ObservableObject, IViewModel
+    class MainWindowViewModel : ObservableObject
     {
         
     }

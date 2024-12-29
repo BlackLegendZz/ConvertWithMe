@@ -11,7 +11,7 @@ using Xabe.FFmpeg;
 
 namespace ConvertWithMe.UI.ViewModels
 {
-    partial class ItemListViewModel : ObservableObject, IViewModel
+    partial class ItemListViewModel : ObservableObject
     {
 
         private ObservableCollection<FileItem> fileItems;
