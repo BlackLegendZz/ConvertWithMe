@@ -31,14 +31,15 @@ namespace ConvertWithMe.UI.Models
         public TimeSpan Duration
         {
             get {
-                if (PrimaryAudioStream != null && PrimaryVideoStream != null)
+                if (IsAudioFile && PrimaryAudioStream != null)
                 {
-                    return PrimaryAudioStream.Duration > PrimaryVideoStream.Duration ? PrimaryAudioStream.Duration : PrimaryVideoStream.Duration;
+                    return PrimaryAudioStream.Duration;
                 }
-                else
+                if (!IsAudioFile && PrimaryVideoStream != null)
                 {
-                    return TimeSpan.Zero;
+                    return PrimaryVideoStream.Duration;
                 }
+                return TimeSpan.Zero;
             }
         }
 
