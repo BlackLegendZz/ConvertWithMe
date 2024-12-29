@@ -78,7 +78,7 @@ namespace ConvertWithMe.Core
             Definitions.VideoCodec vCodec, 
             Definitions.AudioCodec aCodec, 
             int vBitrate, int aBitrate, 
-            int frameRate, int sampleRate,
+            float frameRate, int sampleRate,
             int width, int height,
             EncodingMode encodingMode, 
             PixelFormat pFormat, 
@@ -176,7 +176,7 @@ namespace ConvertWithMe.Core
 
             try
             {
-                await conversion.Start();
+                IConversionResult result = await conversion.Start();
             }
             finally
             {

@@ -23,8 +23,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--  Header  -->
@@ -48,7 +48,7 @@
 
         <!--  Element List  -->
         <ItemsControl
-            Grid.Row="2"
+            Grid.Row="1"
             Margin="0,12,0,0"
             ItemsSource="{Binding FileItems}">
             <ItemsControl.ItemTemplate>
@@ -122,5 +122,11 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Command="{Binding ConvertFilesCommand}" Content="Convert" />
+            <ProgressBar Width="100" Value="{Binding ProgressPercentage}" />
+            <TextBlock VerticalAlignment="Stretch" Text="{Binding ProgressMessage}" />
+        </StackPanel>
     </Grid>
 </UserControl>

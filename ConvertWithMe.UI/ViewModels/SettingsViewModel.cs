@@ -118,7 +118,7 @@ namespace ConvertWithMe.UI.ViewModels
             };
             if (dialog.ShowDialog() ?? false)
             {
-                SFile.DirDest = dialog.SafeFolderName;
+                SFile.DirDest = dialog.FolderName;
             }
         }
 

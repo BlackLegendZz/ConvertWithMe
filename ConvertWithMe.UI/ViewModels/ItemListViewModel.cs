@@ -2,12 +2,14 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using ConvertWithMe.Core;
+using ConvertWithMe.Core.Definitions;
 using ConvertWithMe.UI.Messengers;
 using ConvertWithMe.UI.Models;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
 using Xabe.FFmpeg;
+using Xabe.FFmpeg.Events;
 
 namespace ConvertWithMe.UI.ViewModels
 {
@@ -16,6 +18,12 @@ namespace ConvertWithMe.UI.ViewModels
 
         private ObservableCollection<FileItem> fileItems;
         public IEnumerable<FileItem> FileItems => fileItems;
+
+        [ObservableProperty]
+        private string progressMessage = string.Empty;
+
+        [ObservableProperty]
+        private float progressPercentage;
 
         public ItemListViewModel()
         {
@@ -42,7 +50,6 @@ namespace ConvertWithMe.UI.ViewModels
                     string filename = dialog.FileNames[i];
                     // Skip existing files
                     if (fileItems.Where(x => Path.Combine(x.SettingsFile.DirSrc, x.SettingsFile.FilenameSrc).Equals(filename)).Any()) { continue; }
-
                     SettingsFile settingsFile = new SettingsFile(filename, filename);
                     IMediaInfo mediaInfo = await FFmpeg.GetMediaInfo(filename);
 
@@ -97,6 +104,54 @@ namespace ConvertWithMe.UI.ViewModels
             // Send Settings to Settings ViewModel
             WeakReferenceMessenger.Default.Send(new TransferSettingsMessage(selectedItem));
         }
+
+        [RelayCommand]
+        public async Task ConvertFilesAsync()
+        {
+            FileConversion fc = new FileConversion();
+            for (int i = 0; i < fileItems.Count; i++)
+            {
+                if (AudioFormats.AvailableAudioFormats.Contains(fileItems[i].SettingsFile.Format))
+                {
+                    await fc.ConvertToAudio(
+                        Path.Combine(fileItems[i].SettingsFile.DirSrc, fileItems[i].SettingsFile.FilenameSrc),
+                        Path.Combine(fileItems[i].SettingsFile.DirDest, fileItems[i].SettingsFile.FilenameDest),
+                        fileItems[i].SettingsFile.Format,
+                        fileItems[i].SettingsAudio.Codec,
+                        fileItems[i].SettingsAudio.Bitrate,
+                        fileItems[i].SettingsAudio.SampleRate,
+                        ConversionProgress
+                        );
+                }
+                else
+                {
+                    await fc.ConvertToVideo(
+                        Path.Combine(fileItems[i].SettingsFile.DirSrc, fileItems[i].SettingsFile.FilenameSrc),
+                        Path.Combine(fileItems[i].SettingsFile.DirDest, $"{fileItems[i].SettingsFile.FilenameDest}.{fileItems[i].SettingsFile.Format.Extension}"),
+                        fileItems[i].SettingsFile.Format,
+                        fileItems[i].SettingsVideo.Codec,
+                        fileItems[i].SettingsAudio.Codec,
+                        fileItems[i].SettingsVideo.Bitrate,
+                        fileItems[i].SettingsAudio.Bitrate,
+                        fileItems[i].SettingsVideo.FrameRate,
+                        fileItems[i].SettingsAudio.SampleRate,
+                        fileItems[i].SettingsVideo.Width,
+                        fileItems[i].SettingsVideo.Height,
+                        fileItems[i].SettingsVideo.EncodingMode,
+                        PixelFormat.yuv420p,
+                        fileItems[i].SettingsVideo.QuailityPreset,
+                        ConversionProgress
+                        );
+                }
+                ProgressPercentage = 0;
+            }
+        }
+
+        private void ConversionProgress(object sender, ConversionProgressEventArgs args)
+        {
+            ProgressPercentage = args.Percent;
+        }
+
         private SettingsMetadata ReadMetadata(string file)
         {
             throw new NotImplementedException();
