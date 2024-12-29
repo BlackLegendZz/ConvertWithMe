@@ -81,6 +81,14 @@ namespace ConvertWithMe.UI.ViewModels
         public IEnumerable<ConversionPreset> QualityPresets => Enum.GetValues(typeof(ConversionPreset)).Cast<ConversionPreset>();
         private bool isInitialisingFile = false;
 
+        [ObservableProperty]
+        private bool useSnapping = false;
+
+        [ObservableProperty]
+        private bool manuallyEditABitrate = false;
+
+        [ObservableProperty]
+        private bool manuallyEditVBitrate = false;
         #endregion
 
         public SettingsViewModel()
@@ -330,6 +338,47 @@ namespace ConvertWithMe.UI.ViewModels
         }
 
         #endregion
+
+        #region key down events
+
+        [RelayCommand]
+        public void EnableTickSnapping()
+        {
+            UseSnapping = true;
+        }
+
+        [RelayCommand]
+        public void DisableTickSnapping()
+        {
+            UseSnapping = false;
+        }
+
+        [RelayCommand]
+        public void EnableManualABitrateEdit()
+        {
+            ManuallyEditABitrate = true;
+        }
+
+        [RelayCommand]
+        public void DisableManualABitrateEdit(object e)
+        {
+            ManuallyEditABitrate = false;
+        }
+
+        [RelayCommand]
+        public void EnableManualVBitrateEdit()
+        {
+            ManuallyEditVBitrate = true;
+        }
+
+        [RelayCommand]
+        public void DisableManualVBitrateEdit(object e)
+        {
+            ManuallyEditVBitrate = false;
+        }
+
+        #endregion
+
         private void UpdateTransferredSettings(object recipient, TransferSettingsMessage message)
         {
             FileItem? fileItem = message.Value;

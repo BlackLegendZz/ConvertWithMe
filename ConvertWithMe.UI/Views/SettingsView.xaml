@@ -20,6 +20,25 @@
             <converters:BooleanToVisibilityConverter />
         </converters:ValueConverterGroup>
     </UserControl.Resources>
+    <i:Interaction.Triggers>
+        <!--
+            To use modifiers as your key you weirdly have to specify
+            both the key AND the modifier (meaning the key itself) When pressing down
+            but NOT when releasing the key. Yuu cant make this shit up.
+        -->
+        <i:KeyTrigger
+            Key="LeftShift"
+            FiredOn="KeyDown"
+            Modifiers="Shift">
+            <i:InvokeCommandAction Command="{Binding EnableTickSnappingCommand}" />
+        </i:KeyTrigger>
+        <i:KeyTrigger
+            Key="LeftShift"
+            FiredOn="KeyUp"
+            Modifiers="">
+            <i:InvokeCommandAction Command="{Binding DisableTickSnappingCommand}" />
+        </i:KeyTrigger>
+    </i:Interaction.Triggers>
     <Grid IsEnabled="{Binding IsFileSelected}">
         <StackPanel Orientation="Vertical">
             <StackPanel.Resources>
@@ -389,7 +408,7 @@
                                     SelectedItem="{Binding SVideo.Codec}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction Command="{Binding VideoCodecChangedCommand}" PassEventArgsToCommand="False" />
+                                            <i:InvokeCommandAction Command="{Binding VideoCodecChangedCommand}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </ComboBox>
@@ -400,7 +419,7 @@
                                     SelectedItem="{Binding SVideo.EncodingMode}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction Command="{Binding EncodingProfileChangedCommand}" PassEventArgsToCommand="False" />
+                                            <i:InvokeCommandAction Command="{Binding EncodingProfileChangedCommand}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </ComboBox>
@@ -424,14 +443,16 @@
                                         Value="{Binding SVideo.Bitrate}">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding QualitySliderChangedCommand}" PassEventArgsToCommand="False" />
+                                                <i:InvokeCommandAction Command="{Binding QualitySliderChangedCommand}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Slider>
                                     <Slider
                                         Grid.ColumnSpan="2"
+                                        IsSnapToTickEnabled="{Binding UseSnapping}"
                                         Maximum="100"
                                         Minimum="0"
+                                        TickFrequency="10"
                                         Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}"
                                         Value="{Binding SVideo.Bitrate}" />
                                     <TextBlock
@@ -448,7 +469,28 @@
                                         Padding="0"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Stretch"
-                                        Text="{Binding SVideo.Bitrate}" />
+                                        Text="{Binding SVideo.Bitrate}"
+                                        Visibility="{Binding ManuallyEditVBitrate, Converter={StaticResource InvertAndVisibilityConverter}}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                <i:InvokeCommandAction Command="{Binding EnableManualVBitrateEditCommand}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBlock>
+                                    <TextBox
+                                        Grid.Column="2"
+                                        Margin="0"
+                                        Padding="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Stretch"
+                                        Text="{Binding SVideo.Bitrate}"
+                                        Visibility="{Binding ManuallyEditVBitrate, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <i:Interaction.Triggers>
+                                            <i:KeyTrigger Key="Enter">
+                                                <i:InvokeCommandAction Command="{Binding DisableManualVBitrateEditCommand}" />
+                                            </i:KeyTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
                                 </Grid>
                             </Grid>
                         </StackPanel>
@@ -530,7 +572,7 @@
                                     SelectedItem="{Binding SAudio.Codec}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction Command="{Binding AudioCodecChangedCommand}" PassEventArgsToCommand="True" />
+                                            <i:InvokeCommandAction Command="{Binding AudioCodecChangedCommand}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </ComboBox>
@@ -555,11 +597,11 @@
                                     </Grid.ColumnDefinitions>
                                     <Slider
                                         Grid.Column="0"
-                                        IsSnapToTickEnabled="True"
-                                        Maximum="1000"
-                                        Minimum="0"
-                                        TickPlacement="BottomRight"
-                                        Ticks="192, 280, 320"
+                                        IsSnapToTickEnabled="{Binding UseSnapping}"
+                                        Maximum="320"
+                                        Minimum="8"
+                                        TickFrequency="30"
+                                        Ticks="8, 16, 24, 32, 40, 48, 56, 64, 96, 112, 128, 160, 192, 224, 256, 320"
                                         Value="{Binding SAudio.Bitrate}" />
                                     <TextBlock
                                         Grid.Column="1"
@@ -567,7 +609,28 @@
                                         Padding="0"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Stretch"
-                                        Text="{Binding SAudio.Bitrate}" />
+                                        Text="{Binding SAudio.Bitrate}"
+                                        Visibility="{Binding ManuallyEditABitrate, Converter={StaticResource InvertAndVisibilityConverter}}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                                <i:InvokeCommandAction Command="{Binding EnableManualABitrateEditCommand}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBlock>
+                                    <TextBox
+                                        Grid.Column="1"
+                                        Margin="0"
+                                        Padding="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Stretch"
+                                        Text="{Binding SAudio.Bitrate}"
+                                        Visibility="{Binding ManuallyEditABitrate, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <i:Interaction.Triggers>
+                                            <i:KeyTrigger Key="Enter">
+                                                <i:InvokeCommandAction Command="{Binding DisableManualABitrateEditCommand}" PassEventArgsToCommand="True" />
+                                            </i:KeyTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBox>
                                 </Grid>
                             </Grid>
                         </StackPanel>
