@@ -23,6 +23,10 @@ namespace ConvertWithMe.Core
             CancellationToken cancellationToken
             )
         {
+            if (src.Equals(dest))
+            {
+                throw new ArgumentException("Cant overwrite the original file. Either choose a different filename OR location.");
+            }
             if (!format.AudioCodecs.Contains(aCodec))
             {
                 throw new ArgumentException("Format doesnt support the provided audio codec.");
@@ -54,7 +58,7 @@ namespace ConvertWithMe.Core
             IConversion conversion = FFmpeg.Conversions.New()
                 .AddParameter("-hide_banner")
                 .AddStream(audioStream)
-                .SetOutput($"{dest}.{format.Extension}");
+                .SetOutput(dest);
 
             await startConversionAsync(conversion, dest, progressCallback, cancellationToken);
         }
@@ -75,6 +79,10 @@ namespace ConvertWithMe.Core
             CancellationToken cancellationToken
             )
         {
+            if (src.Equals(dest))
+            {
+                throw new ArgumentException("Cant overwrite the original file. Either choose a different filename OR location.");
+            }
             if (!format.AudioCodecs.Contains(aCodec))
             {
                 throw new ArgumentException("Format doesnt support the provided audio codec.");

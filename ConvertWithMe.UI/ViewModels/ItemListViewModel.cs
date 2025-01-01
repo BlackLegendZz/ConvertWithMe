@@ -117,8 +117,13 @@ namespace ConvertWithMe.UI.ViewModels
         }
 
         [RelayCommand]
-        public async Task ConvertFilesAsync()
+        public async Task ConvertFilesAsync() 
         {
+            if (IsConverting)
+            {
+                return;
+            }
+
             IsConverting = true;
             cancellationTokenSource = new CancellationTokenSource();    // new token
 
@@ -129,7 +134,7 @@ namespace ConvertWithMe.UI.ViewModels
                 {
                     await fc.ConvertToAudio(
                         Path.Combine(fileItems[i].SettingsFile.DirSrc, fileItems[i].SettingsFile.FilenameSrc),
-                        Path.Combine(fileItems[i].SettingsFile.DirDest, fileItems[i].SettingsFile.FilenameDest),
+                        Path.Combine(fileItems[i].SettingsFile.DirDest, $"{fileItems[i].SettingsFile.FilenameDest}.{fileItems[i].SettingsFile.Format.Extension}"),
                         fileItems[i].SettingsFile.Format,
                         fileItems[i].SettingsAudio.Codec,
                         fileItems[i].SettingsAudio.Bitrate,
@@ -167,6 +172,11 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public void CancelConversion()
         {
+            if (cancellationTokenSource.IsCancellationRequested)
+            {
+                return;
+            }
+
             cancellationTokenSource.Cancel();
         }
 
