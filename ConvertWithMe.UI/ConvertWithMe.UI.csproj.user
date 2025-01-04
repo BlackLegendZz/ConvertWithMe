@@ -7,15 +7,24 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\DialogView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\ItemListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\NotificationDialogView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="MainWindow.xaml">
+    <Page Update="Views\DialogView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ItemListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\NotificationDialogView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Styles\ToggleSwitch.xaml">

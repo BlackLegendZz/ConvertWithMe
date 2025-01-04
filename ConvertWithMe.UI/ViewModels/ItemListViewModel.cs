@@ -5,17 +5,16 @@ using ConvertWithMe.Core;
 using ConvertWithMe.Core.Definitions;
 using ConvertWithMe.UI.Messengers;
 using ConvertWithMe.UI.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Events;
 
 namespace ConvertWithMe.UI.ViewModels
 {
-    partial class ItemListViewModel : ObservableObject
+    public partial class ItemListViewModel : ObservableObject
     {
 
         private ObservableCollection<FileItem> fileItems;
@@ -33,8 +32,10 @@ namespace ConvertWithMe.UI.ViewModels
         private string[] audiofileFormats = ["*.aac", "*.flac", "*.m4a", "*.mp3", "*.ogg", "*.opus", "*.wav", "*.wma", "*.webm"];
         private string[] videofileFormats = ["*.avm", "*.avi", "*.flv", "*.mp4", "*.m4v", "*.mkv", "*.mov", "*.mpg", "*.mpeg", "*.qt", "*.webm", "*.wmv"];
         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private readonly DialogViewModel dialogViewModel;
+        private readonly IServiceProvider serviceProvider;
 
-        public ItemListViewModel()
+        public ItemListViewModel(IServiceProvider serviceProvider)
         {
             if (!ApplicationPaths.FFmpeg.Equals(FFmpeg.ExecutablesPath))
             {
@@ -42,6 +43,8 @@ namespace ConvertWithMe.UI.ViewModels
             }
 
             fileItems = new ObservableCollection<FileItem>();
+            dialogViewModel = serviceProvider.GetRequiredService<DialogViewModel>();
+            this.serviceProvider = serviceProvider;
         }
 
         [RelayCommand]

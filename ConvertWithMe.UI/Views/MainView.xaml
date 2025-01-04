@@ -8,7 +8,7 @@
     xmlns:viewmodels="clr-namespace:ConvertWithMe.UI.ViewModels"
     xmlns:views="clr-namespace:ConvertWithMe.UI.Views"
     d:Background="White"
-    d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">

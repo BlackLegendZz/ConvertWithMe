@@ -6,13 +6,13 @@ using System.Windows.Controls;
 namespace ConvertWithMe.UI.Views
 {
     /// <summary>
-    /// Interaktionslogik für MainView.xaml
+    /// Interaktionslogik für DialogViewModel.xaml
     /// </summary>
-    public partial class MainView : UserControl
+    public partial class DialogView : UserControl
     {
-        public MainView()
+        public DialogView()
         {
-            DataContext = ((App)Application.Current).serviceProvider.GetRequiredService<MainViewModel>();
+            DataContext = ((App)Application.Current).serviceProvider.GetRequiredService<DialogViewModel>();
             InitializeComponent();
         }
     }

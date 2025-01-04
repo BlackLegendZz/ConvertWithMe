@@ -10,5 +10,9 @@
     MinHeight="540"
     Loaded="Window_Loaded"
     mc:Ignorable="d">
-    <views:MainView />
+    <Grid>
+        <views:MainView Panel.ZIndex="0" />
+        <views:DialogView Panel.ZIndex="1" />
+    </Grid>
+
 </Window>

@@ -1,4 +1,6 @@
 ﻿using ConvertWithMe.Core;
+using ConvertWithMe.UI.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Windows;
 
@@ -9,6 +11,21 @@ namespace ConvertWithMe.UI
     /// </summary>
     public partial class App : Application
     {
+        IServiceCollection services = new ServiceCollection();
+        public IServiceProvider serviceProvider;
+
+        public App()
+        {
+            // ViewModels
+            services.AddSingleton<DialogViewModel>();
+            services.AddSingleton<ItemListViewModel>();
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<NotificationDialogViewModel>();
+            services.AddSingleton<SettingsViewModel>();
+
+            serviceProvider = services.BuildServiceProvider();
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);

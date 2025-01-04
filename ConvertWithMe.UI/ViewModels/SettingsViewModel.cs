@@ -10,7 +10,7 @@ using Xabe.FFmpeg;
 
 namespace ConvertWithMe.UI.ViewModels
 {
-    partial class SettingsViewModel : ObservableObject
+    public partial class SettingsViewModel : ObservableObject
     {
         #region VARS
 
