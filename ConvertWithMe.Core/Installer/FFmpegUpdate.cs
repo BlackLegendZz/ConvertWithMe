@@ -1,65 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace ConvertWithMe.Core.Installer
 {
     public static class FFmpegUpdate
     {
-        public static async Task<bool> IsNewestVersionAsync()
-        {
-            return DateTime.Compare(await GetCurrentPublishDateAsync(), await GetNewestPublishDateAsync()) >= 0;
-        }
-
-        private static async Task<DateTime> GetNewestPublishDateAsync()
-        {
-            string url = "https://api.github.com/repos/BtbN/FFmpeg-Builds/releases/latest";
-            using HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; VersionChecker/1.0)");
-
-            string response = await client.GetStringAsync(url);
-
-            JsonDocument responseJson = JsonDocument.Parse(response);
-            DateTime dtRelease = responseJson.RootElement.GetProperty("published_at").GetDateTime();
-            return dtRelease;
-        }
-
-        private static async Task<DateTime> GetCurrentPublishDateAsync()
-        {
-            string versionFile = Path.Combine(ApplicationPaths.FFmpeg, "version.txt");
-            DateTime dt = DateTime.MinValue;
-
-            if (!File.Exists(versionFile))
-            {
-                return dt;
-            }
-
-            string f = await File.ReadAllTextAsync(versionFile);
-            bool success = DateTime.TryParse(f, out dt);
-
-            if (!success)
-            {
-                //TODO logging
-            }
-
-            return dt;
-        }
-
         /// <summary>
         /// Downloads the latest precompiled Version of ffmpeg for Windows x64 and unzips it in the Application folder.
         /// </summary>
         /// <param name="callback">Callback function to update on the download Progress</param>
         /// <returns></returns>
-        public static async Task DownloadAndInstallNewestVersion(Action<float> callback)
+        public static async Task DownloadAndInstallNewestVersion(Action<float, string> callback)
         {
-            string fn = "ffmpeg-master-latest-win64-gpl";
-            string downloadUrl = $"https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/{fn}.zip";
+            if (Directory.GetFiles(ApplicationPaths.FFmpeg).Length > 0)
+            {
+                return;
+            }
+            float progress = 0f;
+            callback?.Invoke(progress, "Fetching ffmpeg from github...");
+
+            string fn = "ffmpeg-7.1-full_build";
+            string downloadUrl = $"https://github.com/GyanD/codexffmpeg/releases/download/7.1/{fn}.zip";
 
             using HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; VersionChecker/1.0)");
@@ -83,10 +47,12 @@ namespace ConvertWithMe.Core.Installer
 
                     if (canReportProgress)
                     {
-                        float progress = 100.0f * totalBytesRead / totalBytes;
-                        callback?.Invoke(progress);
+                        // Use 90 so that the remaining 10% are for the extraction.
+                        progress = 90.0f * totalBytesRead / totalBytes;
+                        callback?.Invoke(progress, "Downloading...");
                     }
                 }
+                callback?.Invoke(progress, "Extracting files...");
             }
 
             // Unzip only the 3 executables
@@ -95,20 +61,16 @@ namespace ConvertWithMe.Core.Installer
                 string[] executables = ["ffmpeg.exe", "ffprobe.exe", "ffplay.exe"];
                 foreach (ZipArchiveEntry entry in zArch.Entries)
                 {
+                    progress += 10f / zArch.Entries.Count;
+                    callback?.Invoke(progress, $"Extracting {entry.Name}...");
                     if (!executables.Contains(entry.Name)) { continue; }
 
                     entry.ExtractToFile(Path.Combine(ApplicationPaths.FFmpeg, entry.Name), true);
                 }
             }
 
-            await UpdateVersion();
             File.Delete(filePath); //zip is not needed anymore
-        }
-
-        private static async Task UpdateVersion()
-        {
-            DateTime dtNew = await GetNewestPublishDateAsync();
-            await File.WriteAllTextAsync(Path.Combine(ApplicationPaths.FFmpeg, "version.txt"), dtNew.ToString());
+            callback?.Invoke(100f, "Done!");
         }
     }
 }

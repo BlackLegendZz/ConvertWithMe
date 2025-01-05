@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using ConvertWithMe.Core;
 using ConvertWithMe.Core.Definitions;
+using ConvertWithMe.Core.Installer;
 using ConvertWithMe.UI.Messengers;
 using ConvertWithMe.UI.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -206,6 +207,10 @@ namespace ConvertWithMe.UI.ViewModels
                     }
                     ProgressPercentage = 0;
                 }
+
+                var vm = serviceProvider.GetRequiredService<ProgressDialogViewModel>();
+                vm.Progress = progressPercentage;
+
             } catch (ArgumentException ex)
             {
                 await dialogViewModel.ShowDialogAsync(
