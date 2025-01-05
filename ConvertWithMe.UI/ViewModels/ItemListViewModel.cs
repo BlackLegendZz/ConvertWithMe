@@ -124,6 +124,7 @@ namespace ConvertWithMe.UI.ViewModels
         [RelayCommand]
         public async Task ConvertFilesAsync() 
         {
+            bool errorOccured = false;
             if (IsConverting)
             {
                 return;
@@ -149,6 +150,7 @@ namespace ConvertWithMe.UI.ViewModels
                             serviceProvider.GetRequiredService<NotificationDialogViewModel>(), 
                             new NotificationViewModelData("Error!", "Cant overwrite the original file. Either choose a different filename OR location.")
                             );
+                        errorOccured = true;
                         break;
                     }
 
@@ -207,19 +209,29 @@ namespace ConvertWithMe.UI.ViewModels
                     }
                     ProgressPercentage = 0;
                 }
-
-                var vm = serviceProvider.GetRequiredService<ProgressDialogViewModel>();
-                vm.Progress = progressPercentage;
-
             } catch (ArgumentException ex)
             {
                 await dialogViewModel.ShowDialogAsync(
                     serviceProvider.GetRequiredService<NotificationDialogViewModel>(), 
                     new NotificationViewModelData("Error!", ex.Message)
                     );
+                errorOccured = true;
             }
-            
             IsConverting = false;
+            if (!errorOccured)
+            {
+                await dialogViewModel.ShowDialogAsync(
+                    serviceProvider.GetRequiredService<NotificationDialogViewModel>(),
+                    new NotificationViewModelData("Success!", "All Files have been converted")
+                );
+            }
+            if (cancellationTokenSource.IsCancellationRequested)
+            {
+                await dialogViewModel.ShowDialogAsync(
+                    serviceProvider.GetRequiredService<NotificationDialogViewModel>(),
+                    new NotificationViewModelData("Conversion Aborted", "Conversion process successfully aborted. Some files may have been partially converted.")
+                );
+            }
         }
 
         [RelayCommand]
