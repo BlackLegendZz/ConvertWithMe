@@ -20,8 +20,10 @@ namespace ConvertWithMe.UI
             services.AddSingleton<DialogViewModel>();
             services.AddSingleton<ItemListViewModel>();
             services.AddSingleton<MainViewModel>();
-            services.AddSingleton<NotificationDialogViewModel>();
             services.AddSingleton<SettingsViewModel>();
+            // Dialog ViewModels
+            services.AddSingleton<NotificationDialogViewModel>();
+            services.AddSingleton<QuestionDialogViewModel>();
 
             serviceProvider = services.BuildServiceProvider();
         }

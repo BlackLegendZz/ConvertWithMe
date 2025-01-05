@@ -33,6 +33,9 @@
                         <DataTemplate DataType="{x:Type viewmodels:NotificationDialogViewModel}">
                             <views:NotificationDialogView />
                         </DataTemplate>
+                        <DataTemplate DataType="{x:Type viewmodels:QuestionDialogViewModel}">
+                            <views:QuestionDialogView />
+                        </DataTemplate>
                     </ResourceDictionary>
                 </FrameworkElement.Resources>
             </ContentControl>

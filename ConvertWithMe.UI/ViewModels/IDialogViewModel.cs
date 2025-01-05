@@ -2,8 +2,8 @@
 
 namespace ConvertWithMe.UI.ViewModels
 {
-    public interface IDialogViewModel<TData> where TData : IDialogData
+    public interface IDialogViewModel<TData, TResponse> where TData : IDialogData where TResponse : Enum
     {
-        public void Initialize(TData data, TaskCompletionSource tcs);
+        public void Initialize(TData data, TaskCompletionSource<TResponse> tcs);
     }
 }

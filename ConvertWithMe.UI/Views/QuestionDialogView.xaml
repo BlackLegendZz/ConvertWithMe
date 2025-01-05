@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="ConvertWithMe.UI.Views.NotificationDialogView"
+    x:Class="ConvertWithMe.UI.Views.QuestionDialogView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,7 @@
     xmlns:viewmodels="clr-namespace:ConvertWithMe.UI.ViewModels"
     Width="300"
     d:Background="White"
-    d:DataContext="{d:DesignInstance Type=viewmodels:NotificationDialogViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewmodels:QuestionDialogViewModel}"
     d:DesignHeight="450"
     mc:Ignorable="d">
     <Grid>
@@ -23,12 +23,22 @@
                 Text="{Binding WindowTitle}" />
             <TextBlock
                 Grid.Row="0"
-                Text="{Binding Message}"
+                Text="{Binding Question}"
                 TextWrapping="Wrap" />
         </StackPanel>
-        <Button
-            Grid.Row="1"
-            Command="{Binding ButtonClickedCommand}"
-            Content="Ok" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Command="{Binding ButtonYesClickedCommand}"
+                Content="Yes" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding ButtonNoClickedCommand}"
+                Content="No" />
+        </Grid>
     </Grid>
 </UserControl>

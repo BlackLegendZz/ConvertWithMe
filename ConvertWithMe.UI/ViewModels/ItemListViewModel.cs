@@ -31,9 +31,10 @@ namespace ConvertWithMe.UI.ViewModels
 
         private string[] audiofileFormats = ["*.aac", "*.flac", "*.m4a", "*.mp3", "*.ogg", "*.opus", "*.wav", "*.wma", "*.webm"];
         private string[] videofileFormats = ["*.avm", "*.avi", "*.flv", "*.mp4", "*.m4v", "*.mkv", "*.mov", "*.mpg", "*.mpeg", "*.qt", "*.webm", "*.wmv"];
-        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly DialogViewModel dialogViewModel;
         private readonly IServiceProvider serviceProvider;
+        private bool overrideFile = false;
 
         public ItemListViewModel(IServiceProvider serviceProvider)
         {
@@ -131,44 +132,88 @@ namespace ConvertWithMe.UI.ViewModels
             cancellationTokenSource = new CancellationTokenSource();    // new token
 
             FileConversion fc = new FileConversion();
-            for (int i = 0; i < fileItems.Count; i++)
+            try
             {
-                if (AudioFormats.AvailableAudioFormats.Contains(fileItems[i].SettingsFile.Format))
+                for (int i = 0; i < fileItems.Count; i++)
                 {
-                    await fc.ConvertToAudio(
-                        Path.Combine(fileItems[i].SettingsFile.DirSrc, fileItems[i].SettingsFile.FilenameSrc),
-                        Path.Combine(fileItems[i].SettingsFile.DirDest, $"{fileItems[i].SettingsFile.FilenameDest}.{fileItems[i].SettingsFile.Format.Extension}"),
-                        fileItems[i].SettingsFile.Format,
-                        fileItems[i].SettingsAudio.Codec,
-                        fileItems[i].SettingsAudio.Bitrate,
-                        fileItems[i].SettingsAudio.SampleRate,
-                        ConversionProgress,
-                        cancellationTokenSource.Token
-                        );
+                    string src = Path.Combine(fileItems[i].SettingsFile.DirSrc, fileItems[i].SettingsFile.FilenameSrc);
+                    string dest = Path.Combine(fileItems[i].SettingsFile.DirDest, $"{fileItems[i].SettingsFile.FilenameDest}.{fileItems[i].SettingsFile.Format.Extension}");
+
+                    // There is a difference between the destination already existsing (for example due to a previously made conversion)
+                    // and the destination being the same as the source. The latter is a different scenario which requires a different procedure
+                    // as you cant delete the file you are reading from.
+                    if (src.Equals(dest))
+                    {
+                        await dialogViewModel.ShowDialogAsync(
+                            serviceProvider.GetRequiredService<NotificationDialogViewModel>(), 
+                            new NotificationViewModelData("Error!", "Cant overwrite the original file. Either choose a different filename OR location.")
+                            );
+                        break;
+                    }
+
+                    if (File.Exists(dest) && !overrideFile)
+                    {
+                        Question result = await dialogViewModel.ShowDialogAsync(
+                            serviceProvider.GetRequiredService<QuestionDialogViewModel>(),
+                            new QuestionViewModelData("File already exists", $"The file {dest} already exists. Do you want to overwrite it?")
+                            );
+                        switch (result)
+                        {
+                            case Question.Yes:
+                                overrideFile = true; 
+                                break;
+                            case Question.No: 
+                                overrideFile = false; 
+                                break;
+                        }
+                    }
+
+                    if (AudioFormats.AvailableAudioFormats.Contains(fileItems[i].SettingsFile.Format))
+                    {
+                        await fc.ConvertToAudio(
+                            src,
+                            dest,
+                            fileItems[i].SettingsFile.Format,
+                            fileItems[i].SettingsAudio.Codec,
+                            fileItems[i].SettingsAudio.Bitrate,
+                            fileItems[i].SettingsAudio.SampleRate,
+                            ConversionProgress,
+                            cancellationTokenSource.Token,
+                            overrideFile
+                            );
+                    }
+                    else
+                    {
+                        await fc.ConvertToVideo(
+                            src,
+                            dest,
+                            fileItems[i].SettingsFile.Format,
+                            fileItems[i].SettingsVideo.Codec,
+                            fileItems[i].SettingsAudio.Codec,
+                            fileItems[i].SettingsVideo.Bitrate,
+                            fileItems[i].SettingsAudio.Bitrate,
+                            fileItems[i].SettingsVideo.FrameRate,
+                            fileItems[i].SettingsAudio.SampleRate,
+                            fileItems[i].SettingsVideo.Width,
+                            fileItems[i].SettingsVideo.Height,
+                            fileItems[i].SettingsVideo.EncodingMode,
+                            PixelFormat.yuv420p,
+                            fileItems[i].SettingsVideo.QuailityPreset,
+                            ConversionProgress,
+                            cancellationTokenSource.Token,
+                            overrideFile
+                            );
+                    }
+                    ProgressPercentage = 0;
                 }
-                else
-                {
-                    await fc.ConvertToVideo(
-                        Path.Combine(fileItems[i].SettingsFile.DirSrc, fileItems[i].SettingsFile.FilenameSrc),
-                        Path.Combine(fileItems[i].SettingsFile.DirDest, $"{fileItems[i].SettingsFile.FilenameDest}.{fileItems[i].SettingsFile.Format.Extension}"),
-                        fileItems[i].SettingsFile.Format,
-                        fileItems[i].SettingsVideo.Codec,
-                        fileItems[i].SettingsAudio.Codec,
-                        fileItems[i].SettingsVideo.Bitrate,
-                        fileItems[i].SettingsAudio.Bitrate,
-                        fileItems[i].SettingsVideo.FrameRate,
-                        fileItems[i].SettingsAudio.SampleRate,
-                        fileItems[i].SettingsVideo.Width,
-                        fileItems[i].SettingsVideo.Height,
-                        fileItems[i].SettingsVideo.EncodingMode,
-                        PixelFormat.yuv420p,
-                        fileItems[i].SettingsVideo.QuailityPreset,
-                        ConversionProgress,
-                        cancellationTokenSource.Token
-                        );
-                }
-                ProgressPercentage = 0;
+            } catch (ArgumentException ex)
+            {
+                await dialogViewModel.ShowDialogAsync(
+                    serviceProvider.GetRequiredService<NotificationDialogViewModel>(), 
+                    new NotificationViewModelData("Error!", ex.Message)
+                    );
             }
+            
             IsConverting = false;
         }
 

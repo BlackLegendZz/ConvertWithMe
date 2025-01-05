@@ -4,15 +4,15 @@ using ConvertWithMe.UI.Models;
 
 namespace ConvertWithMe.UI.ViewModels
 {
-    public partial class NotificationDialogViewModel : ObservableObject, IDialogViewModel<NotificationViewModelData>
+    public partial class NotificationDialogViewModel : ObservableObject, IDialogViewModel<NotificationViewModelData, Confirmation>
     {
         [ObservableProperty]
         private string windowTitle = string.Empty;
         [ObservableProperty]
         private string message = string.Empty;
-        private TaskCompletionSource? tcs;
+        private TaskCompletionSource<Confirmation>? tcs;
 
-        public void Initialize(NotificationViewModelData data, TaskCompletionSource tcs)
+        public void Initialize(NotificationViewModelData data, TaskCompletionSource<Confirmation> tcs)
         {
             this.tcs = tcs;
             WindowTitle = data.Title;
@@ -24,7 +24,7 @@ namespace ConvertWithMe.UI.ViewModels
         {
             if (tcs != null)
             {
-                tcs.SetResult();
+                tcs.SetResult(Confirmation.Ok);
             }
         }
     }

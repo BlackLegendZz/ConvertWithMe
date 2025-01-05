@@ -10,18 +10,19 @@ namespace ConvertWithMe.UI.ViewModels
         [ObservableProperty]
         private object? viewModel;
 
-        public async Task ShowDialogAsync<TData>(IDialogViewModel<TData> viewModel, TData data) where TData : IDialogData
+        public async Task<TResponse> ShowDialogAsync<TData, TResponse>(IDialogViewModel<TData, TResponse> viewModel, TData data) where TData : IDialogData where TResponse : Enum
         {
             IsVisible = true;
 
-            TaskCompletionSource tcs = new TaskCompletionSource();
+            TaskCompletionSource<TResponse> tcs = new TaskCompletionSource<TResponse>();
             viewModel.Initialize(data, tcs);
 
             ViewModel = viewModel;
 
-            await tcs.Task.WaitAsync(CancellationToken.None);
+            TResponse result = await tcs.Task.WaitAsync(CancellationToken.None);
 
             IsVisible = false;
+            return result;
         }
     }
 }
