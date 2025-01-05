@@ -20,7 +20,8 @@ namespace ConvertWithMe.Core
             int bitrate, int sampleRate, 
             //SampleFormat sFormat, 
             ConversionProgressEventHandler progressCallback,
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken,
+            bool overrideFile
             )
         {
             if (src.Equals(dest))
@@ -60,7 +61,7 @@ namespace ConvertWithMe.Core
                 .AddStream(audioStream)
                 .SetOutput(dest);
 
-            await startConversionAsync(conversion, dest, progressCallback, cancellationToken);
+            await startConversionAsync(conversion, dest, progressCallback, cancellationToken, overrideFile);
         }
 
         public async Task ConvertToVideo(
@@ -76,7 +77,8 @@ namespace ConvertWithMe.Core
             //SampleFormat sFormat,
             ConversionPreset quailityPreset,
             ConversionProgressEventHandler progressCallback,
-            CancellationToken cancellationToken
+            CancellationToken cancellationToken,
+            bool overrideFile
             )
         {
             if (src.Equals(dest))
@@ -169,19 +171,20 @@ namespace ConvertWithMe.Core
                 conversion = conversion.SetPreset(quailityPreset);
             }
 
-            await startConversionAsync(conversion, dest, progressCallback, cancellationToken);
+            await startConversionAsync(conversion, dest, progressCallback, cancellationToken, overrideFile);
         }
 
-        private async Task startConversionAsync(IConversion conversion, string dest, ConversionProgressEventHandler progressCallback, CancellationToken cancellationToken)
+        private async Task startConversionAsync(IConversion conversion, string dest, ConversionProgressEventHandler progressCallback, CancellationToken cancellationToken, bool overrideFile)
         {
+            if (overrideFile && File.Exists(dest))
+            {
+                File.Delete(dest);
+            }
+
             conversion.OnProgress += progressCallback;
             try
             {
                 IConversionResult result = await conversion.Start(cancellationToken);
-            }
-            catch (Xabe.FFmpeg.Exceptions.ConversionException e)
-            {
-                //TODO
             }
             catch (OperationCanceledException)
             {
