@@ -126,16 +126,17 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <ProgressBar
                 Grid.Column="0"
-                Width="100"
+                Width="250"
                 Margin="0,0,4,0"
                 Visibility="{Binding IsConverting, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Value="{Binding ProgressPercentage}" />
@@ -148,12 +149,14 @@
                 Grid.Column="3"
                 Command="{Binding ConvertFilesCommand}"
                 Content="Convert"
+                Style="{StaticResource PrimaryButton}"
                 Visibility="{Binding IsConverting, Converter={StaticResource InvertAndVisibilityConverter}}" />
             <Button
-                Grid.Column="3"
+                Grid.Column="4"
                 Command="{Binding CancelConversionCommand}"
                 Content="Cancel"
-                Visibility="{Binding IsConverting, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                Style="{StaticResource SecondayryButton}"
+                Visibility="{Binding IsConverting, Converter={StaticResource InvertAndVisibilityConverter}}" />
         </Grid>
     </Grid>
 </UserControl>
