@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FontFamily x:Key="RobotoBlack">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Black</FontFamily>
+    <FontFamily x:Key="RobotoBlackItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Black Italic</FontFamily>
+
+    <FontFamily x:Key="RobotoBold">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Bold</FontFamily>
+    <FontFamily x:Key="RobotoBoldItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Bold Italic</FontFamily>
+
+    <FontFamily x:Key="RobotoExtraBold">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto ExtraBold</FontFamily>
+    <FontFamily x:Key="RobotoExtraBoldItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto ExtraBold Italic</FontFamily>
+
+    <FontFamily x:Key="RobotoExtraLight">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto ExtraLight</FontFamily>
+    <FontFamily x:Key="RobotoExtraLightItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto ExtraLight Italic</FontFamily>
+
+    <FontFamily x:Key="RobotoLight">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Light</FontFamily>
+    <FontFamily x:Key="RobotoLightItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Light Italic</FontFamily>
+
+    <FontFamily x:Key="RobotoMedium">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Medium</FontFamily>
+    <FontFamily x:Key="RobotoMediumItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Medium Italic</FontFamily>
+
+    <FontFamily x:Key="RobotoRegular">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Regular</FontFamily>
+    <FontFamily x:Key="RobotoItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Italic</FontFamily>
+
+    <FontFamily x:Key="RobotoSemiBold">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto SemiBold</FontFamily>
+    <FontFamily x:Key="RobotoSemiBoldItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto SemiBold Italic</FontFamily>
+
+    <FontFamily x:Key="RobotoThin">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Thin</FontFamily>
+    <FontFamily x:Key="RobotoThinItalic">pack://application:,,,/Views/Styles/Fonts/Roboto/#Roboto Thin Italic</FontFamily>
+</ResourceDictionary>
