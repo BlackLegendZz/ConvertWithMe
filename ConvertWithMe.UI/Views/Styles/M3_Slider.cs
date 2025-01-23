@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
@@ -11,7 +12,6 @@ namespace ConvertWithMe.UI.Views.Styles
         private Border handleBorder;
         private Thumb thumb;
         private double valueToSize = 0;
-        private int handleWidth = 16;
 
         static M3_Slider()
         {
@@ -24,9 +24,9 @@ namespace ConvertWithMe.UI.Views.Styles
             rightBorder.Width = Math.Max((Maximum - Value) * valueToSize, 0);
         }
 
-        private void CalculateGrowthRate(int handleWidth)
+        private void CalculateGrowthRate()
         {
-            valueToSize = (Width - handleWidth) / (Maximum - Minimum);
+            valueToSize = (ActualWidth - (handleBorder.Margin.Left + handleBorder.Margin.Right + handleBorder.Width)) / (Maximum - Minimum);
         }
 
         public override void OnApplyTemplate()
@@ -37,25 +37,32 @@ namespace ConvertWithMe.UI.Views.Styles
             thumb = Template.FindName("PART_Thumb", this) as Thumb;
             thumb.DragStarted += Thumb_DragStarted;
             thumb.DragCompleted += Thumb_DragCompleted;
-            
-            CalculateGrowthRate(handleWidth);
-            SetBorders();
 
             base.OnApplyTemplate();
+
+            // Calculate the growth rate after the Window loaded
+            this.SizeChanged += M3_Slider_SizeChanged;
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Loaded, () => CalculateGrowthRate());
+        }
+
+        private void M3_Slider_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            CalculateGrowthRate();
+            SetBorders();
         }
 
         private void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            CalculateGrowthRate(handleWidth);
-            SetBorders();
             handleBorder.Width = 4;
+            CalculateGrowthRate();
+            SetBorders();
         }
 
         private void Thumb_DragStarted(object sender, DragStartedEventArgs e)
         {
-            CalculateGrowthRate(handleWidth-2);
-            SetBorders();
             handleBorder.Width = 2;
+            CalculateGrowthRate();
+            SetBorders();
         }
 
         protected override void OnValueChanged(double oldValue, double newValue)

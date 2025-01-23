@@ -23,18 +23,20 @@
 
     <Style TargetType="{x:Type local:M3_Slider}">
         <Setter Property="IsMoveToPointEnabled" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:M3_Slider}">
-                    <Grid>
+                    <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" UseLayoutRounding="{TemplateBinding UseLayoutRounding}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" x:Name="PART_left" Height="16" CornerRadius="9,2,2,9" Background="#65558F"/>
+                        <Border Grid.Column="0" Width="{Binding DecreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_left" Height="16" CornerRadius="9,2,2,9" Background="#65558F"/>
                         <Border Grid.Column="1" x:Name="PART_Handle" Height="44" Width="4" Margin="6,0" Background="#65558F" CornerRadius="2"/>
-                        <Border Grid.Column="2" x:Name="PART_right" Height="16" CornerRadius="2,9,9,2" Background="#dbc5f9">
+                        <Border Grid.Column="2" Width="{Binding IncreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_right" Height="16" CornerRadius="2,9,9,2" Background="#dbc5f9">
                             <Ellipse Width="4" Height="4" Fill="#65558F" HorizontalAlignment="Right" Margin="4"/>
                         </Border>
                         <Track Grid.ColumnSpan="3" x:Name="PART_Track" Orientation="Horizontal">
