@@ -24,6 +24,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Styles\M3_Slider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Styles\Slider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\DialogView.xaml">
       <SubType>Designer</SubType>
     </Page>

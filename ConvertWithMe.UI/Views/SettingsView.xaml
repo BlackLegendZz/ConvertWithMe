@@ -7,6 +7,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:ConvertWithMe.UI.ViewModels"
+    xmlns:styles="clr-namespace:ConvertWithMe.UI.Views.Styles"
     d:Background="White"
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
     d:DesignHeight="1200"
@@ -435,7 +436,7 @@
                                         <ColumnDefinition Width="100" />
                                         <ColumnDefinition Width="30" />
                                     </Grid.ColumnDefinitions>
-                                    <Slider
+                                    <styles:M3_Slider
                                         Grid.Column="0"
                                         Maximum="30"
                                         Minimum="0"
@@ -447,8 +448,8 @@
                                                 <i:InvokeCommandAction Command="{Binding VideoBitrateChangedCommand}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
-                                    </Slider>
-                                    <Slider
+                                    </styles:M3_Slider>
+                                    <styles:M3_Slider
                                         Grid.ColumnSpan="2"
                                         IsSnapToTickEnabled="{Binding UseSnapping}"
                                         Maximum="100"
@@ -599,7 +600,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
-                                    <Slider
+                                    <styles:M3_Slider
                                         Grid.Column="0"
                                         IsSnapToTickEnabled="{Binding UseSnapping}"
                                         Maximum="320"
@@ -612,7 +613,7 @@
                                                 <i:InvokeCommandAction Command="{Binding AudioBitrateChangedCommand}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
-                                    </Slider>
+                                    </styles:M3_Slider>
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="0"
