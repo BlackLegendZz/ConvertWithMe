@@ -5,14 +5,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:views="clr-namespace:ConvertWithMe.UI.Views"
+    xmlns:styles="clr-namespace:ConvertWithMe.UI.Views.Styles"
     Title="MainWindow"
     MinWidth="960"
     MinHeight="540"
     Loaded="Window_Loaded"
     mc:Ignorable="d">
     <Grid>
+        <!--
         <views:MainView Panel.ZIndex="0" />
         <views:DialogView Panel.ZIndex="1" />
+        -->
+        <styles:M3_Slider
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left"
+            Minimum="0"
+            Maximum="300"
+            Width="500"
+            IsSnapToTickEnabled="True"
+            TickFrequency="10"
+            Value="300"/>
     </Grid>
 
 </Window>
