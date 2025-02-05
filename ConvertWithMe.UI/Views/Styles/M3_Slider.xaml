@@ -35,17 +35,16 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Width="{Binding DecreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_left" Height="16" CornerRadius="9,2,2,9" Background="#65558F">
-                            <StackPanel x:Name="Ticks_Left" Orientation="Horizontal" Margin="6,0,0,0" HorizontalAlignment="Left" FlowDirection="LeftToRight" Visibility="Hidden"/>
+                        <Border Grid.Column="0" Width="{Binding DecreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_left" Height="16" CornerRadius="9,2,2,9" Background="#65558F" ClipToBounds="True">
+                            <Canvas x:Name="Ticks_Left" Margin="6,0,0,0" HorizontalAlignment="Left" FlowDirection="LeftToRight" Visibility="Hidden"/>
                         </Border>
                         <Border Grid.Column="1" x:Name="PART_Handle" Height="44" Width="4" Margin="6,0" Background="#65558F" CornerRadius="2"/>
-                        <Border Grid.Column="2" Width="{Binding IncreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_right" Height="16" CornerRadius="2,9,9,2" Background="#dbc5f9">
-                            <Grid HorizontalAlignment="Stretch">
-                                <StackPanel x:Name="Ticks_Right" Orientation="Horizontal" Margin="0,0,6,0" HorizontalAlignment="Right" FlowDirection="RightToLeft" Visibility="Hidden"/>
-                                <Ellipse Margin="0,0,6,0" Visibility="Collapsed" Fill="Green" Width="4" Height="4" HorizontalAlignment="Right"/>
+                        <Border Grid.Column="2" Width="{Binding IncreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_right" Height="16" CornerRadius="2,9,9,2" Background="#dbc5f9" ClipToBounds="True">
+                            <Grid>
+                                <Canvas x:Name="Ticks_Right" Margin="0,0,6,0" HorizontalAlignment="Right" FlowDirection="RightToLeft" Visibility="Hidden"/>
+                                <Ellipse Margin="0,0,6,0" Visibility="Visible" Fill="#65558F" Width="4" Height="4" HorizontalAlignment="Right"/>
                             </Grid>
                         </Border>
-                        <TickBar x:Name="helpplease" Grid.ColumnSpan="3" Margin="0,16,0,0" Fill="Red"/>
                         
                         <Track Grid.ColumnSpan="3" x:Name="PART_Track" Orientation="Horizontal">
                             <Track.Thumb>

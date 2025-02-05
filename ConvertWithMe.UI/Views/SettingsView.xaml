@@ -605,7 +605,6 @@
                                         IsSnapToTickEnabled="{Binding UseSnapping}"
                                         Maximum="320"
                                         Minimum="8"
-                                        TickFrequency="30"
                                         Ticks="8, 16, 24, 32, 40, 48, 56, 64, 96, 112, 128, 160, 192, 224, 256, 320"
                                         Value="{Binding SAudio.Bitrate}">
                                         <i:Interaction.Triggers>

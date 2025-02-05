@@ -12,19 +12,8 @@
     Loaded="Window_Loaded"
     mc:Ignorable="d">
     <Grid>
-        <!--
         <views:MainView Panel.ZIndex="0" />
         <views:DialogView Panel.ZIndex="1" />
-        -->
-        <styles:M3_Slider
-            VerticalAlignment="Top"
-            HorizontalAlignment="Left"
-            Minimum="0"
-            Maximum="300"
-            Width="500"
-            IsSnapToTickEnabled="True"
-            TickFrequency="10"
-            Value="300"/>
     </Grid>
 
 </Window>

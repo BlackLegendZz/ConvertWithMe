@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Printing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
@@ -12,10 +13,10 @@ namespace ConvertWithMe.UI.Views.Styles
         private Border rightBorder;
         private Border handleBorder;
         private Thumb thumb;
-        private StackPanel ticksLeft;
-        private StackPanel ticksRight;
+        private Canvas ticksLeft;
+        private Canvas ticksRight;
         private double borderGrowthRate = 1;
-        double[] ticks = [];
+        private double sliderWidth = 1;
         double[] tickXCoordinates = [];
 
         static M3_Slider()
@@ -25,7 +26,7 @@ namespace ConvertWithMe.UI.Views.Styles
 
         private void SetBorders()
         {
-            borderGrowthRate = (ActualWidth - (handleBorder.Margin.Left + handleBorder.Margin.Right + handleBorder.Width)) / (Maximum - Minimum);
+            borderGrowthRate = (ActualWidth - sliderWidth) / (Maximum - Minimum);
 
             leftBorder.Width = Math.Max((Value - Minimum) * borderGrowthRate, 0);
             rightBorder.Width = Math.Max((Maximum - Value) * borderGrowthRate, 0);
@@ -39,8 +40,8 @@ namespace ConvertWithMe.UI.Views.Styles
             rightBorder = Template.FindName("PART_right", this) as Border;
             handleBorder = Template.FindName("PART_Handle", this) as Border;
             thumb = Template.FindName("PART_Thumb", this) as Thumb;
-            ticksLeft = Template.FindName("Ticks_Left", this) as StackPanel;
-            ticksRight = Template.FindName("Ticks_Right", this) as StackPanel;
+            ticksLeft = Template.FindName("Ticks_Left", this) as Canvas;
+            ticksRight = Template.FindName("Ticks_Right", this) as Canvas;
 
             thumb.DragStarted += Thumb_DragStarted;
             thumb.DragCompleted += Thumb_DragCompleted;
@@ -49,41 +50,35 @@ namespace ConvertWithMe.UI.Views.Styles
             this.SizeChanged += M3_Slider_SizeChanged;
         }
 
-        private void GetTicks()
-        {
-            if (Ticks.Count > 0)
-            {
-                ticks = Ticks.ToArray();
-            }
-            if (TickFrequency > 1)
-            {
-                int tickAmount = (int)Math.Ceiling((Maximum - Minimum) / TickFrequency);
-                ticks = new double[tickAmount];
-                for (int i = 0; i < tickAmount; i++)
-                {
-                    ticks[i] = i * TickFrequency;
-                }
-            }
-        }
-
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-
-            Size size = new Size(base.ActualWidth, base.ActualHeight);
-            int tickCount = (int)((this.Maximum - this.Minimum) / this.TickFrequency) + 1;
-            Double tickFrequencySize = (size.Width * this.TickFrequency / (this.Maximum - this.Minimum));
-
-            double scaling = (ActualWidth - 16) / ActualWidth;
-
-            tickXCoordinates = new double[tickCount];
-            for (int i = 0; i < tickCount; i++)
+            sliderWidth = handleBorder.Margin.Left + handleBorder.Margin.Right + handleBorder.Width;
+            // I have no idea why subtracting the with of the slider gets the correct scaling.
+            double scaling = (ActualWidth - sliderWidth) / ActualWidth;
+            if (TickFrequency > 1)
             {
-                tickXCoordinates[i] = tickFrequencySize * i * scaling;
-            }
+                int tickCount = (int)Math.Ceiling((Maximum - Minimum) / TickFrequency);
+                double tickFrequencySize = ActualWidth * TickFrequency / (Maximum - Minimum);
 
+                tickXCoordinates = new double[tickCount];
+                for (int i = 0; i < tickCount; i++)
+                {
+                    tickXCoordinates[i] = tickFrequencySize * i * scaling;
+                }
+                //TODO: Bei nicht echten Teilern muss noch ein Punkt hinzugefügt werden
+            }
+            else
+            {
+                double tickFrequencySize = ActualWidth / (Maximum - Minimum);
+
+                tickXCoordinates = new double[Ticks.Count];
+                for (int i = 0; i < Ticks.Count; i++)
+                {
+                    tickXCoordinates[i] = tickFrequencySize * (Ticks[i] - Ticks[0]) * scaling;
+                }
+            }
             SetBorders();
-            GetTicks();
             DrawStopIndicators();
         }
 
@@ -98,19 +93,10 @@ namespace ConvertWithMe.UI.Views.Styles
             SolidColorBrush bl = new SolidColorBrush(cl);
             SolidColorBrush br = new SolidColorBrush(cr);
 
-            double totalLeftPadding = 0;
-            double totalRightPadding = 0;
-
             for (int i = 0; i < tickXCoordinates.Length; i++)
             {
-                Thickness ml = new Thickness(tickXCoordinates[i], 0, 0, 0);
-                Thickness mr = new Thickness(0, 0, tickXCoordinates[i], 0);
-
-                ml.Left -= totalLeftPadding;
-                mr.Right -= totalRightPadding;
-
-                totalLeftPadding += ml.Left + 4;
-                totalRightPadding += mr.Right + 4;
+                Thickness ml = new Thickness(tickXCoordinates[i], 6, 0, 0);
+                Thickness mr = new Thickness(ActualWidth - tickXCoordinates[i] - sliderWidth, 6, 0, 0);
 
                 Ellipse el = new Ellipse()
                 {
@@ -122,14 +108,14 @@ namespace ConvertWithMe.UI.Views.Styles
                 Ellipse er = new Ellipse()
                 {
                     Fill = br,
-                    Margin = ml,
+                    Margin = mr,
                     Width = 4,
                     Height = 4
                 };
+
                 ticksLeft.Children.Add(el);
                 ticksRight.Children.Add(er);
             }
-            TickBar tb = Template.FindName("helpplease", this) as TickBar;
         }
 
         private void M3_Slider_SizeChanged(object sender, SizeChangedEventArgs e)
