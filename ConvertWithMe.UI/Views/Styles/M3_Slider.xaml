@@ -35,14 +35,14 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Width="{Binding DecreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_left" Height="16" CornerRadius="9,2,2,9" Background="#65558F" ClipToBounds="True">
+                        <Border Grid.Column="0" Width="{Binding DecreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_left" Height="16" CornerRadius="9,2,2,9" Background="{StaticResource Primary}" ClipToBounds="True">
                             <Canvas x:Name="Ticks_Left" Margin="6,0,0,0" HorizontalAlignment="Left" FlowDirection="LeftToRight" Visibility="Hidden"/>
                         </Border>
-                        <Border Grid.Column="1" x:Name="PART_Handle" Height="44" Width="4" Margin="6,0" Background="#65558F" CornerRadius="2"/>
-                        <Border Grid.Column="2" Width="{Binding IncreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_right" Height="16" CornerRadius="2,9,9,2" Background="#dbc5f9" ClipToBounds="True">
+                        <Border Grid.Column="1" x:Name="PART_Handle" Height="44" Width="4" Margin="6,0" Background="{StaticResource Primary}" CornerRadius="2"/>
+                        <Border Grid.Column="2" Width="{Binding IncreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_right" Height="16" CornerRadius="2,9,9,2" Background="{StaticResource SecondaryContainer}" ClipToBounds="True">
                             <Grid>
                                 <Canvas x:Name="Ticks_Right" Margin="0,0,6,0" HorizontalAlignment="Right" FlowDirection="RightToLeft" Visibility="Hidden"/>
-                                <Ellipse Margin="0,0,6,0" Visibility="Visible" Fill="#65558F" Width="4" Height="4" HorizontalAlignment="Right"/>
+                                <Ellipse x:Name="FinalStopIndicator" Margin="0,0,6,0" Visibility="Visible" Fill="{StaticResource OnSecondaryContainer}" Width="4" Height="4" HorizontalAlignment="Right"/>
                             </Grid>
                         </Border>
                         
@@ -72,6 +72,42 @@
                         <Trigger Property="IsSnapToTickEnabled" Value="False">
                             <Setter Property="Visibility" Value="Collapsed" TargetName="Ticks_Left"/>
                             <Setter Property="Visibility" Value="Collapsed" TargetName="Ticks_Right"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="PART_left">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource ColorOnSurface}" Opacity="0.38"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Background" TargetName="PART_right">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource ColorOnSurface}" Opacity="0.12"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Background" TargetName="PART_Handle">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource ColorOnSurface}" Opacity="0.38"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Fill" Value="{StaticResource OnSurface}" TargetName="FinalStopIndicator"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Background" TargetName="PART_left">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource ColorPrimary}" Opacity="1"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Background" TargetName="PART_right">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource ColorSecondaryContainer}" Opacity="1"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Background" TargetName="PART_Handle">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource ColorPrimary}" Opacity="1"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Fill" Value="{StaticResource OnSecondaryContainer}" TargetName="FinalStopIndicator"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

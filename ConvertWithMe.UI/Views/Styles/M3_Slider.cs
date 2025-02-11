@@ -7,18 +7,24 @@ using System.Windows.Shapes;
 
 namespace ConvertWithMe.UI.Views.Styles
 {
+    [TemplatePart(Name = nameof(PART_left), Type = typeof(Border))]
+    [TemplatePart(Name = nameof(PART_right), Type = typeof(Border))]
+    [TemplatePart(Name = nameof(PART_Handle), Type = typeof(Border))]
+    [TemplatePart(Name = nameof(thumb), Type = typeof(Thumb))]
+    [TemplatePart(Name = nameof(Ticks_Left), Type = typeof(Canvas))]
+    [TemplatePart(Name = nameof(Ticks_Right), Type = typeof(Canvas))]
     public class M3_Slider : Slider
     {
-        private Border leftBorder;
-        private Border rightBorder;
-        private Border handleBorder;
+        private Border PART_left;
+        private Border PART_right;
+        private Border PART_Handle;
         private Thumb thumb;
-        private Canvas ticksLeft;
-        private Canvas ticksRight;
+        private Canvas Ticks_Left;
+        private Canvas Ticks_Right;
         private double borderGrowthRate = 1;
         private double sliderWidth = 1;
         double[] tickXCoordinates = [];
-
+        Ellipse[] tickElements;
         static M3_Slider()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(M3_Slider), new FrameworkPropertyMetadata(typeof(M3_Slider)));
@@ -28,32 +34,43 @@ namespace ConvertWithMe.UI.Views.Styles
         {
             borderGrowthRate = (ActualWidth - sliderWidth) / (Maximum - Minimum);
 
-            leftBorder.Width = Math.Max((Value - Minimum) * borderGrowthRate, 0);
-            rightBorder.Width = Math.Max((Maximum - Value) * borderGrowthRate, 0);
+            PART_left.Width = Math.Max((Value - Minimum) * borderGrowthRate, 0);
+            PART_right.Width = Math.Max((Maximum - Value) * borderGrowthRate, 0);
         }
 
         public override void OnApplyTemplate()
         {
+            // Function can be called more than once
+            if (thumb != null)
+            {
+                thumb.DragStarted -= Thumb_DragStarted;
+                thumb.DragCompleted -= Thumb_DragCompleted;
+            }
+
             base.OnApplyTemplate();
 
-            leftBorder = Template.FindName("PART_left", this) as Border;
-            rightBorder = Template.FindName("PART_right", this) as Border;
-            handleBorder = Template.FindName("PART_Handle", this) as Border;
-            thumb = Template.FindName("PART_Thumb", this) as Thumb;
-            ticksLeft = Template.FindName("Ticks_Left", this) as Canvas;
-            ticksRight = Template.FindName("Ticks_Right", this) as Canvas;
+            PART_left = GetTemplateChild(nameof(PART_left)) as Border;
+            PART_right = GetTemplateChild(nameof(PART_right)) as Border;
+            PART_Handle = GetTemplateChild(nameof(PART_Handle)) as Border;
+            thumb = GetTemplateChild(nameof(thumb)) as Thumb;
+            Ticks_Left = GetTemplateChild(nameof(Ticks_Left)) as Canvas;
+            Ticks_Right = GetTemplateChild(nameof(Ticks_Right)) as Canvas;
 
-            thumb.DragStarted += Thumb_DragStarted;
-            thumb.DragCompleted += Thumb_DragCompleted;
-
+            if (thumb != null)
+            {
+                thumb.DragStarted += Thumb_DragStarted;
+                thumb.DragCompleted += Thumb_DragCompleted;
+            }
             // Calculate the growth rate after the Window loaded
-            this.SizeChanged += M3_Slider_SizeChanged;
+            SizeChanged += M3_Slider_SizeChanged;
+            IsEnabledChanged += M3_Slider_IsEnabledChanged;
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-            sliderWidth = handleBorder.Margin.Left + handleBorder.Margin.Right + handleBorder.Width;
+            sliderWidth = PART_Handle.Margin.Left + PART_Handle.Margin.Right + PART_Handle.Width;
+
             // I have no idea why subtracting the with of the slider gets the correct scaling.
             double scaling = (ActualWidth - sliderWidth) / ActualWidth;
             if (TickFrequency > 1)
@@ -82,17 +99,35 @@ namespace ConvertWithMe.UI.Views.Styles
             DrawStopIndicators();
         }
 
+        private Tuple<SolidColorBrush, SolidColorBrush> GetCorrectColours()
+        {
+            string cn1 = string.Empty;
+            string cn2 = string.Empty;
+            if (IsEnabled)
+            {
+                cn1 = "OnPrimary";
+                cn2 = "OnSecondaryContainer";
+            }
+            else
+            {
+                cn1 = "InverseOnSurface";
+                cn2 = "OnSurface";
+            }
+
+            return new Tuple<SolidColorBrush, SolidColorBrush>(
+                (Application.Current.Resources[cn1] as SolidColorBrush) ?? new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                (Application.Current.Resources[cn2] as SolidColorBrush) ?? new SolidColorBrush(Color.FromRgb(0, 0, 0))
+            );
+        }
+
         private void DrawStopIndicators()
         {
-            ticksLeft.Children.Clear();
-            ticksRight.Children.Clear();
+            Ticks_Left.Children.Clear();
+            Ticks_Right.Children.Clear();
+            tickElements = new Ellipse[tickXCoordinates.Length * 2];
 
-            Color cl = Color.FromRgb(211, 191, 239);
-            Color cr = Color.FromRgb(101, 85, 143);
-
-            SolidColorBrush bl = new SolidColorBrush(cl);
-            SolidColorBrush br = new SolidColorBrush(cr);
-
+            (SolidColorBrush ColStopIndicatorSelected, SolidColorBrush ColStopIndicator) = GetCorrectColours();
+            
             for (int i = 0; i < tickXCoordinates.Length; i++)
             {
                 Thickness ml = new Thickness(tickXCoordinates[i], 6, 0, 0);
@@ -100,21 +135,23 @@ namespace ConvertWithMe.UI.Views.Styles
 
                 Ellipse el = new Ellipse()
                 {
-                    Fill = bl,
+                    Fill = ColStopIndicatorSelected,
                     Margin = ml,
                     Width = 4,
                     Height = 4
                 };
                 Ellipse er = new Ellipse()
                 {
-                    Fill = br,
+                    Fill = ColStopIndicator,
                     Margin = mr,
                     Width = 4,
                     Height = 4
                 };
 
-                ticksLeft.Children.Add(el);
-                ticksRight.Children.Add(er);
+                Ticks_Left.Children.Add(el);
+                Ticks_Right.Children.Add(er);
+                tickElements[i] = el;
+                tickElements[i + tickXCoordinates.Length] = er;
             }
         }
 
@@ -124,21 +161,31 @@ namespace ConvertWithMe.UI.Views.Styles
             DrawStopIndicators();
         }
 
+        private void M3_Slider_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            (SolidColorBrush ColStopIndicatorSelected, SolidColorBrush ColStopIndicator) = GetCorrectColours();
+            for (int i = 0; i < tickXCoordinates.Length; i++)
+            {
+                tickElements[i].Fill = ColStopIndicatorSelected;
+                tickElements[i + tickXCoordinates.Length].Fill = ColStopIndicator;
+            }
+        }
+
         private void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            handleBorder.Width = 4;
+            PART_Handle.Width = 4;
             SetBorders();
         }
 
         private void Thumb_DragStarted(object sender, DragStartedEventArgs e)
         {
-            handleBorder.Width = 2;
+            PART_Handle.Width = 2;
             SetBorders();
         }
 
         protected override void OnValueChanged(double oldValue, double newValue)
         {
-            if (leftBorder is null || rightBorder is null)
+            if (PART_left is null || PART_right is null)
             {
                 return;
             }
