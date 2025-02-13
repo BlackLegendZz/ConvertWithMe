@@ -298,10 +298,9 @@
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             Content="Export Video" />
-                        <CheckBox
+                        <styles:M3_ToggleSwitch
                             Grid.Column="3"
-                            IsChecked="{Binding ConvertVideo}"
-                            Style="{StaticResource ToggleButton}" />
+                            IsChecked="{Binding ConvertVideo}"/>
                     </Grid>
                     <StackPanel
                         Margin="0,12,0,0"
@@ -527,10 +526,9 @@
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             Content="Export Audio" />
-                        <CheckBox
+                        <styles:M3_ToggleSwitch
                             Grid.Column="3"
-                            IsChecked="{Binding ConvertAudio}"
-                            Style="{StaticResource ToggleButton}" />
+                            IsChecked="{Binding ConvertAudio}"/>
                     </Grid>
                     <StackPanel
                         Margin="0,12,0,0"

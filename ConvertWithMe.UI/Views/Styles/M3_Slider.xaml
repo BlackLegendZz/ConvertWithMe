@@ -24,12 +24,12 @@
     <Style TargetType="{x:Type local:M3_Slider}">
         <Setter Property="IsMoveToPointEnabled" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="False"/>
         <Setter Property="Height" Value="44"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:M3_Slider}">
-                    <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" UseLayoutRounding="{TemplateBinding UseLayoutRounding}">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>

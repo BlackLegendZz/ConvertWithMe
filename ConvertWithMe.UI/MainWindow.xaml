@@ -10,7 +10,8 @@
     MinWidth="960"
     MinHeight="540"
     Loaded="Window_Loaded"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{StaticResource Surface}">
     <Grid>
         <views:MainView Panel.ZIndex="0" />
         <views:DialogView Panel.ZIndex="1" />

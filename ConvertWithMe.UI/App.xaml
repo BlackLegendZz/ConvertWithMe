@@ -10,7 +10,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Views/Styles/Fonts/Fonts.xaml" />
                 <ResourceDictionary Source="Views/Styles/Colours.xaml" />
-                <ResourceDictionary Source="Views/Styles/ToggleSwitch.xaml" />
                 <ResourceDictionary Source="Views/Styles/Buttons.xaml" />
                 <ResourceDictionary Source="Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>

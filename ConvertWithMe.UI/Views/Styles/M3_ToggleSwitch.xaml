@@ -1,0 +1,112 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ConvertWithMe.UI.Views.Styles">
+
+    <Style TargetType="{x:Type local:M3_ToggleSwitch}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:M3_ToggleSwitch}">
+                    <Grid Width="52" Height="40">
+                        <Border x:Name="PART_ThumbOn" Background="{StaticResource OnPrimary}" Width="24" Height="24" CornerRadius="100" Margin="4,0" Panel.ZIndex="2"/>
+                        <Border x:Name="PART_ThumbOff" Background="{StaticResource Outline}" Width="16" Height="16" CornerRadius="100" Margin="8,0" Panel.ZIndex="2"/>
+
+                        <Border x:Name="PART_TrackOn" Background="{StaticResource Primary}" Width="52" Height="32" CornerRadius="16" Panel.ZIndex="1"/>
+                        <Border x:Name="PART_TrackOff" Background="{StaticResource SurfaceContainerHighest}" BorderBrush="{StaticResource Outline}" BorderThickness="2" Width="52" Height="32" CornerRadius="16" Panel.ZIndex="1"/>
+
+                        <Border x:Name="PART_ThumbHover" Background="{StaticResource Primary}" Width="40" Height="40" CornerRadius="100" Opacity="0.08" Margin="-4,0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Primary}" TargetName="PART_ThumbHover"/>
+                            <Setter Property="HorizontalAlignment" Value="Right" TargetName="PART_ThumbHover"/>
+                            
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_TrackOn"/>
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_ThumbOn"/>
+                            <Setter Property="HorizontalAlignment" Value="Right" TargetName="PART_ThumbOn"/>
+
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_TrackOff"/>
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_ThumbOff"/>
+                            <Setter Property="HorizontalAlignment" Value="Right" TargetName="PART_ThumbOff"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Background" Value="{StaticResource Outline}" TargetName="PART_ThumbHover"/>
+                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbHover"/>
+
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_TrackOn"/>
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_ThumbOn"/>
+                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbOn"/>
+                            
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_TrackOff"/>
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_ThumbOff"/>
+                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbOff"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter Property="Background" Value="{StaticResource Outline}" TargetName="PART_ThumbHover"/>
+                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbHover"/>
+
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_TrackOn"/>
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_ThumbOn"/>
+                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbOn"/>
+
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_TrackOff"/>
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_ThumbOff"/>
+                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbOff"/>
+                        </Trigger>
+                        
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource PrimaryContainer}" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Background" Value="{StaticResource OnSurfaceVariant}" TargetName="PART_ThumbOff"/>
+                            <Setter Property="Visibility" Value="Visible" TargetName="PART_ThumbHover"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="Background" Value="{StaticResource OnPrimary}" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Background" Value="{StaticResource Outline}" TargetName="PART_ThumbOff"/>
+                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_ThumbHover"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.12" TargetName="PART_ThumbHover"/>
+                            <Setter Property="Width" Value="28" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Height" Value="28" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Margin" Value="2,0" TargetName="PART_ThumbOn"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="False">
+                            <Setter Property="Opacity" Value="0.08" TargetName="PART_ThumbHover"/>
+                            <Setter Property="Width" Value="24" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Height" Value="24" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Margin" Value="4,0" TargetName="PART_ThumbOn"/>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Opacity" Value="1" TargetName="PART_TrackOn"/>
+                            <Setter Property="Opacity" Value="1" TargetName="PART_TrackOff"/>
+                            <Setter Property="Background" Value="{StaticResource Primary}" TargetName="PART_TrackOn"/>
+                            <Setter Property="Background" Value="{StaticResource SurfaceContainerHighest}" TargetName="PART_TrackOff"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Outline}" TargetName="PART_TrackOff"/>
+
+                            <Setter Property="Opacity" Value="1" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Opacity" Value="1" TargetName="PART_ThumbOff"/>
+                            <Setter Property="Background" Value="{StaticResource OnPrimary}" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Background" Value="{StaticResource Outline}" TargetName="PART_ThumbOff"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.12" TargetName="PART_TrackOn"/>
+                            <Setter Property="Opacity" Value="0.12" TargetName="PART_TrackOff"/>
+                            <Setter Property="Background" Value="{StaticResource OnSurface}" TargetName="PART_TrackOn"/>
+                            <Setter Property="Background" Value="{StaticResource SurfaceContainerHighest}" TargetName="PART_TrackOff"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource OnSurface}" TargetName="PART_TrackOff"/>
+
+                            <Setter Property="Opacity" Value="1" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Opacity" Value="0.38" TargetName="PART_ThumbOff"/>
+                            <Setter Property="Background" Value="{StaticResource Surface}" TargetName="PART_ThumbOn"/>
+                            <Setter Property="Background" Value="{StaticResource OnSurface}" TargetName="PART_ThumbOff"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

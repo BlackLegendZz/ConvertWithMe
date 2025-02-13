@@ -4,5 +4,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Views/Styles/M3_Slider.xaml"/>
+        <ResourceDictionary Source="/Views/Styles/M3_ToggleSwitch.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
