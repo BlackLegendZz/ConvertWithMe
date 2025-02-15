@@ -16,8 +16,22 @@ using System.Windows.Shapes;
 
 namespace ConvertWithMe.UI.Views.Styles
 {
+    public enum ToggleIcon { None, OnChecked, OnUnchecked, OnBoth }
     public class M3_ToggleSwitch : ToggleButton
     {
+
+
+        public ToggleIcon UseIcon
+        {
+            get { return (ToggleIcon)GetValue(UseIconProperty); }
+            set { SetValue(UseIconProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for UseIcon.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty UseIconProperty =
+            DependencyProperty.Register("UseIcon", typeof(ToggleIcon), typeof(M3_ToggleSwitch), new PropertyMetadata(ToggleIcon.None));
+
+
         static M3_ToggleSwitch()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(M3_ToggleSwitch), new FrameworkPropertyMetadata(typeof(M3_ToggleSwitch)));

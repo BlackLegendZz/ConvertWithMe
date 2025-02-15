@@ -8,6 +8,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Views/Styles/Icons.xaml"/>
                 <ResourceDictionary Source="Views/Styles/Fonts/Fonts.xaml" />
                 <ResourceDictionary Source="Views/Styles/Colours.xaml" />
                 <ResourceDictionary Source="Views/Styles/Buttons.xaml" />

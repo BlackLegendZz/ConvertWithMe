@@ -51,6 +51,9 @@
     <Page Update="Views\Styles\Fonts\Fonts.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\Styles\Icons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\Styles\M3_ToggleSwitch.xaml">
       <SubType>Designer</SubType>
     </Page>
