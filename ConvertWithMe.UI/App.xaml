@@ -4,15 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:ConvertWithMe.UI"
     xmlns:view="clr-namespace:ConvertWithMe.UI.Views"
-    StartupUri="MainWindow.xaml">
+    StartupUri="MainWindow.xaml"
+    xmlns:styles="clr-namespace:ConvertWithMe.Material3.Styles;assembly=ConvertWithMe.Material3">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Views/Styles/Icons.xaml"/>
-                <ResourceDictionary Source="Views/Styles/Fonts/Fonts.xaml" />
-                <ResourceDictionary Source="Views/Styles/Colours.xaml" />
-                <ResourceDictionary Source="Views/Styles/Buttons.xaml" />
-                <ResourceDictionary Source="Themes/Generic.xaml" />
+                <ResourceDictionary Source="/ConvertWithMe.Material3;component/Colours/Colours.Purple.Light.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

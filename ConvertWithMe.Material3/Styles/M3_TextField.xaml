@@ -1,0 +1,65 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ConvertWithMe.Material3.Styles">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Fonts/Fonts.xaml"/>
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Icons.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <ControlTemplate x:Key="Filled" TargetType="{x:Type local:M3_TextField}">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+            <Border Background="{DynamicResource SurfaceContainerHighest}" MinHeight="56" CornerRadius="2,2,0,0" BorderThickness="0,0,0,1" BorderBrush="Black">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition MinWidth="200" Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Path x:Name="SearchIcon" Grid.Column="0" Data="{StaticResource Search}" Fill="{DynamicResource OnSurfaceVariant}" Stretch="Uniform" Width="24" Height="24" Margin="12,0,0,0"/>
+                    <StackPanel Grid.Column="1" Orientation="Vertical" Margin="16,8">
+                        <TextBlock x:Name="PART_LabelText" Text="{TemplateBinding LabelText}"/>
+                        <TextBlock x:Name="PART_Text" Text="{TemplateBinding Text}"/>
+                    </StackPanel>
+                    <Path x:Name="CancelIcon" Grid.Column="2" Data="{StaticResource Cancel}" Fill="{DynamicResource OnSurfaceVariant}" Stretch="Uniform" Width="24" Height="24" Margin="0,0,12,0"/>
+                </Grid>
+            </Border>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="200" Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="PART_SupportingText" Grid.Column="0" Text="{TemplateBinding SupportingText}" Margin="16,4,16,0"/>
+                <TextBlock x:Name="PART_CharacterCount" Grid.Column="1" Text="{TemplateBinding CharacterCount}" Margin="0,4,16,0"/>
+            </Grid>
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="DisplayIcons" Value="True">
+                <Setter Property="Visibility" Value="Visible" TargetName="SearchIcon"/>
+                <Setter Property="Visibility" Value="Visible" TargetName="CancelIcon"/>
+            </Trigger>
+            <Trigger Property="DisplayIcons" Value="False">
+                <Setter Property="Visibility" Value="Hidden" TargetName="SearchIcon"/>
+                <Setter Property="Visibility" Value="Hidden" TargetName="CancelIcon"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="Outlined" TargetType="{x:Type local:M3_TextField}">
+        <Border Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+        </Border>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type local:M3_TextField}">
+        <Style.Triggers>
+            <Trigger Property="TextFieldType" Value="Filled">
+                <Setter Property="Template" Value="{StaticResource Filled}"/>
+            </Trigger>
+            <Trigger Property="TextFieldType" Value="Outlined">
+                <Setter Property="Template" Value="{StaticResource Outlined}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace ConvertWithMe.UI.Views.Styles
+namespace ConvertWithMe.Material3.Styles
 {
     [TemplatePart(Name = nameof(PART_left), Type = typeof(Border))]
     [TemplatePart(Name = nameof(PART_right), Type = typeof(Border))]

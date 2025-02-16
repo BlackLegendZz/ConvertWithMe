@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ConvertWithMe.UI.Views.Styles
+namespace ConvertWithMe.Material3.Styles
 {
     public enum ToggleIcon { None, OnChecked, OnUnchecked, OnBoth }
     public class M3_ToggleSwitch : ToggleButton

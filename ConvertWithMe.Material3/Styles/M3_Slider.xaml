@@ -1,8 +1,8 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ConvertWithMe.UI.Views.Styles">
-
+    xmlns:local="clr-namespace:ConvertWithMe.Material3.Styles">
+ 
     <Style x:Key="M3_RepeatButton" TargetType="{x:Type RepeatButton}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -35,14 +35,14 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Width="{Binding DecreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_left" Height="16" CornerRadius="9,2,2,9" Background="{StaticResource Primary}" ClipToBounds="True">
+                        <Border Grid.Column="0" Width="{Binding DecreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_left" Height="16" CornerRadius="9,2,2,9" Background="{DynamicResource Primary}" ClipToBounds="True">
                             <Canvas x:Name="Ticks_Left" Margin="6,0,0,0" HorizontalAlignment="Left" FlowDirection="LeftToRight" Visibility="Hidden"/>
                         </Border>
-                        <Border Grid.Column="1" x:Name="PART_Handle" Height="44" Width="4" Margin="6,0" Background="{StaticResource Primary}" CornerRadius="2"/>
-                        <Border Grid.Column="2" Width="{Binding IncreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_right" Height="16" CornerRadius="2,9,9,2" Background="{StaticResource SecondaryContainer}" ClipToBounds="True">
+                        <Border Grid.Column="1" x:Name="PART_Handle" Height="44" Width="4" Margin="6,0" Background="{DynamicResource Primary}" CornerRadius="2"/>
+                        <Border Grid.Column="2" Width="{Binding IncreaseRepeatButton.ActualWidth, ElementName=PART_Track}" x:Name="PART_right" Height="16" CornerRadius="2,9,9,2" Background="{DynamicResource SecondaryContainer}" ClipToBounds="True">
                             <Grid>
                                 <Canvas x:Name="Ticks_Right" Margin="0,0,6,0" HorizontalAlignment="Right" FlowDirection="RightToLeft" Visibility="Hidden"/>
-                                <Ellipse x:Name="FinalStopIndicator" Margin="0,0,6,0" Visibility="Visible" Fill="{StaticResource OnSecondaryContainer}" Width="4" Height="4" HorizontalAlignment="Right"/>
+                                <Ellipse x:Name="FinalStopIndicator" Margin="0,0,6,0" Visibility="Visible" Fill="{DynamicResource OnSecondaryContainer}" Width="4" Height="4" HorizontalAlignment="Right"/>
                             </Grid>
                         </Border>
                         
@@ -89,7 +89,7 @@
                                     <SolidColorBrush Color="{DynamicResource ColorOnSurface}" Opacity="0.38"/>
                                 </Setter.Value>
                             </Setter>
-                            <Setter Property="Fill" Value="{StaticResource OnSurface}" TargetName="FinalStopIndicator"/>
+                            <Setter Property="Fill" Value="{DynamicResource OnSurface}" TargetName="FinalStopIndicator"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="True">
                             <Setter Property="Background" TargetName="PART_left">
@@ -107,7 +107,7 @@
                                     <SolidColorBrush Color="{DynamicResource ColorPrimary}" Opacity="1"/>
                                 </Setter.Value>
                             </Setter>
-                            <Setter Property="Fill" Value="{StaticResource OnSecondaryContainer}" TargetName="FinalStopIndicator"/>
+                            <Setter Property="Fill" Value="{DynamicResource OnSecondaryContainer}" TargetName="FinalStopIndicator"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

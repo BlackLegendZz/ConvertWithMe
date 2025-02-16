@@ -1,5 +1,41 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="ColorPrimary">#D0BCFF</Color>
+    <Color x:Key="ColorOnPrimary">#381E72</Color>
+    <Color x:Key="ColorPrimaryContainer">#4F378B</Color>
+    <Color x:Key="ColorOnPrimaryContainer">#EADDFF</Color>
+
+    <Color x:Key="ColorSecondary">#CCC2DC</Color>
+    <Color x:Key="ColorOnSecondary">#332D41</Color>
+    <Color x:Key="ColorSecondaryContainer">#4A4458</Color>
+    <Color x:Key="ColorOnSecondaryContainer">#E8DEF8</Color>
+
+    <Color x:Key="ColorTertiary">#EFB8C8</Color>
+    <Color x:Key="ColorOnTertiary">#492532</Color>
+    <Color x:Key="ColorTertiaryContainer">#633B48</Color>
+    <Color x:Key="ColorOnTertiaryContainer">#FFD8E4</Color>
+
+    <Color x:Key="ColorError">#F2B8B5</Color>
+    <Color x:Key="ColorOnError">#601410</Color>
+    <Color x:Key="ColorErrorContainer">#8C1D18</Color>
+    <Color x:Key="ColorOnErrorContainer">#F9DEDC</Color>
+
+    <Color x:Key="ColorSurface">#141218</Color>
+    <Color x:Key="ColorOnSurface">#E6E0E9</Color>
+    <Color x:Key="ColorSurfaceVariant">#49454F</Color>
+    <Color x:Key="ColorOnSurfaceVariant">#CAC4D0</Color>
+    <Color x:Key="ColorSurfaceContainerHighest">#36343B</Color>
+    <Color x:Key="ColorSurfaceContainerHigh">#2B2930</Color>
+    <Color x:Key="ColorSurfaceContainer">#211F26</Color>
+    <Color x:Key="ColorSurfaceContainerLow">#1D1B20</Color>
+    <Color x:Key="ColorSurfaceContainerLowest">#0F0D13</Color>
+    <Color x:Key="ColorInverseSurface">#E6E0E9</Color>
+    <Color x:Key="ColorInverseOnSurface">#322F35</Color>
+    <Color x:Key="ColorSurfaceTint">#D0BCFF</Color>
+
+    <Color x:Key="ColorOutline">#938F99</Color>
+    <Color x:Key="ColorOutlineVariant">#49454F</Color>
+
     <SolidColorBrush x:Key="Primary" Color="{DynamicResource ColorPrimary}"/>
     <SolidColorBrush x:Key="OnPrimary" Color="{DynamicResource ColorOnPrimary}"/>
     <SolidColorBrush x:Key="PrimaryContainer" Color="{DynamicResource ColorPrimaryContainer}"/>
@@ -35,41 +71,4 @@
 
     <SolidColorBrush x:Key="Outline" Color="{DynamicResource ColorOutline}"/>
     <SolidColorBrush x:Key="OutlineVariant" Color="{DynamicResource ColorOutlineVariant}"/>
-
-
-    <Color x:Key="ColorPrimary">#6750A4</Color>
-    <Color x:Key="ColorOnPrimary">#FFFFFF</Color>
-    <Color x:Key="ColorPrimaryContainer">#EADDFF</Color>
-    <Color x:Key="ColorOnPrimaryContainer">#4F378B</Color>
-
-    <Color x:Key="ColorSecondary">#625B71</Color>
-    <Color x:Key="ColorOnSecondary">#FFFFFF</Color>
-    <Color x:Key="ColorSecondaryContainer">#E8DEF8</Color>
-    <Color x:Key="ColorOnSecondaryContainer">#4A4458</Color>
-
-    <Color x:Key="ColorTertiary">#7D5260</Color>
-    <Color x:Key="ColorOnTertiary">#FFFFFF</Color>
-    <Color x:Key="ColorTertiaryContainer">#FFD8E4</Color>
-    <Color x:Key="ColorOnTertiaryContainer">#633B48</Color>
-
-    <Color x:Key="ColorError">#B3261E</Color>
-    <Color x:Key="ColorOnError">#FFFFFF</Color>
-    <Color x:Key="ColorErrorContainer">#F9DEDC</Color>
-    <Color x:Key="ColorOnErrorContainer">#8C1D18</Color>
-
-    <Color x:Key="ColorSurface">#FEF7FF</Color>
-    <Color x:Key="ColorOnSurface">#1D1B20</Color>
-    <Color x:Key="ColorSurfaceVariant">#E7E0EC</Color>
-    <Color x:Key="ColorOnSurfaceVariant">#49454F</Color>
-    <Color x:Key="ColorSurfaceContainerHighest">#E6E0E9</Color>
-    <Color x:Key="ColorSurfaceContainerHigh">#ECE6F0</Color>
-    <Color x:Key="ColorSurfaceContainer">#F3EDF7</Color>
-    <Color x:Key="ColorSurfaceContainerLow">#F7F2FA</Color>
-    <Color x:Key="ColorSurfaceContainerLowest">#FFFFFF</Color>
-    <Color x:Key="ColorInverseSurface">#322F35</Color>
-    <Color x:Key="ColorInverseOnSurface">#F5EFF7</Color>
-    <Color x:Key="ColorSurfaceTint">#6750A4</Color>
-
-    <Color x:Key="ColorOutline">#79747E</Color>
-    <Color x:Key="ColorOutlineVariant">#CAC4D0</Color>
 </ResourceDictionary>

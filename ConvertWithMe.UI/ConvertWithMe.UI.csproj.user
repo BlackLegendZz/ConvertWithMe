@@ -24,12 +24,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Themes\Generic.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Styles\Colours.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\DialogView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -43,18 +37,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\QuestionDialogView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Styles\Buttons.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Styles\Fonts\Fonts.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Styles\Icons.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\Styles\M3_ToggleSwitch.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

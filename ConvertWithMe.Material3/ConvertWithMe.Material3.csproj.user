@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Page Update="Colours\Colours.Purple.Light.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Fonts\Fonts.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Icons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\M3_Slider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\M3_TextField.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\M3_ToggleSwitch.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>
