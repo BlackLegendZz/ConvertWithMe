@@ -11,7 +11,10 @@
 
     <ControlTemplate x:Key="Filled" TargetType="{x:Type local:M3_TextField}">
         <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
-            <Border Background="{DynamicResource SurfaceContainerHighest}" CornerRadius="4,4,0,0">
+            <Border
+                x:Name="container"
+                Background="{DynamicResource SurfaceContainerHighest}"
+                CornerRadius="4,4,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -76,6 +79,7 @@
                             MinHeight="24"
                             Margin="-2,0,0,0"
                             HorizontalAlignment="Stretch"
+                            VerticalContentAlignment="Bottom"
                             Background="Transparent"
                             BorderThickness="0"
                             CaretBrush="{DynamicResource Primary}"
@@ -163,6 +167,49 @@
                 <Setter TargetName="PART_TrailingIconButton" Property="Visibility" Value="Hidden" />
             </Trigger>
 
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter TargetName="PART_Border" Property="Height" Value="1" />
+
+                <Setter TargetName="PART_Text" Property="Opacity" Value="1" />
+                <Setter TargetName="PART_LabelText" Property="Opacity" Value="1" />
+                <Setter TargetName="TrailingIcon" Property="Opacity" Value="1" />
+                <Setter TargetName="LeadingIcon" Property="Opacity" Value="1" />
+                <Setter TargetName="PART_SupportingText" Property="Opacity" Value="1" />
+                <Setter TargetName="PART_Border" Property="Opacity" Value="1" />
+                <Setter TargetName="PART_StateLayer" Property="Opacity" Value="0.08" />
+
+                <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource OnSurfaceVariant}" />
+                <Setter TargetName="PART_Text" Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
+                <Setter TargetName="PART_LabelText" Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
+                <Setter TargetName="TrailingIcon" Property="Fill" Value="{DynamicResource OnSurfaceVariant}" />
+                <Setter TargetName="LeadingIcon" Property="Fill" Value="{DynamicResource OnSurfaceVariant}" />
+                <Setter TargetName="PART_SupportingText" Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
+
+                <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="container" Property="Background" Value="{DynamicResource SurfaceContainerHighest}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="PART_Border" Property="Height" Value="1" />
+
+                <Setter TargetName="PART_Text" Property="Opacity" Value="0.38" />
+                <Setter TargetName="PART_LabelText" Property="Opacity" Value="0.38" />
+                <Setter TargetName="TrailingIcon" Property="Opacity" Value="0.38" />
+                <Setter TargetName="LeadingIcon" Property="Opacity" Value="0.38" />
+                <Setter TargetName="PART_SupportingText" Property="Opacity" Value="0.38" />
+                <Setter TargetName="PART_Border" Property="Opacity" Value="0.38" />
+                <Setter TargetName="PART_StateLayer" Property="Opacity" Value="0.04" />
+
+                <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource OnSurface}" />
+                <Setter TargetName="PART_Text" Property="Foreground" Value="{DynamicResource OnSurface}" />
+                <Setter TargetName="PART_LabelText" Property="Foreground" Value="{DynamicResource OnSurface}" />
+                <Setter TargetName="TrailingIcon" Property="Fill" Value="{DynamicResource OnSurface}" />
+                <Setter TargetName="LeadingIcon" Property="Fill" Value="{DynamicResource OnSurface}" />
+                <Setter TargetName="PART_SupportingText" Property="Foreground" Value="{DynamicResource OnSurface}" />
+
+                <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
+                <Setter TargetName="container" Property="Background" Value="Transparent" />
+            </Trigger>
+
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
                 <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource OnSurface}" />
@@ -247,8 +294,6 @@
                 <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource OnSurfaceVariant}" />
             </MultiTrigger>
             <!--#endregion-->
-
-
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
@@ -260,6 +305,7 @@
     </ControlTemplate>
 
     <Style TargetType="{x:Type local:M3_TextField}">
+        <Setter Property="Focusable" Value="False" />
         <Style.Triggers>
             <Trigger Property="TextFieldType" Value="Filled">
                 <Setter Property="Template" Value="{StaticResource Filled}" />
