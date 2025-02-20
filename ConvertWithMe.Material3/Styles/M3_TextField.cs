@@ -109,6 +109,10 @@ namespace ConvertWithMe.Material3.Styles
 
         private void PutLabelInFocus()
         {
+            if (PART_LabelText.Text == string.Empty)
+            {
+                return;
+            }
             PART_LabelText.FontSize = 16;
             PART_LabelText.LineHeight = 24;
             Grid.SetRow(PART_LabelText, 0);
@@ -117,6 +121,10 @@ namespace ConvertWithMe.Material3.Styles
 
         private void PutLabelOutOfFocus()
         {
+            if (PART_LabelText.Text == string.Empty)
+            {
+                return;
+            }
             PART_LabelText.FontSize = 12;
             PART_LabelText.LineHeight = 16;
             Grid.SetRow(PART_LabelText, 0);
