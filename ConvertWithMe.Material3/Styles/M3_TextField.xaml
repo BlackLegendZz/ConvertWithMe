@@ -179,7 +179,7 @@
                 <Setter TargetName="PART_StateLayer" Property="Opacity" Value="0.08" />
 
                 <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource OnSurfaceVariant}" />
-                <Setter TargetName="PART_Text" Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
+                <Setter TargetName="PART_Text" Property="Foreground" Value="{DynamicResource OnSurface}" />
                 <Setter TargetName="PART_LabelText" Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
                 <Setter TargetName="TrailingIcon" Property="Fill" Value="{DynamicResource OnSurfaceVariant}" />
                 <Setter TargetName="LeadingIcon" Property="Fill" Value="{DynamicResource OnSurfaceVariant}" />

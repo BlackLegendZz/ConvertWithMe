@@ -82,12 +82,12 @@
                             Grid.Row="0"
                             Grid.Column="0"
                             Text="Filename"
-                            Visibility="Collapsed" />
+                            Visibility="Visible" />
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
                             Text="Location"
-                            Visibility="Collapsed" />
+                            Visibility="Visible" />
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
@@ -99,14 +99,14 @@
 
                         <styles:M3_TextField
                             Grid.Row="0"
-                            Grid.ColumnSpan="2"
+                            Grid.Column="1"
                             Margin="8,0,0,6"
                             LabelText="Filename"
                             Text="{Binding SFile.FilenameDest}"
                             TextFieldType="Filled" />
                         <DockPanel
                             Grid.Row="1"
-                            Grid.ColumnSpan="2"
+                            Grid.Column="1"
                             Margin="0,0,0,6"
                             LastChildFill="True">
                             <Button
