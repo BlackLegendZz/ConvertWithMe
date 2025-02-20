@@ -24,7 +24,19 @@ namespace ConvertWithMe.Material3.Styles
         private double borderGrowthRate = 1;
         private double sliderWidth = 1;
         double[] tickXCoordinates = [];
-        Ellipse[] tickElements;
+        Ellipse[] tickElements = [];
+
+        // Not needed but gets rid of the annoying warnings
+        public M3_Slider()
+        {
+            PART_left = new Border();
+            PART_right = new Border();
+            PART_Handle = new Border();
+            thumb = new Thumb();
+            Ticks_Left = new Canvas();
+            Ticks_Right = new Canvas();
+        }
+
         static M3_Slider()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(M3_Slider), new FrameworkPropertyMetadata(typeof(M3_Slider)));
@@ -40,27 +52,23 @@ namespace ConvertWithMe.Material3.Styles
 
         public override void OnApplyTemplate()
         {
-            // Function can be called more than once
-            if (thumb != null)
-            {
-                thumb.DragStarted -= Thumb_DragStarted;
-                thumb.DragCompleted -= Thumb_DragCompleted;
-            }
-
             base.OnApplyTemplate();
 
-            PART_left = GetTemplateChild(nameof(PART_left)) as Border;
-            PART_right = GetTemplateChild(nameof(PART_right)) as Border;
-            PART_Handle = GetTemplateChild(nameof(PART_Handle)) as Border;
-            thumb = GetTemplateChild(nameof(thumb)) as Thumb;
-            Ticks_Left = GetTemplateChild(nameof(Ticks_Left)) as Canvas;
-            Ticks_Right = GetTemplateChild(nameof(Ticks_Right)) as Canvas;
+            PART_left = (Border)GetTemplateChild(nameof(PART_left));
+            PART_right = (Border)GetTemplateChild(nameof(PART_right));
+            PART_Handle = (Border)GetTemplateChild(nameof(PART_Handle));
+            thumb = (Thumb)GetTemplateChild(nameof(thumb));
+            Ticks_Left = (Canvas)GetTemplateChild(nameof(Ticks_Left));
+            Ticks_Right = (Canvas)GetTemplateChild(nameof(Ticks_Right));
 
+            // weirdly this is still needed as the function can get called multiple times
+            // doesnt seem to be an issues for other elements though.
             if (thumb != null)
             {
                 thumb.DragStarted += Thumb_DragStarted;
                 thumb.DragCompleted += Thumb_DragCompleted;
             }
+
             // Calculate the growth rate after the Window loaded
             SizeChanged += M3_Slider_SizeChanged;
             IsEnabledChanged += M3_Slider_IsEnabledChanged;

@@ -92,6 +92,16 @@ namespace ConvertWithMe.Material3.Styles
         private TextBox PART_Text;
         private Button PART_TrailingIconButton;
 
+        // Not needed but gets rid of the annoying warnings
+        public M3_TextField()
+        {
+            PART_LabelText = new TextBlock();
+            PART_SupportingText = new TextBlock();
+            PART_CharacterCount = new TextBlock();
+            PART_Text = new TextBox();
+            PART_TrailingIconButton = new Button();
+        }
+
         static M3_TextField()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(M3_TextField), new FrameworkPropertyMetadata(typeof(M3_TextField)));
@@ -118,11 +128,11 @@ namespace ConvertWithMe.Material3.Styles
         {
             base.OnApplyTemplate();
             
-            PART_LabelText = GetTemplateChild(nameof(PART_LabelText)) as TextBlock;
-            PART_SupportingText = GetTemplateChild(nameof(PART_SupportingText)) as TextBlock;
-            PART_CharacterCount = GetTemplateChild(nameof(PART_CharacterCount)) as TextBlock;
-            PART_Text = GetTemplateChild(nameof(PART_Text)) as TextBox;
-            PART_TrailingIconButton = GetTemplateChild(nameof(PART_TrailingIconButton)) as Button;
+            PART_LabelText = (TextBlock)GetTemplateChild(nameof(PART_LabelText));
+            PART_SupportingText = (TextBlock)GetTemplateChild(nameof(PART_SupportingText));
+            PART_CharacterCount = (TextBlock)GetTemplateChild(nameof(PART_CharacterCount));
+            PART_Text = (TextBox)GetTemplateChild(nameof(PART_Text));
+            PART_TrailingIconButton = (Button)GetTemplateChild(nameof(PART_TrailingIconButton));
 
             GotFocus += PART_Text_GotFocus;
             PART_Text.LostFocus += PART_Text_LostFocus;
