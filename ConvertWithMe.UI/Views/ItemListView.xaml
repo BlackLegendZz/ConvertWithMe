@@ -149,13 +149,11 @@
                 Grid.Column="3"
                 Command="{Binding ConvertFilesCommand}"
                 Content="Convert"
-                Style="{StaticResource PrimaryButton}"
                 Visibility="{Binding IsConverting, Converter={StaticResource InvertAndVisibilityConverter}}" />
             <Button
                 Grid.Column="4"
                 Command="{Binding CancelConversionCommand}"
                 Content="Cancel"
-                Style="{StaticResource SecondayryButton}"
                 Visibility="{Binding IsConverting, Converter={StaticResource InvertAndVisibilityConverter}}" />
         </Grid>
     </Grid>
