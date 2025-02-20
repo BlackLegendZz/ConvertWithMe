@@ -3,13 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:ConvertWithMe.UI"
+    xmlns:styles="clr-namespace:ConvertWithMe.Material3.Styles;assembly=ConvertWithMe.Material3"
     xmlns:view="clr-namespace:ConvertWithMe.UI.Views"
-    StartupUri="MainWindow.xaml"
-    xmlns:styles="clr-namespace:ConvertWithMe.Material3.Styles;assembly=ConvertWithMe.Material3">
+    StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/ConvertWithMe.Material3;component/Colours/Colours.Purple.Light.xaml"/>
+                <ResourceDictionary Source="/ConvertWithMe.Material3;component/Colours/Colours.Purple.Light.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
