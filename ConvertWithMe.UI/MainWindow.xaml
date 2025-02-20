@@ -4,20 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:views="clr-namespace:ConvertWithMe.UI.Views"
     xmlns:styles="clr-namespace:ConvertWithMe.Material3.Styles;assembly=ConvertWithMe.Material3"
+    xmlns:views="clr-namespace:ConvertWithMe.UI.Views"
     Title="MainWindow"
     MinWidth="960"
     MinHeight="540"
+    Background="{DynamicResource Surface}"
     Loaded="Window_Loaded"
-    mc:Ignorable="d"
-    Background="White">
+    mc:Ignorable="d">
     <Grid>
-        <styles:M3_TextField TextFieldType="Filled"
-                             Width="300"
-                             Height="100"/>
-        <styles:M3_Slider
-            VerticalAlignment="Bottom" Maximum="100" Value="50"/>
+        <views:MainView Panel.ZIndex="0" />
+        <views:DialogView Panel.ZIndex="1" />
     </Grid>
 
 </Window>
