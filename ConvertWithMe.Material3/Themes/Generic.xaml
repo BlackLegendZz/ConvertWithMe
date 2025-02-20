@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_Button.xaml"/>
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_Slider.xaml" />
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ToggleSwitch.xaml"/>
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_TextField.xaml"/>
