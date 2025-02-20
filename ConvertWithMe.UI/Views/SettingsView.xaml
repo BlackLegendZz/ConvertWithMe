@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodels="clr-namespace:ConvertWithMe.UI.ViewModels"
     xmlns:styles="clr-namespace:ConvertWithMe.Material3.Styles;assembly=ConvertWithMe.Material3"
+    xmlns:viewmodels="clr-namespace:ConvertWithMe.UI.ViewModels"
     d:Background="White"
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
     d:DesignHeight="1200"
@@ -33,10 +33,7 @@
             Modifiers="Shift">
             <i:InvokeCommandAction Command="{Binding EnableTickSnappingCommand}" />
         </i:KeyTrigger>
-        <i:KeyTrigger
-            Key="LeftShift"
-            FiredOn="KeyUp"
-            Modifiers="">
+        <i:KeyTrigger Key="LeftShift" FiredOn="KeyUp">
             <i:InvokeCommandAction Command="{Binding DisableTickSnappingCommand}" />
         </i:KeyTrigger>
     </i:Interaction.Triggers>
@@ -51,11 +48,6 @@
                     <Setter Property="Margin" Value="16,0,0,6" />
                     <Setter Property="HorizontalAlignment" Value="Left" />
                     <Setter Property="VerticalAlignment" Value="Center" />
-                </Style>
-                <Style TargetType="TextBox">
-                    <Setter Property="Height" Value="25" />
-                    <Setter Property="Margin" Value="8,0,0,6" />
-                    <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
                 <Style TargetType="ComboBox">
                     <Setter Property="Height" Value="25" />
@@ -89,11 +81,13 @@
                         <TextBlock
                             Grid.Row="0"
                             Grid.Column="0"
-                            Text="Filename" />
+                            Text="Filename"
+                            Visibility="Collapsed" />
                         <TextBlock
                             Grid.Row="1"
                             Grid.Column="0"
-                            Text="Location" />
+                            Text="Location"
+                            Visibility="Collapsed" />
                         <TextBlock
                             Grid.Row="2"
                             Grid.Column="0"
@@ -103,14 +97,16 @@
                             Grid.Column="0"
                             Text="Format" />
 
-                        <TextBox
+                        <styles:M3_TextField
                             Grid.Row="0"
-                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
                             Margin="8,0,0,6"
-                            Text="{Binding SFile.FilenameDest}" />
+                            LabelText="Filename"
+                            Text="{Binding SFile.FilenameDest}"
+                            TextFieldType="Filled" />
                         <DockPanel
                             Grid.Row="1"
-                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
                             Margin="0,0,0,6"
                             LastChildFill="True">
                             <Button
@@ -119,11 +115,13 @@
                                 Command="{Binding UpdateDestinationCommand}"
                                 Content="Browse"
                                 DockPanel.Dock="Right" />
-                            <TextBox
+                            <styles:M3_TextField
                                 Margin="8,0"
                                 DockPanel.Dock="Left"
                                 IsReadOnly="True"
-                                Text="{Binding SFile.DirDest}" />
+                                LabelText="Location"
+                                Text="{Binding SFile.DirDest}"
+                                TextFieldType="Filled" />
                         </DockPanel>
                         <ComboBox
                             Grid.Row="2"
@@ -298,9 +296,7 @@
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             Content="Export Video" />
-                        <styles:M3_ToggleSwitch
-                            Grid.Column="3"
-                            IsChecked="{Binding ConvertVideo}"/>
+                        <styles:M3_ToggleSwitch Grid.Column="3" IsChecked="{Binding ConvertVideo}" />
                     </Grid>
                     <StackPanel
                         Margin="0,12,0,0"
@@ -327,27 +323,34 @@
                                 <TextBlock
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Text="Resolution" />
+                                    Text="Resolution"
+                                    Visibility="Collapsed" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Text="Framerate" />
-                                <Grid Grid.Row="0" Grid.Column="1">
+                                <Grid Grid.Row="0" Grid.ColumnSpan="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBox Grid.Column="0" Text="{Binding SVideo.Width}" />
+                                    <styles:M3_TextField
+                                        Grid.Column="0"
+                                        LabelText="Width"
+                                        Text="{Binding SVideo.Width}"
+                                        TextFieldType="Filled" />
                                     <TextBlock
                                         Grid.Column="1"
                                         Margin="8,0,8,6"
                                         HorizontalAlignment="Center"
                                         Text="X" />
-                                    <TextBox
+                                    <styles:M3_TextField
                                         Grid.Column="2"
                                         Margin="0,0,0,6"
-                                        Text="{Binding SVideo.Height}" />
+                                        LabelText="Height"
+                                        Text="{Binding SVideo.Height}"
+                                        TextFieldType="Filled" />
                                 </Grid>
                                 <ComboBox
                                     Grid.Row="1"
@@ -526,9 +529,7 @@
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             Content="Export Audio" />
-                        <styles:M3_ToggleSwitch
-                            Grid.Column="3"
-                            IsChecked="{Binding ConvertAudio}"/>
+                        <styles:M3_ToggleSwitch Grid.Column="3" IsChecked="{Binding ConvertAudio}" />
                     </Grid>
                     <StackPanel
                         Margin="0,12,0,0"
