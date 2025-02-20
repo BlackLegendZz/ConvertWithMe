@@ -40,11 +40,11 @@
                         Visibility="Collapsed" />
 
                     <Path
-                        x:Name="SearchIcon"
+                        x:Name="LeadingIcon"
                         Grid.Row="0"
                         Grid.Column="0"
-                        Width="24"
-                        Height="24"
+                        Width="20"
+                        Height="20"
                         Margin="12,0,0,0"
                         Data="{StaticResource Search}"
                         Fill="{DynamicResource OnSurfaceVariant}"
@@ -78,6 +78,7 @@
                             HorizontalAlignment="Stretch"
                             Background="Transparent"
                             BorderThickness="0"
+                            CaretBrush="{DynamicResource Primary}"
                             FontFamily="{StaticResource RobotoRegular}"
                             FontSize="16"
                             FontWeight="Regular"
@@ -86,22 +87,33 @@
                             TextWrapping="Wrap" />
                     </Grid>
                     <Button
-                        x:Name="PART_CancelButton"
+                        x:Name="PART_TrailingIconButton"
                         Grid.Row="0"
                         Grid.Column="2"
                         Style="{StaticResource EmptyButton}"
                         Visibility="Hidden">
                         <Button.Content>
                             <Path
-                                x:Name="CancelIcon"
-                                Width="24"
-                                Height="24"
+                                x:Name="TrailingIcon"
+                                Width="20"
+                                Height="20"
                                 Margin="0,0,12,0"
                                 Data="{StaticResource Cancel}"
                                 Fill="{DynamicResource OnSurfaceVariant}"
                                 Stretch="Uniform" />
                         </Button.Content>
                     </Button>
+                    <Path
+                        x:Name="TrailingIconError"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Width="20"
+                        Height="20"
+                        Margin="0,0,12,0"
+                        Data="{StaticResource Error}"
+                        Fill="{DynamicResource Error}"
+                        Stretch="Uniform"
+                        Visibility="Hidden" />
                 </Grid>
             </Border>
             <Grid>
@@ -124,11 +136,33 @@
                     x:Name="PART_CharacterCount"
                     Grid.Column="1"
                     Margin="0,4,16,0"
+                    FontFamily="{StaticResource RobotoRegular}"
+                    FontSize="12"
+                    FontWeight="Regular"
+                    Foreground="{DynamicResource OnSurfaceVariant}"
+                    LineHeight="16"
                     Text="{TemplateBinding CharacterCount}"
                     Visibility="Collapsed" />
             </Grid>
         </StackPanel>
         <ControlTemplate.Triggers>
+            <Trigger Property="DisplayIcons" Value="Both">
+                <Setter TargetName="LeadingIcon" Property="Visibility" Value="Visible" />
+                <Setter TargetName="PART_TrailingIconButton" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="DisplayIcons" Value="LeadingIcon">
+                <Setter TargetName="LeadingIcon" Property="Visibility" Value="Visible" />
+                <Setter TargetName="PART_TrailingIconButton" Property="Visibility" Value="Hidden" />
+            </Trigger>
+            <Trigger Property="DisplayIcons" Value="TrailingIcon">
+                <Setter TargetName="LeadingIcon" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="PART_TrailingIconButton" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="DisplayIcons" Value="None">
+                <Setter TargetName="LeadingIcon" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="PART_TrailingIconButton" Property="Visibility" Value="Hidden" />
+            </Trigger>
+
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
                 <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource OnSurface}" />
@@ -149,22 +183,72 @@
                 <Setter TargetName="PART_Border" Property="Height" Value="1" />
             </Trigger>
 
-            <Trigger Property="DisplayIcons" Value="Both">
-                <Setter TargetName="SearchIcon" Property="Visibility" Value="Visible" />
-                <Setter TargetName="PART_CancelButton" Property="Visibility" Value="Visible" />
+            <!--#region Error State-->
+            <Trigger Property="IsErrorState" Value="True">
+                <Setter TargetName="PART_TrailingIconButton" Property="Visibility" Value="Hidden" />
+                <Setter TargetName="TrailingIconError" Property="Visibility" Value="Visible" />
+                <Setter TargetName="PART_SupportingText" Property="Foreground" Value="{DynamicResource Error}" />
+                <Setter TargetName="PART_Text" Property="CaretBrush" Value="{DynamicResource Error}" />
+                <Setter TargetName="PART_CharacterCount" Property="Foreground" Value="{DynamicResource Error}" />
             </Trigger>
-            <Trigger Property="DisplayIcons" Value="LeadingIcon">
-                <Setter TargetName="SearchIcon" Property="Visibility" Value="Visible" />
-                <Setter TargetName="PART_CancelButton" Property="Visibility" Value="Hidden" />
+            <Trigger Property="IsErrorState" Value="False">
+                <Setter TargetName="TrailingIconError" Property="Visibility" Value="Hidden" />
+                <Setter TargetName="PART_SupportingText" Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
+                <Setter TargetName="PART_Text" Property="CaretBrush" Value="{DynamicResource Primary}" />
+                <Setter TargetName="PART_CharacterCount" Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
             </Trigger>
-            <Trigger Property="DisplayIcons" Value="TrailingIcon">
-                <Setter TargetName="SearchIcon" Property="Visibility" Value="Collapsed" />
-                <Setter TargetName="PART_CancelButton" Property="Visibility" Value="Visible" />
-            </Trigger>
-            <Trigger Property="DisplayIcons" Value="None">
-                <Setter TargetName="SearchIcon" Property="Visibility" Value="Collapsed" />
-                <Setter TargetName="PART_CancelButton" Property="Visibility" Value="Hidden" />
-            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsErrorState" Value="False" />
+                    <Condition Property="DisplayIcons" Value="Both" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_TrailingIconButton" Property="Visibility" Value="Visible" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsErrorState" Value="False" />
+                    <Condition Property="DisplayIcons" Value="TrailingIcon" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_TrailingIconButton" Property="Visibility" Value="Visible" />
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsErrorState" Value="True" />
+                    <Condition Property="IsMouseOver" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_LabelText" Property="Foreground" Value="{DynamicResource Error}" />
+                <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource Error}" />
+                <Setter TargetName="TrailingIconError" Property="Fill" Value="{DynamicResource Error}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsErrorState" Value="True" />
+                    <Condition Property="IsMouseOver" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_LabelText" Property="Foreground" Value="{DynamicResource OnErrorContainer}" />
+                <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource OnErrorContainer}" />
+                <Setter TargetName="TrailingIconError" Property="Fill" Value="{DynamicResource OnErrorContainer}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsErrorState" Value="False" />
+                    <Condition SourceName="PART_Text" Property="IsFocused" Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_LabelText" Property="Foreground" Value="{DynamicResource Primary}" />
+                <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource Primary}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsErrorState" Value="False" />
+                    <Condition SourceName="PART_Text" Property="IsFocused" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_LabelText" Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
+                <Setter TargetName="PART_Border" Property="Fill" Value="{DynamicResource OnSurfaceVariant}" />
+            </MultiTrigger>
+            <!--#endregion-->
+
+
         </ControlTemplate.Triggers>
     </ControlTemplate>
 

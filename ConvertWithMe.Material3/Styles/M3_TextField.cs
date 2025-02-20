@@ -11,11 +11,11 @@ namespace ConvertWithMe.Material3.Styles
     [TemplatePart(Name = "PART_SupportingText", Type = typeof(TextBlock))]
     [TemplatePart(Name = "PART_CharacterCount", Type = typeof(TextBlock))]
     [TemplatePart(Name = "PART_Text", Type = typeof(TextBox))]
-    [TemplatePart(Name = "PART_CancelButton", Type = typeof(Button))]
+    [TemplatePart(Name = "PART_TrailingIconButton", Type = typeof(Button))]
     public class M3_TextField : TextBox
     {
         #region Dependency Properties
-        public bool IsErrorState
+        internal bool IsErrorState
         {
             get { return (bool)GetValue(IsErrorStateProperty); }
             set { SetValue(IsErrorStateProperty, value); }
@@ -90,7 +90,7 @@ namespace ConvertWithMe.Material3.Styles
         private TextBlock PART_SupportingText;
         private TextBlock PART_CharacterCount;
         private TextBox PART_Text;
-        private Button PART_CancelButton;
+        private Button PART_TrailingIconButton;
 
         static M3_TextField()
         {
@@ -122,11 +122,11 @@ namespace ConvertWithMe.Material3.Styles
             PART_SupportingText = GetTemplateChild(nameof(PART_SupportingText)) as TextBlock;
             PART_CharacterCount = GetTemplateChild(nameof(PART_CharacterCount)) as TextBlock;
             PART_Text = GetTemplateChild(nameof(PART_Text)) as TextBox;
-            PART_CancelButton = GetTemplateChild(nameof(PART_CancelButton)) as Button;
+            PART_TrailingIconButton = GetTemplateChild(nameof(PART_TrailingIconButton)) as Button;
 
             GotFocus += PART_Text_GotFocus;
             PART_Text.LostFocus += PART_Text_LostFocus;
-            PART_CancelButton.Click += PART_CancelButton_Click;
+            PART_TrailingIconButton.Click += PART_TrailingIconButton_Click;
             PART_Text.TextChanged += PART_Text_TextChanged;
 
             if (PART_Text.Text != string.Empty)
@@ -151,6 +151,14 @@ namespace ConvertWithMe.Material3.Styles
                     SupportingText = "Text exceeds maximum length";
                     IsErrorState = true;
                 }
+                else
+                {
+                    if (SupportingText == "Text exceeds maximum length")
+                    {
+                        SupportingText = string.Empty;
+                        IsErrorState = false;
+                    }
+                }
             }
 
             if (PART_Text.Text != string.Empty)
@@ -165,7 +173,7 @@ namespace ConvertWithMe.Material3.Styles
             }
         }
 
-        private void PART_CancelButton_Click(object sender, RoutedEventArgs e)
+        private void PART_TrailingIconButton_Click(object sender, RoutedEventArgs e)
         {
             PART_Text.Text = string.Empty;
             PutLabelInFocus();
