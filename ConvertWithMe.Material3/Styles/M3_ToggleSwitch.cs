@@ -13,23 +13,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ConvertWithMe.Material3.Styles.UIEnums;
 
 namespace ConvertWithMe.Material3.Styles
 {
-    public enum ToggleIcon { None, OnChecked, OnUnchecked, OnBoth }
     public class M3_ToggleSwitch : ToggleButton
     {
-
-
-        public ToggleIcon UseIcon
+        public IconTypeSwitch DisplayIcons
         {
-            get { return (ToggleIcon)GetValue(UseIconProperty); }
-            set { SetValue(UseIconProperty, value); }
+            get { return (IconTypeSwitch)GetValue(DisplayIconsProperty); }
+            set { SetValue(DisplayIconsProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for UseIcon.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty UseIconProperty =
-            DependencyProperty.Register("UseIcon", typeof(ToggleIcon), typeof(M3_ToggleSwitch), new PropertyMetadata(ToggleIcon.None));
+        // Using a DependencyProperty as the backing store for DisplayIcons.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DisplayIconsProperty =
+            DependencyProperty.Register("DisplayIcons", typeof(IconTypeSwitch), typeof(M3_ToggleSwitch), new PropertyMetadata(IconTypeSwitch.None));
 
 
         static M3_ToggleSwitch()

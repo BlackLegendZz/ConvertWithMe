@@ -1,181 +1,222 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:ConvertWithMe.Material3.Styles">
-
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Icons.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
+    xmlns:local="clr-namespace:ConvertWithMe.Material3.Styles"
+    xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF">
 
     <Style TargetType="{x:Type local:M3_ToggleSwitch}">
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="UseLayoutRounding" Value="False"/>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="False" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:M3_ToggleSwitch}">
                     <Grid Width="52" Height="40">
-                        <Border x:Name="PART_ThumbOn" Background="{DynamicResource OnPrimary}" Width="24" Height="24" CornerRadius="100" Margin="4,0" Panel.ZIndex="2">
-                            <Path x:Name="IconCheckOn" Data="{StaticResource Check}" Fill="{DynamicResource OnPrimaryContainer}" Stretch="Uniform" Width="12" Height="12"/>
+                        <Border
+                            x:Name="PART_ThumbOn"
+                            Width="24"
+                            Height="24"
+                            Margin="4,0"
+                            Panel.ZIndex="2"
+                            Background="{DynamicResource OnPrimary}"
+                            CornerRadius="100">
+                            <materialIcons:MaterialIcon
+                                x:Name="IconCheckOn"
+                                Width="16"
+                                Height="16"
+                                Foreground="{DynamicResource OnPrimaryContainer}"
+                                Kind="Check" />
                         </Border>
-                        <Border x:Name="PART_ThumbOff" Background="{DynamicResource Outline}" Width="16" Height="16" CornerRadius="100" Margin="8,0" Panel.ZIndex="2">
-                            <Path x:Name="IconCheckOff" Data="{StaticResource Close}" Fill="{DynamicResource SurfaceContainerHighest}" Stretch="Uniform" Width="12" Height="12"/>
+                        <Border
+                            x:Name="PART_ThumbOff"
+                            Width="16"
+                            Height="16"
+                            Margin="8,0"
+                            Panel.ZIndex="2"
+                            Background="{DynamicResource Outline}"
+                            CornerRadius="100">
+                            <materialIcons:MaterialIcon
+                                x:Name="IconCheckOff"
+                                Width="18"
+                                Foreground="{DynamicResource SurfaceContainerHighest}"
+                                Kind="Close" />
                         </Border>
 
-                        <Border x:Name="PART_TrackOn" Background="{DynamicResource Primary}" Width="52" Height="32" CornerRadius="16" Panel.ZIndex="1"/>
-                        <Border x:Name="PART_TrackOff" Background="{DynamicResource SurfaceContainerHighest}" BorderBrush="{DynamicResource Outline}" BorderThickness="2" Width="52" Height="32" CornerRadius="16" Panel.ZIndex="1"/>
+                        <Border
+                            x:Name="PART_TrackOn"
+                            Width="52"
+                            Height="32"
+                            Panel.ZIndex="1"
+                            Background="{DynamicResource Primary}"
+                            CornerRadius="16" />
+                        <Border
+                            x:Name="PART_TrackOff"
+                            Width="52"
+                            Height="32"
+                            Panel.ZIndex="1"
+                            Background="{DynamicResource SurfaceContainerHighest}"
+                            BorderBrush="{DynamicResource Outline}"
+                            BorderThickness="2"
+                            CornerRadius="16" />
 
-                        <Border x:Name="PART_ThumbHover" Background="{DynamicResource Primary}" Width="40" Height="40" CornerRadius="100" Opacity="0.08" Margin="-4,0"/>
+                        <Border
+                            x:Name="PART_ThumbHover"
+                            Width="40"
+                            Height="40"
+                            Margin="-4,0"
+                            Background="{DynamicResource Primary}"
+                            CornerRadius="100"
+                            Opacity="0.08" />
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="True">
-                            <Setter Property="Opacity" Value="1" TargetName="PART_TrackOn"/>
-                            <Setter Property="Opacity" Value="1" TargetName="PART_TrackOff"/>
-                            <Setter Property="Background" Value="{DynamicResource Primary}" TargetName="PART_TrackOn"/>
-                            <Setter Property="Background" Value="{DynamicResource SurfaceContainerHighest}" TargetName="PART_TrackOff"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource Outline}" TargetName="PART_TrackOff"/>
+                            <Setter TargetName="PART_TrackOn" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_TrackOff" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_TrackOn" Property="Background" Value="{DynamicResource Primary}" />
+                            <Setter TargetName="PART_TrackOff" Property="Background" Value="{DynamicResource SurfaceContainerHighest}" />
+                            <Setter TargetName="PART_TrackOff" Property="BorderBrush" Value="{DynamicResource Outline}" />
 
-                            <Setter Property="Opacity" Value="1" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Opacity" Value="1" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Background" Value="{DynamicResource OnPrimary}" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Background" Value="{DynamicResource Outline}" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOn" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_ThumbOff" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_ThumbOn" Property="Background" Value="{DynamicResource OnPrimary}" />
+                            <Setter TargetName="PART_ThumbOff" Property="Background" Value="{DynamicResource Outline}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.12" TargetName="PART_TrackOn"/>
-                            <Setter Property="Opacity" Value="0.12" TargetName="PART_TrackOff"/>
-                            <Setter Property="Background" Value="{DynamicResource OnSurface}" TargetName="PART_TrackOn"/>
-                            <Setter Property="Background" Value="{DynamicResource SurfaceContainerHighest}" TargetName="PART_TrackOff"/>
-                            <Setter Property="BorderBrush" Value="{DynamicResource OnSurface}" TargetName="PART_TrackOff"/>
+                            <Setter TargetName="PART_TrackOn" Property="Opacity" Value="0.12" />
+                            <Setter TargetName="PART_TrackOff" Property="Opacity" Value="0.12" />
+                            <Setter TargetName="PART_TrackOn" Property="Background" Value="{DynamicResource OnSurface}" />
+                            <Setter TargetName="PART_TrackOff" Property="Background" Value="{DynamicResource SurfaceContainerHighest}" />
+                            <Setter TargetName="PART_TrackOff" Property="BorderBrush" Value="{DynamicResource OnSurface}" />
 
-                            <Setter Property="Opacity" Value="1" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Opacity" Value="0.38" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Background" Value="{DynamicResource Surface}" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Background" Value="{DynamicResource OnSurface}" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOn" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_ThumbOff" Property="Opacity" Value="0.38" />
+                            <Setter TargetName="PART_ThumbOn" Property="Background" Value="{DynamicResource Surface}" />
+                            <Setter TargetName="PART_ThumbOff" Property="Background" Value="{DynamicResource OnSurface}" />
                         </Trigger>
 
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource Primary}" TargetName="PART_ThumbHover"/>
-                            <Setter Property="HorizontalAlignment" Value="Right" TargetName="PART_ThumbHover"/>
+                            <Setter TargetName="PART_ThumbHover" Property="Background" Value="{DynamicResource Primary}" />
+                            <Setter TargetName="PART_ThumbHover" Property="HorizontalAlignment" Value="Right" />
 
-                            <Setter Property="Visibility" Value="Visible" TargetName="PART_TrackOn"/>
-                            <Setter Property="Visibility" Value="Visible" TargetName="PART_ThumbOn"/>
-                            <Setter Property="HorizontalAlignment" Value="Right" TargetName="PART_ThumbOn"/>
+                            <Setter TargetName="PART_TrackOn" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_ThumbOn" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_ThumbOn" Property="HorizontalAlignment" Value="Right" />
 
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_TrackOff"/>
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_ThumbOff"/>
-                            <Setter Property="HorizontalAlignment" Value="Right" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_TrackOff" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ThumbOff" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ThumbOff" Property="HorizontalAlignment" Value="Right" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
-                            <Setter Property="Background" Value="{DynamicResource OnSurface}" TargetName="PART_ThumbHover"/>
-                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbHover"/>
+                            <Setter TargetName="PART_ThumbHover" Property="Background" Value="{DynamicResource OnSurface}" />
+                            <Setter TargetName="PART_ThumbHover" Property="HorizontalAlignment" Value="Left" />
 
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_TrackOn"/>
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_ThumbOn"/>
-                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbOn"/>
+                            <Setter TargetName="PART_TrackOn" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ThumbOn" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ThumbOn" Property="HorizontalAlignment" Value="Left" />
 
-                            <Setter Property="Visibility" Value="Visible" TargetName="PART_TrackOff"/>
-                            <Setter Property="Visibility" Value="Visible" TargetName="PART_ThumbOff"/>
-                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_TrackOff" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_ThumbOff" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_ThumbOff" Property="HorizontalAlignment" Value="Left" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="{x:Null}">
-                            <Setter Property="Background" Value="{DynamicResource Outline}" TargetName="PART_ThumbHover"/>
-                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbHover"/>
+                            <Setter TargetName="PART_ThumbHover" Property="Background" Value="{DynamicResource Outline}" />
+                            <Setter TargetName="PART_ThumbHover" Property="HorizontalAlignment" Value="Left" />
 
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_TrackOn"/>
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_ThumbOn"/>
-                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbOn"/>
+                            <Setter TargetName="PART_TrackOn" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ThumbOn" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="PART_ThumbOn" Property="HorizontalAlignment" Value="Left" />
 
-                            <Setter Property="Visibility" Value="Visible" TargetName="PART_TrackOff"/>
-                            <Setter Property="Visibility" Value="Visible" TargetName="PART_ThumbOff"/>
-                            <Setter Property="HorizontalAlignment" Value="Left" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_TrackOff" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_ThumbOff" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_ThumbOff" Property="HorizontalAlignment" Value="Left" />
                         </Trigger>
 
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource PrimaryContainer}" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Background" Value="{DynamicResource OnSurfaceVariant}" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Visibility" Value="Visible" TargetName="PART_ThumbHover"/>
+                            <Setter TargetName="PART_ThumbOn" Property="Background" Value="{DynamicResource PrimaryContainer}" />
+                            <Setter TargetName="PART_ThumbOff" Property="Background" Value="{DynamicResource OnSurfaceVariant}" />
+                            <Setter TargetName="PART_ThumbHover" Property="Visibility" Value="Visible" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="False">
-                            <Setter Property="Background" Value="{DynamicResource OnPrimary}" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Background" Value="{DynamicResource Outline}" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="PART_ThumbHover"/>
+                            <Setter TargetName="PART_ThumbOn" Property="Background" Value="{DynamicResource OnPrimary}" />
+                            <Setter TargetName="PART_ThumbOff" Property="Background" Value="{DynamicResource Outline}" />
+                            <Setter TargetName="PART_ThumbHover" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Opacity" Value="0.12" TargetName="PART_ThumbHover"/>
-                            <Setter Property="Width" Value="28" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Width" Value="28" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbHover" Property="Opacity" Value="0.12" />
+                            <Setter TargetName="PART_ThumbOn" Property="Width" Value="28" />
+                            <Setter TargetName="PART_ThumbOff" Property="Width" Value="28" />
 
-                            <Setter Property="Height" Value="28" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Height" Value="28" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOn" Property="Height" Value="28" />
+                            <Setter TargetName="PART_ThumbOff" Property="Height" Value="28" />
 
-                            <Setter Property="Margin" Value="2,0" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Margin" Value="2,0" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOn" Property="Margin" Value="2,0" />
+                            <Setter TargetName="PART_ThumbOff" Property="Margin" Value="2,0" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="False">
-                            <Setter Property="Opacity" Value="0.08" TargetName="PART_ThumbHover"/>
-                            <Setter Property="Width" Value="24" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Width" Value="16" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbHover" Property="Opacity" Value="0.08" />
+                            <Setter TargetName="PART_ThumbOn" Property="Width" Value="24" />
+                            <Setter TargetName="PART_ThumbOff" Property="Width" Value="16" />
 
-                            <Setter Property="Height" Value="24" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Height" Value="16" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOn" Property="Height" Value="24" />
+                            <Setter TargetName="PART_ThumbOff" Property="Height" Value="16" />
 
-                            <Setter Property="Margin" Value="4,0" TargetName="PART_ThumbOn"/>
-                            <Setter Property="Margin" Value="8,0" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOn" Property="Margin" Value="4,0" />
+                            <Setter TargetName="PART_ThumbOff" Property="Margin" Value="8,0" />
                         </Trigger>
 
-                        <Trigger Property="UseIcon" Value="None">
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="IconCheckOn"/>
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="IconCheckOff"/>
+                        <Trigger Property="DisplayIcons" Value="None">
+                            <Setter TargetName="IconCheckOn" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="IconCheckOff" Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="UseIcon" Value="OnBoth">
-                            <Setter Property="Visibility" Value="Visible" TargetName="IconCheckOn"/>
-                            <Setter Property="Visibility" Value="Visible" TargetName="IconCheckOff"/>
+                        <Trigger Property="DisplayIcons" Value="Both">
+                            <Setter TargetName="IconCheckOn" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="IconCheckOff" Property="Visibility" Value="Visible" />
                         </Trigger>
-                        <Trigger Property="UseIcon" Value="OnChecked">
-                            <Setter Property="Visibility" Value="Visible" TargetName="IconCheckOn"/>
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="IconCheckOff"/>
+                        <Trigger Property="DisplayIcons" Value="OnChecked">
+                            <Setter TargetName="IconCheckOn" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="IconCheckOff" Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                        <Trigger Property="UseIcon" Value="OnUnchecked">
-                            <Setter Property="Visibility" Value="Collapsed" TargetName="IconCheckOn"/>
-                            <Setter Property="Visibility" Value="Visible" TargetName="IconCheckOff"/>
+                        <Trigger Property="DisplayIcons" Value="OnUnchecked">
+                            <Setter TargetName="IconCheckOn" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="IconCheckOff" Property="Visibility" Value="Visible" />
                         </Trigger>
 
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsPressed" Value="False"/>
-                                <Condition Property="UseIcon" Value="OnBoth"/>
+                                <Condition Property="IsPressed" Value="False" />
+                                <Condition Property="DisplayIcons" Value="Both" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Width" Value="24" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Height" Value="24" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Margin" Value="4,0" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOff" Property="Width" Value="24" />
+                            <Setter TargetName="PART_ThumbOff" Property="Height" Value="24" />
+                            <Setter TargetName="PART_ThumbOff" Property="Margin" Value="4,0" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsPressed" Value="False"/>
-                                <Condition Property="UseIcon" Value="OnUnchecked"/>
+                                <Condition Property="IsPressed" Value="False" />
+                                <Condition Property="DisplayIcons" Value="OnUnchecked" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Width" Value="24" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Height" Value="24" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Margin" Value="4,0" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOff" Property="Width" Value="24" />
+                            <Setter TargetName="PART_ThumbOff" Property="Height" Value="24" />
+                            <Setter TargetName="PART_ThumbOff" Property="Margin" Value="4,0" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsPressed" Value="False"/>
-                                <Condition Property="UseIcon" Value="None"/>
+                                <Condition Property="IsPressed" Value="False" />
+                                <Condition Property="DisplayIcons" Value="None" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Width" Value="16" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Height" Value="16" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Margin" Value="8,0" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOff" Property="Width" Value="16" />
+                            <Setter TargetName="PART_ThumbOff" Property="Height" Value="16" />
+                            <Setter TargetName="PART_ThumbOff" Property="Margin" Value="8,0" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="IsPressed" Value="False"/>
-                                <Condition Property="UseIcon" Value="OnChecked"/>
+                                <Condition Property="IsPressed" Value="False" />
+                                <Condition Property="DisplayIcons" Value="OnChecked" />
                             </MultiTrigger.Conditions>
-                            <Setter Property="Width" Value="16" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Height" Value="16" TargetName="PART_ThumbOff"/>
-                            <Setter Property="Margin" Value="8,0" TargetName="PART_ThumbOff"/>
+                            <Setter TargetName="PART_ThumbOff" Property="Width" Value="16" />
+                            <Setter TargetName="PART_ThumbOff" Property="Height" Value="16" />
+                            <Setter TargetName="PART_ThumbOff" Property="Margin" Value="8,0" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

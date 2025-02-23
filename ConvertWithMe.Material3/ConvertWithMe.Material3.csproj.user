@@ -8,9 +8,6 @@
     <Page Update="Fonts\Fonts.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Icons.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Styles\M3_Slider.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Material.Icons.WPF" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Fonts\Roboto\Roboto-Black.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

@@ -1,11 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using ConvertWithMe.Material3.Styles.UIEnums;
 
 namespace ConvertWithMe.Material3.Styles
 {
     public enum FieldType { Filled, Outlined }
-    public enum IconType { None, LeadingIcon, TrailingIcon, Both }
 
     [TemplatePart(Name = "PART_LabelText", Type = typeof(TextBlock))]
     [TemplatePart(Name = "PART_SupportingText", Type = typeof(TextBlock))]
