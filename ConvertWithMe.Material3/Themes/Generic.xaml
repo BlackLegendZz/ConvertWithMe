@@ -5,5 +5,7 @@
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_Slider.xaml" />
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ToggleSwitch.xaml" />
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_TextField.xaml" />
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ComboBox.xaml" />
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ComboBoxItem.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
