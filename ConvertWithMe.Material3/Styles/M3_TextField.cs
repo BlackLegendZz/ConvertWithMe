@@ -142,8 +142,8 @@ namespace ConvertWithMe.Material3.Styles
             PART_Text = (TextBox)GetTemplateChild(nameof(PART_Text));
             PART_TrailingIconButton = (Button)GetTemplateChild(nameof(PART_TrailingIconButton));
 
-            GotFocus += PART_Text_GotFocus;
-            PART_Text.LostFocus += PART_Text_LostFocus;
+            GotFocus += M3_TextField_GotFocus;
+            LostFocus += M3_TextField_LostFocus;
             PART_TrailingIconButton.Click += PART_TrailingIconButton_Click;
             PART_Text.TextChanged += PART_Text_TextChanged;
 
@@ -197,7 +197,7 @@ namespace ConvertWithMe.Material3.Styles
             PutLabelInFocus();
         }
 
-        private void PART_Text_LostFocus(object sender, RoutedEventArgs e)
+        private void M3_TextField_LostFocus(object sender, RoutedEventArgs e)
         {
             if (PART_Text.Text == string.Empty)
             {
@@ -205,7 +205,7 @@ namespace ConvertWithMe.Material3.Styles
             }
         }
 
-        private void PART_Text_GotFocus(object sender, RoutedEventArgs e)
+        private void M3_TextField_GotFocus(object sender, RoutedEventArgs e)
         {
             PutLabelOutOfFocus();
         }

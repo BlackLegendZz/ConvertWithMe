@@ -18,7 +18,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" MinWidth="200" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -62,7 +62,7 @@
                         <TextBlock
                             x:Name="PART_LabelText"
                             Grid.Row="0"
-                            Margin="0,0,0,-3"
+                            Margin="0,0,0,-6"
                             VerticalAlignment="Center"
                             FontFamily="{StaticResource RobotoRegular}"
                             FontSize="16"
