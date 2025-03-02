@@ -6,6 +6,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Fonts/Fonts.xaml" />
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ScrollViewer.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="OutlinedToggleButton" TargetType="{x:Type ToggleButton}">
@@ -162,7 +163,7 @@
                                 MinWidth="{TemplateBinding ActualWidth}"
                                 MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                 Background="{DynamicResource SurfaceContainer}"
-                                CornerRadius="14">
+                                CornerRadius="4">
                                 <Border.OpacityMask>
                                     <VisualBrush>
                                         <VisualBrush.Visual>
@@ -171,7 +172,7 @@
                                                 Height="{Binding MaxDropDownHeight, RelativeSource={RelativeSource Templatedparent}}"
                                                 Background="Black"
                                                 BorderBrush="Black"
-                                                CornerRadius="14" />
+                                                CornerRadius="4" />
                                         </VisualBrush.Visual>
                                     </VisualBrush>
                                 </Border.OpacityMask>
