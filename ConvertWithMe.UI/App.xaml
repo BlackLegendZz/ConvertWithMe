@@ -10,6 +10,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/ConvertWithMe.Material3;component/Colours/Colours.Purple.Light.xaml" />
+                <ResourceDictionary Source="/ConvertWithMe.Material3;component/Fonts/Fonts.xaml" />
+                <ResourceDictionary Source="/ConvertWithMe.Material3;component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
