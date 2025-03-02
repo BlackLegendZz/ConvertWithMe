@@ -7,6 +7,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Fonts/Fonts.xaml" />
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ScrollViewer.xaml" />
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ComboboxItem.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="OutlinedToggleButton" TargetType="{x:Type ToggleButton}">
@@ -107,16 +108,16 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
         <Setter Property="MinWidth" Value="120" />
-        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="Height" Value="59" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="FontFamily" Value="{StaticResource RobotoBlack}" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource {x:Type local:M3_ComboboxItem}}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:M3_ComboBox}">
                     <Grid>
                         <ToggleButton
                             Name="PART_ToggleButton"
-                            Grid.Column="2"
                             ClickMode="Press"
                             Focusable="False"
                             IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
@@ -145,7 +146,11 @@
                                 Grid.Row="0"
                                 VerticalAlignment="Center"
                                 Content="{TemplateBinding SelectionBoxItem}"
-                                IsHitTestVisible="False"
+                                ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                IsHitTestVisible="false"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 TextBlock.FontFamily="{StaticResource RobotoRegular}"
                                 TextBlock.FontSize="16"
                                 TextBlock.Foreground="{DynamicResource OnSurfaceVariant}"
@@ -169,7 +174,7 @@
                                         <VisualBrush.Visual>
                                             <Border
                                                 Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                                                Height="{Binding MaxDropDownHeight, RelativeSource={RelativeSource Templatedparent}}"
+                                                Height="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}"
                                                 Background="Black"
                                                 BorderBrush="Black"
                                                 CornerRadius="4" />
@@ -177,7 +182,7 @@
                                     </VisualBrush>
                                 </Border.OpacityMask>
                                 <ScrollViewer>
-                                    <ItemsPresenter />
+                                    <ItemsPresenter/>
                                 </ScrollViewer>
                             </Border>
                         </Popup>
@@ -202,19 +207,9 @@
                         <Trigger Property="HasItems" Value="false">
                             <Setter TargetName="PART_ItemsContainer" Property="MinHeight" Value="95" />
                         </Trigger>
-                        <!--Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
-                            <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0" />
-                            <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0" />
-                        </Trigger-->
-                        <!--Trigger Property="IsEditable"  Value="true">
-                            <Setter Property="IsTabStop" Value="false"/>
-                            <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
-                        </Trigger-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Style.Triggers />
     </Style>
 </ResourceDictionary>

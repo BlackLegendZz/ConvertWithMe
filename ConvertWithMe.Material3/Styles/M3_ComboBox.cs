@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ConvertWithMe.Material3.Styles
 {
@@ -20,8 +10,6 @@ namespace ConvertWithMe.Material3.Styles
     public class M3_ComboBox : ComboBox
     {
         #region DEPENDENCY PROPERTIES
-
-
         public string LabelText
         {
             get { return (string)GetValue(LabelTextProperty); }
@@ -30,24 +18,17 @@ namespace ConvertWithMe.Material3.Styles
 
         // Using a DependencyProperty as the backing store for LabelText.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LabelTextProperty =
-            DependencyProperty.Register("LabelText", typeof(string), typeof(M3_ComboBox), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(LabelText), typeof(string), typeof(M3_ComboBox), new PropertyMetadata(string.Empty));
 
 
         #endregion
 
-        private ContentPresenter PART_Content;
-        private TextBlock PART_LabelText;
+        private ContentPresenter PART_Content = new();
+        private TextBlock PART_LabelText = new();
 
         static M3_ComboBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(M3_ComboBox), new FrameworkPropertyMetadata(typeof(M3_ComboBox)));
-        }
-
-        // Not needed but gets rid of the annoying warnings
-        public M3_ComboBox()
-        {
-            PART_LabelText = new TextBlock();
-            PART_Content = new ContentPresenter();
         }
 
         private void PutLabelInFocus()
@@ -75,14 +56,34 @@ namespace ConvertWithMe.Material3.Styles
 
         }
 
+        private string GetContentValue()
+        {
+            string contentValue = PART_Content.Content.ToString()?? string.Empty;
+            Type cType = PART_Content.Content.GetType();
+            PropertyInfo? property = cType.GetProperty(DisplayMemberPath);
+            
+            if (property == null)
+            {
+                return contentValue;
+            }
+            
+            object? v = property.GetValue(PART_Content.Content);
+            if (v != null)
+            {
+                contentValue = v.ToString()?? string.Empty;
+            }
+            
+            return contentValue;
+        }
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            PART_LabelText = (TextBlock)GetTemplateChild(nameof(PART_LabelText));
-            PART_Content = (ContentPresenter)GetTemplateChild(nameof(PART_Content));
-
-            if ((string)PART_Content.Content != string.Empty)
+            PART_LabelText = GetTemplateChild(nameof(PART_LabelText)) as TextBlock?? PART_LabelText;
+            PART_Content = GetTemplateChild(nameof(PART_Content)) as ContentPresenter?? PART_Content;
+            
+            string contentValue = GetContentValue();            
+            if (contentValue != string.Empty)
             {
                 PutLabelOutOfFocus();
             }
@@ -91,9 +92,15 @@ namespace ConvertWithMe.Material3.Styles
             LostFocus += M3_ComboBox_LostFocus;
         }
 
+        protected override DependencyObject GetContainerForItemOverride()
+        {
+            return new M3_ComboboxItem();
+        }
+
         private void M3_ComboBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if ((string)PART_Content.Content != string.Empty)
+            string contentValue = GetContentValue();
+            if (contentValue == string.Empty)
             {
                 PutLabelInFocus();
             }

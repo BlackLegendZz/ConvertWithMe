@@ -3,6 +3,105 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:ConvertWithMe.Material3.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF">
+
+    <ControlTemplate x:Key="ComboboxItemTemplate" TargetType="{x:Type local:M3_ComboboxItem}">
+        <Grid MinHeight="48">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Border
+                x:Name="PART_Container"
+                Grid.Row="0"
+                Background="{DynamicResource SurfaceContainer}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        x:Name="PART_StateLayer"
+                        Grid.ColumnSpan="3"
+                        Background="{DynamicResource OnSurface}"
+                        Opacity="0.08"
+                        Visibility="Hidden" />
+                    <materialIcons:MaterialIcon
+                        x:Name="PART_LeadingIcon"
+                        Grid.Column="0"
+                        Width="24"
+                        Height="24"
+                        Margin="12,0,0,0"
+                        Foreground="{DynamicResource OnSurfaceVariant}"
+                        Kind="{TemplateBinding LeadingIcon}"
+                        Visibility="Collapsed" />
+                    <ContentPresenter
+                        x:Name="PART_Content"
+                        Grid.Column="1"
+                        Margin="12,0,12,0"
+                        VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            <Rectangle
+                x:Name="PART_Divider"
+                Grid.Row="1"
+                Height="1"
+                Margin="0,8"
+                Fill="{DynamicResource SurfaceVariant}"
+                Visibility="Collapsed" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource OnSurface}" />
+                <Setter TargetName="PART_Content" Property="Opacity" Value="0.38" />
+                <Setter TargetName="PART_LeadingIcon" Property="Opacity" Value="0.38" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource OnSurface}" />
+                <Setter TargetName="PART_Content" Property="Opacity" Value="1" />
+                <Setter TargetName="PART_LeadingIcon" Property="Opacity" Value="1" />
+            </Trigger>
+
+            <Trigger Property="DisplayLeadingIcon" Value="True">
+                <Setter TargetName="PART_LeadingIcon" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="DisplayLeadingIcon" Value="False">
+                <Setter TargetName="PART_LeadingIcon" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+
+            <Trigger Property="IsSelected" Value="True">
+                <Setter TargetName="PART_Container" Property="Background" Value="{DynamicResource SecondaryContainer}" />
+                <Setter Property="Foreground" Value="{DynamicResource OnSecondaryContainer}" />
+                <Setter TargetName="PART_Divider" Property="Fill" Value="{DynamicResource OutlineVariant}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="False">
+                <Setter TargetName="PART_Container" Property="Background" Value="{DynamicResource SurfaceContainer}" />
+                <Setter Property="Foreground" Value="{DynamicResource OnSurface}" />
+                <Setter TargetName="PART_Divider" Property="Fill" Value="{DynamicResource SurfaceVariant}" />
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Hidden" />
+            </Trigger>
+
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="False">
+                <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Hidden" />
+            </Trigger>
+
+            <Trigger Property="ShowDivider" Value="True">
+                <Setter TargetName="PART_Divider" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="ShowDivider" Value="False">
+                <Setter TargetName="PART_Divider" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <Style TargetType="{x:Type local:M3_ComboboxItem}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
@@ -11,107 +110,6 @@
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Foreground" Value="{DynamicResource OnSurface}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:M3_ComboboxItem}">
-                    <Grid MinHeight="48">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="48" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Border
-                            x:Name="PART_Container"
-                            Grid.Row="0"
-                            Background="{DynamicResource SurfaceContainer}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Border
-                                    x:Name="PART_StateLayer"
-                                    Grid.ColumnSpan="3"
-                                    Background="{DynamicResource OnSurface}"
-                                    Opacity="0.08"
-                                    Visibility="Hidden" />
-                                <materialIcons:MaterialIcon
-                                    x:Name="PART_LeadingIcon"
-                                    Grid.Column="0"
-                                    Width="24"
-                                    Height="24"
-                                    Margin="12,0,0,0"
-                                    Foreground="{DynamicResource OnSurfaceVariant}"
-                                    Kind="{TemplateBinding LeadingIcon}"
-                                    Visibility="Collapsed" />
-                                <ContentPresenter
-                                    x:Name="PART_Content"
-                                    Grid.Column="1"
-                                    Margin="12,0,12,0"
-                                    VerticalAlignment="Center"
-                                    Content="{TemplateBinding Content}" />
-                            </Grid>
-                        </Border>
-                        <Rectangle
-                            x:Name="PART_Divider"
-                            Grid.Row="1"
-                            Height="1"
-                            Margin="0,8"
-                            Fill="{DynamicResource SurfaceVariant}"
-                            Visibility="Collapsed" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource OnSurface}" />
-                            <Setter TargetName="PART_Content" Property="Opacity" Value="0.38" />
-                            <Setter TargetName="PART_LeadingIcon" Property="Opacity" Value="0.38" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="True">
-                            <Setter Property="Foreground" Value="{DynamicResource OnSurface}" />
-                            <Setter TargetName="PART_Content" Property="Opacity" Value="1" />
-                            <Setter TargetName="PART_LeadingIcon" Property="Opacity" Value="1" />
-                        </Trigger>
-
-                        <Trigger Property="DisplayLeadingIcon" Value="True">
-                            <Setter TargetName="PART_LeadingIcon" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <Trigger Property="DisplayLeadingIcon" Value="False">
-                            <Setter TargetName="PART_LeadingIcon" Property="Visibility" Value="Collapsed" />
-                        </Trigger>
-
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="PART_Container" Property="Background" Value="{DynamicResource SecondaryContainer}" />
-                            <Setter Property="Foreground" Value="{DynamicResource OnSecondaryContainer}" />
-                            <Setter TargetName="PART_Divider" Property="Fill" Value="{DynamicResource OutlineVariant}" />
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="False">
-                            <Setter TargetName="PART_Container" Property="Background" Value="{DynamicResource SurfaceContainer}" />
-                            <Setter Property="Foreground" Value="{DynamicResource OnSurface}" />
-                            <Setter TargetName="PART_Divider" Property="Fill" Value="{DynamicResource SurfaceVariant}" />
-                        </Trigger>
-
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="False">
-                            <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Hidden" />
-                        </Trigger>
-
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="False">
-                            <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Hidden" />
-                        </Trigger>
-
-                        <Trigger Property="ShowDivider" Value="True">
-                            <Setter TargetName="PART_Divider" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <Trigger Property="ShowDivider" Value="False">
-                            <Setter TargetName="PART_Divider" Property="Visibility" Value="Collapsed" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="Template" Value="{StaticResource ComboboxItemTemplate}" />
     </Style>
 </ResourceDictionary>
