@@ -44,7 +44,7 @@
                         Margin="12,0,12,0"
                         VerticalAlignment="Center">
                         <ContentPresenter.Resources>
-                            <Style BasedOn="{StaticResource BodyLarge}" TargetType="{x:Type TextBlock}" />
+                            <Style BasedOn="{StaticResource BodyLarge_TBl}" TargetType="{x:Type TextBlock}" />
                         </ContentPresenter.Resources>
                     </ContentPresenter>
                 </Grid>

@@ -136,8 +136,7 @@
                                 VerticalAlignment="Center"
                                 Foreground="{DynamicResource OnSurfaceVariant}"
                                 IsHitTestVisible="False"
-                                LineHeight="24"
-                                Style="{StaticResource BodyLarge}"
+                                Style="{DynamicResource BodyLarge_TBl}"
                                 Text="{TemplateBinding LabelText}" />
                             <ContentPresenter
                                 x:Name="PART_Content"
@@ -151,7 +150,7 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 TextBlock.Foreground="{DynamicResource OnSurfaceVariant}">
                                 <ContentPresenter.Resources>
-                                    <Style BasedOn="{StaticResource BodyLarge}" TargetType="{x:Type TextBlock}" />
+                                    <Style BasedOn="{StaticResource BodyLarge_TBl}" TargetType="{x:Type TextBlock}" />
                                 </ContentPresenter.Resources>
                             </ContentPresenter>
                         </Grid>
