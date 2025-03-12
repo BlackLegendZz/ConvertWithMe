@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -25,20 +24,33 @@ namespace ConvertWithMe.Material3.Styles
 
         private ContentPresenter PART_Content = new();
         private TextBlock PART_LabelText = new();
+        private readonly Style styleBodyLarge;
+        private readonly Style styleBodySmall;
 
         static M3_ComboBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(M3_ComboBox), new FrameworkPropertyMetadata(typeof(M3_ComboBox)));
         }
 
+        public M3_ComboBox()
+        {
+            Style? sBodyLarge = (Style?)FindResource("BodyLarge_TBl");
+            Style? sBodySmall = (Style?)FindResource("BodySmall_TBl");
+
+            if (sBodyLarge == null || sBodySmall == null)
+            {
+                throw new NullReferenceException("M3_ComboBox: StyleBodyLarge or StyleBodySmall are null");
+            }
+            styleBodyLarge = sBodyLarge;
+            styleBodySmall = sBodySmall;
+        }
         private void PutLabelInFocus()
         {
             if (PART_LabelText.Text == string.Empty)
             {
                 return;
             }
-            PART_LabelText.FontSize = 16;
-            PART_LabelText.LineHeight = 24;
+            PART_LabelText.Style = styleBodyLarge;
             Grid.SetRow(PART_LabelText, 0);
             Grid.SetRow(PART_Content, 0);
         }
@@ -49,8 +61,7 @@ namespace ConvertWithMe.Material3.Styles
             {
                 return;
             }
-            PART_LabelText.FontSize = 12;
-            PART_LabelText.LineHeight = 16;
+            PART_LabelText.Style = styleBodySmall;
             Grid.SetRow(PART_LabelText, 0);
             Grid.SetRow(PART_Content, 1);
 

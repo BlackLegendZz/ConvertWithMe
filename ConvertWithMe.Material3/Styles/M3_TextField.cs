@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using ConvertWithMe.Material3.Styles.UIEnums;
 
 namespace ConvertWithMe.Material3.Styles
@@ -23,7 +22,7 @@ namespace ConvertWithMe.Material3.Styles
 
         // Using a DependencyProperty as the backing store for IsErrorState.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsErrorStateProperty =
-            DependencyProperty.Register("IsErrorState", typeof(bool), typeof(M3_TextField), new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(IsErrorState), typeof(bool), typeof(M3_TextField), new PropertyMetadata(false));
 
         public FieldType TextFieldType
         {
@@ -86,20 +85,26 @@ namespace ConvertWithMe.Material3.Styles
             DependencyProperty.Register(nameof(CharLimit), typeof(int), typeof(M3_TextField), new PropertyMetadata(0));
         #endregion
 
-        private TextBlock PART_LabelText;
-        private TextBlock PART_SupportingText;
-        private TextBlock PART_CharacterCount;
-        private TextBox PART_Text;
-        private Button PART_TrailingIconButton;
+        private TextBlock PART_LabelText = new();
+        private TextBlock PART_SupportingText = new();
+        private TextBlock PART_CharacterCount = new();
+        private TextBox PART_Text = new();
+        private Button PART_TrailingIconButton = new();
+        private readonly Style styleBodyLarge;
+        private readonly Style styleBodySmall;
 
         // Not needed but gets rid of the annoying warnings
         public M3_TextField()
         {
-            PART_LabelText = new TextBlock();
-            PART_SupportingText = new TextBlock();
-            PART_CharacterCount = new TextBlock();
-            PART_Text = new TextBox();
-            PART_TrailingIconButton = new Button();
+            Style? sBodyLarge = (Style?)FindResource("BodyLarge_TBl");
+            Style? sBodySmall = (Style?)FindResource("BodySmall_TBl");
+
+            if (sBodyLarge == null || sBodySmall == null)
+            {
+                throw new NullReferenceException("M3_ComboBox: StyleBodyLarge or StyleBodySmall are null");
+            }
+            styleBodyLarge = sBodyLarge;
+            styleBodySmall = sBodySmall;
         }
 
         static M3_TextField()
@@ -113,8 +118,8 @@ namespace ConvertWithMe.Material3.Styles
             {
                 return;
             }
-            PART_LabelText.FontSize = 16;
-            PART_LabelText.LineHeight = 24;
+
+            PART_LabelText.Style = styleBodyLarge;
             Grid.SetRow(PART_LabelText, 0);
             Grid.SetRow(PART_Text, 0);
         }
@@ -125,8 +130,7 @@ namespace ConvertWithMe.Material3.Styles
             {
                 return;
             }
-            PART_LabelText.FontSize = 12;
-            PART_LabelText.LineHeight = 16;
+            PART_LabelText.Style = styleBodySmall;
             Grid.SetRow(PART_LabelText, 0);
             Grid.SetRow(PART_Text, 1);
 
@@ -136,11 +140,11 @@ namespace ConvertWithMe.Material3.Styles
         {
             base.OnApplyTemplate();
             
-            PART_LabelText = (TextBlock)GetTemplateChild(nameof(PART_LabelText));
-            PART_SupportingText = (TextBlock)GetTemplateChild(nameof(PART_SupportingText));
-            PART_CharacterCount = (TextBlock)GetTemplateChild(nameof(PART_CharacterCount));
-            PART_Text = (TextBox)GetTemplateChild(nameof(PART_Text));
-            PART_TrailingIconButton = (Button)GetTemplateChild(nameof(PART_TrailingIconButton));
+            PART_LabelText = GetTemplateChild(nameof(PART_LabelText)) as TextBlock?? PART_LabelText;
+            PART_SupportingText = GetTemplateChild(nameof(PART_SupportingText)) as TextBlock?? PART_SupportingText;
+            PART_CharacterCount = GetTemplateChild(nameof(PART_CharacterCount)) as TextBlock?? PART_CharacterCount;
+            PART_Text = GetTemplateChild(nameof(PART_Text)) as TextBox?? PART_Text;
+            PART_TrailingIconButton = GetTemplateChild(nameof(PART_TrailingIconButton)) as Button?? PART_TrailingIconButton;
 
             GotFocus += M3_TextField_GotFocus;
             LostFocus += M3_TextField_LostFocus;
