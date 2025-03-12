@@ -69,7 +69,13 @@ namespace ConvertWithMe.Material3.Styles
 
         private string GetContentValue()
         {
-            string contentValue = PART_Content.Content.ToString()?? string.Empty;
+            string contentValue = string.Empty;
+            if (PART_Content.Content == null)
+            {
+                return contentValue;
+            }
+            
+            contentValue = PART_Content.Content.ToString()?? contentValue;
             Type cType = PART_Content.Content.GetType();
             PropertyInfo? property = cType.GetProperty(DisplayMemberPath);
             
@@ -81,7 +87,7 @@ namespace ConvertWithMe.Material3.Styles
             object? v = property.GetValue(PART_Content.Content);
             if (v != null)
             {
-                contentValue = v.ToString()?? string.Empty;
+                contentValue = v.ToString()?? contentValue;
             }
             
             return contentValue;
@@ -101,6 +107,16 @@ namespace ConvertWithMe.Material3.Styles
 
             GotFocus += M3_ComboBox_GotFocus;
             LostFocus += M3_ComboBox_LostFocus;
+        }
+
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+        {
+            base.OnSelectionChanged(e);
+            string contentValue = GetContentValue();            
+            if (contentValue != string.Empty)
+            {
+                PutLabelOutOfFocus();
+            }
         }
 
         protected override DependencyObject GetContainerForItemOverride()
