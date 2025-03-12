@@ -64,11 +64,7 @@
                             Grid.Row="0"
                             Margin="0,0,0,-6"
                             VerticalAlignment="Center"
-                            FontFamily="{StaticResource RobotoRegular}"
-                            FontSize="16"
-                            FontWeight="Regular"
                             Foreground="{DynamicResource OnSurfaceVariant}"
-                            LineHeight="24"
                             Text="{TemplateBinding LabelText}" />
                         <TextBox
                             x:Name="PART_Text"

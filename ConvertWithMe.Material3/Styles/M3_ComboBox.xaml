@@ -8,6 +8,7 @@
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Fonts/Fonts.xaml" />
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ScrollViewer.xaml" />
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ComboboxItem.xaml" />
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_TextBlock.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <ControlTemplate x:Key="OutlinedToggleButton" TargetType="{x:Type ToggleButton}">
@@ -110,8 +111,7 @@
         <Setter Property="MinWidth" Value="120" />
         <Setter Property="Height" Value="59" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="FontFamily" Value="{StaticResource RobotoBlack}" />
-        <Setter Property="ItemContainerStyle" Value="{StaticResource {x:Type local:M3_ComboboxItem}}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource {x:Type local:M3_ComboboxItem}}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:M3_ComboBox}">
@@ -134,12 +134,10 @@
                                 Grid.Row="0"
                                 Margin="0,0,0,-3"
                                 VerticalAlignment="Center"
-                                FontFamily="{StaticResource RobotoRegular}"
-                                FontSize="16"
-                                FontWeight="Regular"
                                 Foreground="{DynamicResource OnSurfaceVariant}"
                                 IsHitTestVisible="False"
                                 LineHeight="24"
+                                Style="{StaticResource BodyLarge}"
                                 Text="{TemplateBinding LabelText}" />
                             <ContentPresenter
                                 x:Name="PART_Content"
@@ -151,10 +149,11 @@
                                 ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                 IsHitTestVisible="false"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                TextBlock.FontFamily="{StaticResource RobotoRegular}"
-                                TextBlock.FontSize="16"
-                                TextBlock.Foreground="{DynamicResource OnSurfaceVariant}"
-                                TextBlock.LineHeight="24" />
+                                TextBlock.Foreground="{DynamicResource OnSurfaceVariant}">
+                                <ContentPresenter.Resources>
+                                    <Style BasedOn="{StaticResource BodyLarge}" TargetType="{x:Type TextBlock}" />
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
                         </Grid>
                         <Popup
                             Name="PART_Popup"
@@ -182,7 +181,7 @@
                                     </VisualBrush>
                                 </Border.OpacityMask>
                                 <ScrollViewer>
-                                    <ItemsPresenter/>
+                                    <ItemsPresenter />
                                 </ScrollViewer>
                             </Border>
                         </Popup>

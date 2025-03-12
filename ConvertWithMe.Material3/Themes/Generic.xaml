@@ -8,5 +8,8 @@
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ScrollViewer.xaml" />
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ComboBox.xaml" />
         <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_ComboBoxItem.xaml" />
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_TextBlock.xaml" />
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_TextBox.xaml" />
+
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

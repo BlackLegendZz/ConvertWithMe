@@ -4,6 +4,10 @@
     xmlns:local="clr-namespace:ConvertWithMe.Material3.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/ConvertWithMe.Material3;component/Styles/M3_TextBlock.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <ControlTemplate x:Key="ComboboxItemTemplate" TargetType="{x:Type local:M3_ComboboxItem}">
         <Grid MinHeight="48">
             <Grid.RowDefinitions>
@@ -38,7 +42,11 @@
                         x:Name="PART_Content"
                         Grid.Column="1"
                         Margin="12,0,12,0"
-                        VerticalAlignment="Center"/>
+                        VerticalAlignment="Center">
+                        <ContentPresenter.Resources>
+                            <Style BasedOn="{StaticResource BodyLarge}" TargetType="{x:Type TextBlock}" />
+                        </ContentPresenter.Resources>
+                    </ContentPresenter>
                 </Grid>
             </Border>
             <Rectangle
@@ -106,8 +114,6 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
         <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
-        <Setter Property="FontFamily" Value="{StaticResource RobotoRegular}" />
-        <Setter Property="FontSize" Value="16" />
         <Setter Property="Foreground" Value="{DynamicResource OnSurface}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template" Value="{StaticResource ComboboxItemTemplate}" />
