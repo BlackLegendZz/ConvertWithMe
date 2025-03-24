@@ -8,4 +8,5 @@ namespace ConvertWithMe.Material3.Styles.UIEnums
 {
     public enum IconType { None, LeadingIcon, TrailingIcon, Both }
     public enum IconTypeSwitch { None, OnChecked, OnUnchecked, Both }
+    public enum BtnType { Filled, Outlined, Text }
 }

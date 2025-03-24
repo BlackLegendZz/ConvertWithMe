@@ -40,14 +40,8 @@
     <Grid IsEnabled="{Binding IsFileSelected}">
         <StackPanel Orientation="Vertical">
             <StackPanel.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="Margin" Value="2,1" />
-                    <Setter Property="Padding" Value="8" />
-                </Style>
                 <Style TargetType="TextBlock">
-                    <Setter Property="Margin" Value="16,0,0,6" />
-                    <Setter Property="HorizontalAlignment" Value="Left" />
-                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="Margin" Value="16,0,0,8" />
                 </Style>
                 <Style TargetType="{x:Type styles:M3_ComboBox}">
                     <Setter Property="Margin" Value="0,0,0,8" />
@@ -62,8 +56,8 @@
             <Border>
                 <StackPanel Orientation="Vertical">
                     <TextBlock
-                        Margin="0"
-                        FontWeight="Bold"
+                        LineHeight="1"
+                        Style="{StaticResource LabelLarge_TBl}"
                         Text="File Settings" />
                     <Grid Margin="0,12,0,0">
                         <Grid.RowDefinitions>
@@ -75,7 +69,7 @@
 
                         <styles:M3_TextField
                             Grid.Row="0"
-                            Margin="8,0,0,6"
+                            Margin="0,0,0,6"
                             LabelText="Filename"
                             Text="{Binding SFile.FilenameDest}"
                             TextFieldType="Filled" />
@@ -83,20 +77,23 @@
                             Grid.Row="1"
                             Margin="0,0,0,6"
                             LastChildFill="True">
-                            <Button
-                                Width="50"
-                                Height="25"
+                            <styles:M3_Button
                                 Command="{Binding UpdateDestinationCommand}"
-                                Content="Browse"
+                                Content="Select file location"
                                 DockPanel.Dock="Right" />
                             <TextBlock
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Left"
-                                Text="Location" />
+                                Foreground="{DynamicResource Primary}"
+                                LineHeight="1"
+                                Style="{StaticResource BodyLarge_TBl}"
+                                Text="Location: " />
                             <TextBlock
                                 Margin="8,0"
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Left"
+                                Foreground="{DynamicResource Primary}"
+                                Style="{StaticResource BodyLarge_TBl}"
                                 Text="{Binding SFile.DirDest}"
                                 TextWrapping="Wrap" />
                         </DockPanel>
@@ -266,13 +263,19 @@
                             IsChecked="{Binding DisplayVideo}" />
                         <TextBlock
                             Grid.Column="1"
-                            Margin="0"
-                            FontWeight="Bold"
+                            Margin="7.9,0,0,0"
+                            VerticalAlignment="Center"
+                            LineHeight="1"
+                            Style="{StaticResource LabelLarge_TBl}"
                             Text="Video" />
-                        <Label
+                        <TextBlock
                             Grid.Column="2"
+                            Margin="0,0,8,0"
                             HorizontalAlignment="Right"
-                            Content="Export Video" />
+                            VerticalAlignment="Center"
+                            LineHeight="1"
+                            Style="{StaticResource BodyLarge_TBl}"
+                            Text="Export Video" />
                         <styles:M3_ToggleSwitch Grid.Column="3" IsChecked="{Binding ConvertVideo}" />
                     </Grid>
                     <StackPanel
@@ -284,8 +287,10 @@
                         <!--  Video Settings  -->
                         <StackPanel Margin="0,0,0,8" Orientation="Vertical">
                             <TextBlock
-                                Margin="0,0,0,6"
-                                FontWeight="Bold"
+                                Margin="0,0,0,8"
+                                VerticalAlignment="Center"
+                                LineHeight="1"
+                                Style="{StaticResource LabelLarge_TBl}"
                                 Text="Video Settings" />
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -308,6 +313,9 @@
                                         Grid.Column="1"
                                         Margin="8,0,8,6"
                                         HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        LineHeight="1"
+                                        Style="{StaticResource LabelLarge_TBl}"
                                         Text="X" />
                                     <styles:M3_TextField
                                         Grid.Column="2"
@@ -329,8 +337,10 @@
                         <!--  Ecoding Settings  -->
                         <StackPanel Margin="0,0,0,8" Orientation="Vertical">
                             <TextBlock
-                                Margin="0,0,0,6"
-                                FontWeight="Bold"
+                                Margin="0,0,0,8"
+                                VerticalAlignment="Center"
+                                LineHeight="1"
+                                Style="{StaticResource LabelLarge_TBl}"
                                 Text="Video Codec Settings" />
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -347,11 +357,17 @@
                                 <TextBlock
                                     Grid.Row="3"
                                     Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    LineHeight="1"
+                                    Style="{StaticResource BodyMedium_TBl}"
                                     Text="Bitrate (MBit/s)"
                                     Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}" />
                                 <TextBlock
                                     Grid.Row="3"
                                     Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    LineHeight="1"
+                                    Style="{StaticResource BodyMedium_TBl}"
                                     Text="Quality"
                                     Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
@@ -477,13 +493,19 @@
                             IsChecked="{Binding DisplayAudio}" />
                         <TextBlock
                             Grid.Column="1"
-                            Margin="0"
-                            FontWeight="Bold"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            LineHeight="1"
+                            Style="{StaticResource LabelLarge_TBl}"
                             Text="Audio" />
-                        <Label
+                        <TextBlock
                             Grid.Column="2"
+                            Margin="0,0,8,0"
                             HorizontalAlignment="Right"
-                            Content="Export Audio" />
+                            VerticalAlignment="Center"
+                            LineHeight="1"
+                            Style="{StaticResource BodyLarge_TBl}"
+                            Text="Export Audio" />
                         <styles:M3_ToggleSwitch Grid.Column="3" IsChecked="{Binding ConvertAudio}" />
                     </Grid>
                     <StackPanel
@@ -495,8 +517,11 @@
                         <!--  Ecoding Settings  -->
                         <StackPanel Margin="0,0,0,8" Orientation="Vertical">
                             <TextBlock
-                                Margin="0,0,0,6"
+                                Margin="0,0,0,8"
+                                VerticalAlignment="Center"
                                 FontWeight="Bold"
+                                LineHeight="1"
+                                Style="{StaticResource LabelLarge_TBl}"
                                 Text="Audio Codec Settings" />
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -512,6 +537,9 @@
                                 <TextBlock
                                     Grid.Row="2"
                                     Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    LineHeight="1"
+                                    Style="{StaticResource LabelLarge_TBl}"
                                     Text="Bitrate (KBit/s)"
                                     Visibility="{Binding SAudio.Codec.IsLossless, Converter={StaticResource InvertAndVisibilityConverter}}" />
 
