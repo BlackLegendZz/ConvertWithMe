@@ -11,7 +11,8 @@
     d:Background="{StaticResource Surface}"
     d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
     d:DesignHeight="1200"
-    d:DesignWidth="380"
+    d:DesignWidth="575"
+    Focusable="False"
     mc:Ignorable="d">
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -37,444 +38,448 @@
             <i:InvokeCommandAction Command="{Binding DisableTickSnappingCommand}" />
         </i:KeyTrigger>
     </i:Interaction.Triggers>
-    <Grid IsEnabled="{Binding IsFileSelected}">
+    <Grid Margin="8" IsEnabled="{Binding IsFileSelected}">
         <StackPanel Orientation="Vertical">
             <StackPanel.Resources>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Margin" Value="16,0,0,8" />
-                </Style>
                 <Style TargetType="{x:Type styles:M3_ComboBox}">
                     <Setter Property="Margin" Value="0,0,0,8" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
                 </Style>
+                <Style TargetType="{x:Type styles:M3_TextField}">
+                    <Setter Property="Margin" Value="0,0,0,8" />
+                </Style>
                 <Style TargetType="ColumnDefinition">
-                    <Setter Property="Width" Value="108" />
+                    <Setter Property="Width" Value="116" />
                 </Style>
             </StackPanel.Resources>
 
             <!--  File Settings  -->
-            <Border>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock
-                        LineHeight="1"
-                        Style="{StaticResource LabelLarge_TBl}"
-                        Text="File Settings" />
-                    <Grid Margin="0,12,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+            <StackPanel Margin="0,0,0,8" Orientation="Vertical">
+                <TextBlock
+                    LineHeight="1"
+                    Style="{StaticResource TitleMedium_TBl}"
+                    Text="File Settings" />
+                <Grid Margin="24,8,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                        <styles:M3_TextField
-                            Grid.Row="0"
-                            Margin="0,0,0,6"
-                            LabelText="Filename"
-                            Text="{Binding SFile.FilenameDest}"
-                            TextFieldType="Filled" />
-                        <DockPanel
-                            Grid.Row="1"
-                            Margin="0,0,0,6"
-                            LastChildFill="True">
-                            <styles:M3_Button
-                                Command="{Binding UpdateDestinationCommand}"
-                                Content="Select file location"
-                                DockPanel.Dock="Right" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                DockPanel.Dock="Left"
-                                Foreground="{DynamicResource Primary}"
-                                LineHeight="1"
-                                Style="{StaticResource BodyLarge_TBl}"
-                                Text="Location: " />
-                            <TextBlock
-                                Margin="8,0"
-                                VerticalAlignment="Center"
-                                DockPanel.Dock="Left"
-                                Foreground="{DynamicResource Primary}"
-                                Style="{StaticResource BodyLarge_TBl}"
-                                Text="{Binding SFile.DirDest}"
-                                TextWrapping="Wrap" />
-                        </DockPanel>
-                        <styles:M3_ComboBox
-                            Grid.Row="2"
-                            DisplayMemberPath="Name"
-                            IsEnabled="{Binding IsAudioFile, Converter={StaticResource InvertBooleanConverter}}"
-                            ItemsSource="{Binding PresetList}"
-                            LabelText="Video Preset"
-                            SelectedItem="{Binding SFile.Preset}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding PresetChangedCommand}" PassEventArgsToCommand="False" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </styles:M3_ComboBox>
-                        <styles:M3_ComboBox
-                            Grid.Row="3"
-                            DisplayMemberPath="Extension"
-                            ItemsSource="{Binding AvailableFormats}"
-                            LabelText="Format"
-                            SelectedItem="{Binding SFile.Format}">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="SelectionChanged">
-                                    <i:InvokeCommandAction Command="{Binding FormatChangedCommand}" PassEventArgsToCommand="False" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </styles:M3_ComboBox>
-                    </Grid>
-                </StackPanel>
-            </Border>
+                    <styles:M3_TextField
+                        Grid.Row="0"
+                        LabelText="Filename"
+                        Text="{Binding SFile.FilenameDest}"
+                        TextFieldType="Filled" />
+                    <DockPanel
+                        Grid.Row="1"
+                        Margin="0,0,0,8"
+                        LastChildFill="True">
+                        <styles:M3_Button
+                            Command="{Binding UpdateDestinationCommand}"
+                            Content="Select file location"
+                            DockPanel.Dock="Right" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            DockPanel.Dock="Left"
+                            Foreground="{DynamicResource Primary}"
+                            LineHeight="1"
+                            Style="{StaticResource BodyLarge_TBl}"
+                            Text="Location: " />
+                        <TextBlock
+                            Margin="8,0"
+                            VerticalAlignment="Center"
+                            DockPanel.Dock="Left"
+                            Foreground="{DynamicResource Primary}"
+                            LineHeight="1"
+                            Style="{StaticResource BodyLarge_TBl}"
+                            Text="{Binding SFile.DirDest}"
+                            TextWrapping="Wrap" />
+                    </DockPanel>
+                    <styles:M3_ComboBox
+                        Grid.Row="2"
+                        DisplayMemberPath="Name"
+                        IsEnabled="{Binding IsAudioFile, Converter={StaticResource InvertBooleanConverter}}"
+                        ItemsSource="{Binding PresetList}"
+                        LabelText="Video Preset"
+                        SelectedItem="{Binding SFile.Preset}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding PresetChangedCommand}" PassEventArgsToCommand="False" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </styles:M3_ComboBox>
+                    <styles:M3_ComboBox
+                        Grid.Row="3"
+                        DisplayMemberPath="Extension"
+                        ItemsSource="{Binding AvailableFormats}"
+                        LabelText="Format"
+                        SelectedItem="{Binding SFile.Format}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding FormatChangedCommand}" PassEventArgsToCommand="False" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </styles:M3_ComboBox>
+                </Grid>
+            </StackPanel>
+
 
             <!--  Metadata  -->
-            <Border Visibility="Collapsed">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding DisplayMetadata}" />
-                        <TextBlock
-                            Margin="0"
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="Metadata" />
-                    </StackPanel>
-                    <Grid Margin="0,12,0,0" Visibility="{Binding DisplayMetadata, Converter={StaticResource BooleanToVisibilityConverter}}">
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Text="Title" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Text="Artist" />
-                        <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Text="Album" />
-                        <TextBlock
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Text="Album Artist" />
-                        <TextBlock
-                            Grid.Row="4"
-                            Grid.Column="0"
-                            Text="Genre" />
-                        <TextBlock
-                            Grid.Row="5"
-                            Grid.Column="0"
-                            Text="Year" />
-                        <TextBlock
-                            Grid.Row="6"
-                            Grid.Column="0"
-                            Text="Track number" />
-                        <TextBlock
-                            Grid.Row="7"
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            Text="Cover"
-                            Visibility="Collapsed" />
-
-                        <TextBox
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Text="{Binding SMetadata.Title}" />
-                        <TextBox
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Text="{Binding SMetadata.Artist}" />
-                        <TextBox
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Text="{Binding SMetadata.Album}" />
-                        <TextBox
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Text="{Binding SMetadata.AlbumArtist}" />
-                        <!--  TODO: Add list of genres and function to update the setting on a change  -->
-                        <ComboBox
-                            Grid.Row="4"
-                            Grid.Column="1"
-                            Width="120"
-                            HorizontalAlignment="Left" />
-                        <TextBox
-                            Grid.Row="5"
-                            Grid.Column="1"
-                            Width="120"
-                            HorizontalAlignment="Left"
-                            Text="{Binding SMetadata.Year}" />
-                        <TextBox
-                            Grid.Row="6"
-                            Grid.Column="1"
-                            Width="120"
-                            HorizontalAlignment="Left"
-                            Text="{Binding SMetadata.Tracknumber}" />
-                        <StackPanel
-                            Grid.Row="7"
-                            Grid.Column="1"
-                            Margin="8,0"
-                            HorizontalAlignment="Left"
-                            Orientation="Vertical"
-                            Visibility="Collapsed">
-                            <Image
-                                Width="150"
-                                Height="150"
-                                Margin="0,0,0,4"
-                                Source="../Resources/Images/logo_placeholder.png" />
-                            <Button
-                                Height="25"
-                                Padding="8,0"
-                                HorizontalAlignment="Center"
-                                Content="Change Cover" />
-                        </StackPanel>
-                    </Grid>
+            <StackPanel Orientation="Vertical" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding DisplayMetadata}" />
+                    <TextBlock
+                        Margin="0"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Text="Metadata" />
                 </StackPanel>
-            </Border>
+                <Grid Margin="0,12,0,0" Visibility="{Binding DisplayMetadata, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Title" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Artist" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="Album" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Text="Album Artist" />
+                    <TextBlock
+                        Grid.Row="4"
+                        Grid.Column="0"
+                        Text="Genre" />
+                    <TextBlock
+                        Grid.Row="5"
+                        Grid.Column="0"
+                        Text="Year" />
+                    <TextBlock
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        Text="Track number" />
+                    <TextBlock
+                        Grid.Row="7"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Cover"
+                        Visibility="Collapsed" />
+
+                    <TextBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Text="{Binding SMetadata.Title}" />
+                    <TextBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{Binding SMetadata.Artist}" />
+                    <TextBox
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="{Binding SMetadata.Album}" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Text="{Binding SMetadata.AlbumArtist}" />
+                    <!--  TODO: Add list of genres and function to update the setting on a change  -->
+                    <ComboBox
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        Width="120"
+                        HorizontalAlignment="Left" />
+                    <TextBox
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        Width="120"
+                        HorizontalAlignment="Left"
+                        Text="{Binding SMetadata.Year}" />
+                    <TextBox
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        Width="120"
+                        HorizontalAlignment="Left"
+                        Text="{Binding SMetadata.Tracknumber}" />
+                    <StackPanel
+                        Grid.Row="7"
+                        Grid.Column="1"
+                        Margin="8,0"
+                        HorizontalAlignment="Left"
+                        Orientation="Vertical"
+                        Visibility="Collapsed">
+                        <Image
+                            Width="150"
+                            Height="150"
+                            Margin="0,0,0,4"
+                            Source="../Resources/Images/logo_placeholder.png" />
+                        <Button
+                            Height="25"
+                            Padding="8,0"
+                            HorizontalAlignment="Center"
+                            Content="Change Cover" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
 
             <!--  Video  -->
-            <Border>
-                <StackPanel IsEnabled="{Binding CanConvertVideo}" Orientation="Vertical">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+            <StackPanel
+                Margin="0,0,0,8"
+                IsEnabled="{Binding CanConvertVideo}"
+                Orientation="Vertical">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                        <CheckBox
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            IsChecked="{Binding DisplayVideo}" />
+                    <CheckBox
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding DisplayVideo}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Center"
+                        LineHeight="1"
+                        Style="{StaticResource TitleMedium_TBl}"
+                        Text="Video" />
+                    <TextBlock
+                        Grid.Column="2"
+                        Margin="0,0,8,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        LineHeight="1"
+                        Style="{StaticResource TitleMedium_TBl}"
+                        Text="Export Video" />
+                    <styles:M3_ToggleSwitch Grid.Column="3" IsChecked="{Binding ConvertVideo}" />
+                </Grid>
+                <StackPanel
+                    Margin="0,8,0,0"
+                    IsEnabled="{Binding ConvertVideo}"
+                    Orientation="Vertical"
+                    Visibility="{Binding DisplayVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                    <!--  Video Settings  -->
+                    <StackPanel Margin="0,0,0,8" Orientation="Vertical">
                         <TextBlock
-                            Grid.Column="1"
-                            Margin="7.9,0,0,0"
+                            Margin="0,0,0,8"
                             VerticalAlignment="Center"
                             LineHeight="1"
                             Style="{StaticResource LabelLarge_TBl}"
-                            Text="Video" />
-                        <TextBlock
-                            Grid.Column="2"
-                            Margin="0,0,8,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            LineHeight="1"
-                            Style="{StaticResource BodyLarge_TBl}"
-                            Text="Export Video" />
-                        <styles:M3_ToggleSwitch Grid.Column="3" IsChecked="{Binding ConvertVideo}" />
-                    </Grid>
-                    <StackPanel
-                        Margin="0,12,0,0"
-                        IsEnabled="{Binding ConvertVideo}"
-                        Orientation="Vertical"
-                        Visibility="{Binding DisplayVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Text="Video Settings" />
+                        <Grid Margin="24,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <!--  Video Settings  -->
-                        <StackPanel Margin="0,0,0,8" Orientation="Vertical">
-                            <TextBlock
-                                Margin="0,0,0,8"
-                                VerticalAlignment="Center"
-                                LineHeight="1"
-                                Style="{StaticResource LabelLarge_TBl}"
-                                Text="Video Settings" />
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <Grid Grid.Row="0" Grid.ColumnSpan="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <styles:M3_TextField
-                                        Grid.Column="0"
-                                        LabelText="Width"
-                                        Text="{Binding SVideo.Width}"
-                                        TextFieldType="Filled" />
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Margin="8,0,8,6"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        LineHeight="1"
-                                        Style="{StaticResource LabelLarge_TBl}"
-                                        Text="X" />
-                                    <styles:M3_TextField
-                                        Grid.Column="2"
-                                        Margin="0,0,0,6"
-                                        LabelText="Height"
-                                        Text="{Binding SVideo.Height}"
-                                        TextFieldType="Filled" />
-                                </Grid>
-                                <styles:M3_ComboBox
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    Padding="0"
-                                    ItemsSource="{Binding Framrates}"
-                                    LabelText="Framrate"
-                                    SelectedItem="{Binding SVideo.FrameRate}" />
-                            </Grid>
-                        </StackPanel>
-
-                        <!--  Ecoding Settings  -->
-                        <StackPanel Margin="0,0,0,8" Orientation="Vertical">
-                            <TextBlock
-                                Margin="0,0,0,8"
-                                VerticalAlignment="Center"
-                                LineHeight="1"
-                                Style="{StaticResource LabelLarge_TBl}"
-                                Text="Video Codec Settings" />
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-
-                                <TextBlock
-                                    Grid.Row="3"
+                                <styles:M3_TextField
                                     Grid.Column="0"
+                                    LabelText="Width"
+                                    Text="{Binding SVideo.Width}"
+                                    TextFieldType="Filled" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="8,0,8,0"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     LineHeight="1"
-                                    Style="{StaticResource BodyMedium_TBl}"
-                                    Text="Bitrate (MBit/s)"
-                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}" />
-                                <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    VerticalAlignment="Center"
-                                    LineHeight="1"
-                                    Style="{StaticResource BodyMedium_TBl}"
-                                    Text="Quality"
-                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-                                <styles:M3_ComboBox
-                                    Grid.Row="0"
-                                    Grid.ColumnSpan="2"
-                                    DisplayMemberPath="Name"
-                                    ItemsSource="{Binding SFile.Format.VideoCodecs}"
-                                    LabelText="Video Codec"
-                                    SelectedItem="{Binding SVideo.Codec}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction Command="{Binding VideoCodecChangedCommand}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </styles:M3_ComboBox>
-                                <styles:M3_ComboBox
-                                    Grid.Row="1"
-                                    Grid.ColumnSpan="2"
-                                    ItemsSource="{Binding EncodingProfiles}"
-                                    LabelText="Bitrate Encoding"
-                                    SelectedItem="{Binding SVideo.EncodingMode}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction Command="{Binding EncodingProfileChangedCommand}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </styles:M3_ComboBox>
-                                <styles:M3_ComboBox
-                                    Grid.Row="2"
-                                    Grid.ColumnSpan="2"
-                                    ItemsSource="{Binding QualityPresets}"
-                                    LabelText="Encoding Profile"
-                                    SelectedItem="{Binding SVideo.QuailityPreset}"
-                                    Visibility="{Binding SVideo.Codec.HasVBRSupport, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                <Grid Grid.Row="3" Grid.Column="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="100" />
-                                        <ColumnDefinition Width="30" />
-                                    </Grid.ColumnDefinitions>
-                                    <styles:M3_Slider
-                                        Grid.Column="0"
-                                        Maximum="30"
-                                        Minimum="0"
-                                        Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Value="{Binding SVideo.Bitrate}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding QualitySliderChangedCommand}" />
-                                                <i:InvokeCommandAction Command="{Binding VideoBitrateChangedCommand}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </styles:M3_Slider>
-                                    <styles:M3_Slider
-                                        Grid.ColumnSpan="2"
-                                        IsSnapToTickEnabled="{Binding UseSnapping}"
-                                        Maximum="100"
-                                        Minimum="0"
-                                        TickFrequency="10"
-                                        Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}"
-                                        Value="{Binding SVideo.Bitrate}" />
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Margin="8,0,0,0"
-                                        Padding="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding QualityHint}"
-                                        Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                    <TextBlock
-                                        Grid.Column="2"
-                                        Margin="8,0,0,0"
-                                        Padding="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding SVideo.Bitrate}"
-                                        Visibility="{Binding ManuallyEditVBitrate, Converter={StaticResource InvertAndVisibilityConverter}}">
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="MouseLeftButtonDown">
-                                                <i:InvokeCommandAction Command="{Binding EnableManualVBitrateEditCommand}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </TextBlock>
-                                    <TextBox
-                                        Grid.Column="2"
-                                        Margin="8,0,0,0"
-                                        Padding="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding SVideo.Bitrate}"
-                                        Visibility="{Binding ManuallyEditVBitrate, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <i:Interaction.Triggers>
-                                            <i:KeyTrigger Key="Enter">
-                                                <i:InvokeCommandAction Command="{Binding DisableManualVBitrateEditCommand}" />
-                                            </i:KeyTrigger>
-                                            <i:EventTrigger EventName="ValueChanged">
-                                                <i:InvokeCommandAction Command="{Binding VideoBitrateChangedCommand}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </TextBox>
-                                </Grid>
+                                    Style="{StaticResource BodyLarge_TBl}"
+                                    Text="X" />
+                                <styles:M3_TextField
+                                    Grid.Column="2"
+                                    Margin="0,0,0,6"
+                                    LabelText="Height"
+                                    Text="{Binding SVideo.Height}"
+                                    TextFieldType="Filled" />
                             </Grid>
-                        </StackPanel>
+                            <styles:M3_ComboBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Padding="0"
+                                ItemsSource="{Binding Framrates}"
+                                LabelText="Framrate"
+                                SelectedItem="{Binding SVideo.FrameRate}" />
+                        </Grid>
+                    </StackPanel>
+
+                    <!--  Ecoding Settings  -->
+                    <StackPanel Margin="0,0,0,8" Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,0,0,8"
+                            VerticalAlignment="Center"
+                            LineHeight="1"
+                            Style="{StaticResource LabelLarge_TBl}"
+                            Text="Video Codec Settings" />
+                        <Grid Margin="24,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                LineHeight="1"
+                                Style="{StaticResource BodyLarge_TBl}"
+                                Text="Bitrate (MBit/s)"
+                                Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}" />
+                            <TextBlock
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                LineHeight="1"
+                                Style="{StaticResource BodyLarge_TBl}"
+                                Text="Quality"
+                                Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                            <styles:M3_ComboBox
+                                Grid.Row="0"
+                                Grid.ColumnSpan="2"
+                                DisplayMemberPath="Name"
+                                ItemsSource="{Binding SFile.Format.VideoCodecs}"
+                                LabelText="Video Codec"
+                                SelectedItem="{Binding SVideo.Codec}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding VideoCodecChangedCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </styles:M3_ComboBox>
+                            <styles:M3_ComboBox
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                ItemsSource="{Binding EncodingProfiles}"
+                                LabelText="Bitrate Encoding"
+                                SelectedItem="{Binding SVideo.EncodingMode}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding EncodingProfileChangedCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </styles:M3_ComboBox>
+                            <styles:M3_ComboBox
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                ItemsSource="{Binding QualityPresets}"
+                                LabelText="Encoding Profile"
+                                SelectedItem="{Binding SVideo.QuailityPreset}"
+                                Visibility="{Binding SVideo.Codec.HasVBRSupport, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <Grid Grid.Row="3" Grid.Column="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="108" />
+                                    <ColumnDefinition Width="30" />
+                                </Grid.ColumnDefinitions>
+                                <styles:M3_Slider
+                                    Grid.Column="0"
+                                    IsSnapToTickEnabled="True"
+                                    Maximum="30"
+                                    Minimum="0"
+                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Value="{Binding SVideo.Bitrate}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="ValueChanged">
+                                            <i:InvokeCommandAction Command="{Binding QualitySliderChangedCommand}" />
+                                            <i:InvokeCommandAction Command="{Binding VideoBitrateChangedCommand}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </styles:M3_Slider>
+                                <styles:M3_Slider
+                                    Grid.ColumnSpan="2"
+                                    IsSnapToTickEnabled="{Binding UseSnapping}"
+                                    Maximum="100"
+                                    Minimum="0"
+                                    TickFrequency="10"
+                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource InvertAndVisibilityConverter}}"
+                                    Value="{Binding SVideo.Bitrate}" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="8,0,0,0"
+                                    Padding="0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource LabelMedium_TBl}"
+                                    Text="{Binding QualityHint}"
+                                    Visibility="{Binding IsVBRSelected, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Margin="8,0,0,0"
+                                    Padding="0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource LabelMedium_TBl}"
+                                    Text="{Binding SVideo.Bitrate}"
+                                    Visibility="{Binding ManuallyEditVBitrate, Converter={StaticResource InvertAndVisibilityConverter}}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                                            <i:InvokeCommandAction Command="{Binding EnableManualVBitrateEditCommand}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBlock>
+                                <TextBox
+                                    Grid.Column="2"
+                                    Margin="8,0,0,0"
+                                    Padding="0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding SVideo.Bitrate}"
+                                    Visibility="{Binding ManuallyEditVBitrate, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <i:Interaction.Triggers>
+                                        <i:KeyTrigger Key="Enter">
+                                            <i:InvokeCommandAction Command="{Binding DisableManualVBitrateEditCommand}" />
+                                        </i:KeyTrigger>
+                                        <i:EventTrigger EventName="ValueChanged">
+                                            <i:InvokeCommandAction Command="{Binding VideoBitrateChangedCommand}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
+                            </Grid>
+                        </Grid>
                     </StackPanel>
                 </StackPanel>
-            </Border>
+            </StackPanel>
+
 
             <!--  Audio  -->
             <Border>
@@ -496,7 +501,7 @@
                             Margin="8,0,0,0"
                             VerticalAlignment="Center"
                             LineHeight="1"
-                            Style="{StaticResource LabelLarge_TBl}"
+                            Style="{StaticResource TitleMedium_TBl}"
                             Text="Audio" />
                         <TextBlock
                             Grid.Column="2"
@@ -504,7 +509,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             LineHeight="1"
-                            Style="{StaticResource BodyLarge_TBl}"
+                            Style="{StaticResource TitleMedium_TBl}"
                             Text="Export Audio" />
                         <styles:M3_ToggleSwitch Grid.Column="3" IsChecked="{Binding ConvertAudio}" />
                     </Grid>
@@ -519,11 +524,10 @@
                             <TextBlock
                                 Margin="0,0,0,8"
                                 VerticalAlignment="Center"
-                                FontWeight="Bold"
                                 LineHeight="1"
                                 Style="{StaticResource LabelLarge_TBl}"
                                 Text="Audio Codec Settings" />
-                            <Grid>
+                            <Grid Margin="24,0,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -537,9 +541,10 @@
                                 <TextBlock
                                     Grid.Row="2"
                                     Grid.Column="0"
+                                    Margin="0,0,8,0"
                                     VerticalAlignment="Center"
                                     LineHeight="1"
-                                    Style="{StaticResource LabelLarge_TBl}"
+                                    Style="{StaticResource BodyLarge_TBl}"
                                     Text="Bitrate (KBit/s)"
                                     Visibility="{Binding SAudio.Codec.IsLossless, Converter={StaticResource InvertAndVisibilityConverter}}" />
 

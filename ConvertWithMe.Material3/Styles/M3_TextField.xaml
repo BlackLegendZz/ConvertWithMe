@@ -67,8 +67,8 @@
                             Margin="0,0,0,-6"
                             VerticalAlignment="Center"
                             Foreground="{DynamicResource OnSurfaceVariant}"
-                            Text="{TemplateBinding LabelText}" 
-                            Style="{StaticResource BodyLarge_TBl}"/>
+                            Style="{StaticResource BodyLarge_TBl}"
+                            Text="{TemplateBinding LabelText}" />
                         <TextBox
                             x:Name="PART_Text"
                             Grid.Row="0"
@@ -77,10 +77,10 @@
                             VerticalContentAlignment="Bottom"
                             Background="Transparent"
                             BorderThickness="0"
-                            Style="{StaticResource BodyLarge_TBx}"
                             CaretBrush="{DynamicResource Primary}"
                             FontWeight="Regular"
                             Foreground="{DynamicResource OnSurface}"
+                            Style="{StaticResource BodyLarge_TBx}"
                             Text="{TemplateBinding Text}"
                             TextWrapping="Wrap" />
                     </Grid>
@@ -120,9 +120,9 @@
                     Margin="16,4,16,0"
                     FontWeight="Regular"
                     Foreground="{DynamicResource OnSurfaceVariant}"
-                    Text="{TemplateBinding SupportingText}"
                     Style="{StaticResource BodySmall_TBl}"
-                    Visibility="Visible" />
+                    Text="{TemplateBinding SupportingText}"
+                    Visibility="Collapsed" />
                 <TextBlock
                     x:Name="PART_CharacterCount"
                     Grid.Column="1"
@@ -308,8 +308,8 @@
                     Margin="16,4,16,0"
                     FontWeight="Regular"
                     Foreground="{DynamicResource OnSurfaceVariant}"
-                    Text="{TemplateBinding SupportingText}"
                     Style="{StaticResource BodySmall_TBl}"
+                    Text="{TemplateBinding SupportingText}"
                     Visibility="Visible" />
                 <TextBlock
                     x:Name="PART_CharacterCount"
@@ -317,8 +317,8 @@
                     Margin="0,4,16,0"
                     FontWeight="Regular"
                     Foreground="{DynamicResource OnSurfaceVariant}"
-                    Text="{TemplateBinding CharacterCount}"
                     Style="{StaticResource BodySmall_TBl}"
+                    Text="{TemplateBinding CharacterCount}"
                     Visibility="Collapsed" />
             </Grid>
         </StackPanel>
