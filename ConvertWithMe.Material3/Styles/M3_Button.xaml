@@ -36,6 +36,13 @@
                             Height="40"
                             Background="{DynamicResource Primary}"
                             CornerRadius="20">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="12"
+                                    Direction="-90"
+                                    Opacity="{TemplateBinding DropShadowOpacity}"
+                                    ShadowDepth="2" />
+                            </Border.Effect>
                             <Grid Margin="24,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -67,29 +74,13 @@
                             CornerRadius="20"
                             Opacity="0.08"
                             Visibility="Collapsed" />
-                        <Border
-                            x:Name="Shadow"
-                            Height="42"
-                            Margin="0,2,0,0"
-                            Panel.ZIndex="-1"
-                            Background="Black"
-                            CornerRadius="20"
-                            Opacity="0.3"
-                            Visibility="Collapsed">
-                            <Border.Effect>
-                                <BlurEffect
-                                    KernelType="Gaussian"
-                                    Radius="8"
-                                    RenderingBias="Performance" />
-                            </Border.Effect>
-                        </Border>
                     </Grid>
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="Shadow" Property="Visibility" Value="Visible" />
                         </Trigger>
+
                         <!--  Different Button States  -->
                         <Trigger Property="ButtonType" Value="Outlined">
                             <Setter TargetName="PART_Border" Property="BorderBrush" Value="{DynamicResource Outline}" />
@@ -98,14 +89,12 @@
                             <Setter TargetName="PART_Content" Property="TextBlock.Foreground" Value="{DynamicResource Primary}" />
                             <Setter TargetName="PART_Icon" Property="Foreground" Value="{DynamicResource Primary}" />
                             <Setter TargetName="PART_StateLayer" Property="Background" Value="{DynamicResource Primary}" />
-                            <Setter TargetName="Shadow" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="ButtonType" Value="Text">
                             <Setter TargetName="PART_Border" Property="Background" Value="Transparent" />
                             <Setter TargetName="PART_Content" Property="TextBlock.Foreground" Value="{DynamicResource Primary}" />
                             <Setter TargetName="PART_Icon" Property="Foreground" Value="{DynamicResource Primary}" />
                             <Setter TargetName="PART_StateLayer" Property="Background" Value="{DynamicResource Primary}" />
-                            <Setter TargetName="Shadow" Property="Visibility" Value="Collapsed" />
                         </Trigger>
 
                         <!--#region Disabled-->
@@ -145,11 +134,9 @@
                         </MultiTrigger>
                         <!--#endregion-->
 
-
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
                             <Setter TargetName="PART_StateLayer" Property="Opacity" Value="0.16" />
-                            <Setter TargetName="Shadow" Property="Visibility" Value="Collapsed" />
                             <Setter TargetName="PART_Border" Property="BorderBrush" Value="{DynamicResource Primary}" />
                         </Trigger>
                         <Trigger Property="DisplayIcon" Value="True">
