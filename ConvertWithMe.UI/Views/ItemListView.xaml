@@ -5,7 +5,9 @@
     xmlns:converters="clr-namespace:ConvertWithMe.UI.Views.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ConvertWithMe.UI.Views"
+    xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:styles="clr-namespace:ConvertWithMe.Material3.Styles;assembly=ConvertWithMe.Material3"
     xmlns:viewmodels="clr-namespace:ConvertWithMe.UI.ViewModels"
     d:Background="White"
     d:DataContext="{d:DesignInstance Type=viewmodels:ItemListViewModel}"
@@ -29,24 +31,24 @@
         </Grid.RowDefinitions>
 
         <!--  Header  -->
-        <DockPanel
-            Grid.Row="0"
-            Margin="0,36,0,0"
-            LastChildFill="False">
+        <Grid Grid.Row="0" Margin="0,36,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             <TextBlock
+                Grid.Column="0"
                 VerticalAlignment="Center"
-                DockPanel.Dock="Left"
                 FontSize="16"
                 FontWeight="Bold"
                 Text="Media Files" />
-            <Button
-                Width="45"
-                Height="45"
+            <styles:M3_Button
+                Grid.Column="1"
                 Command="{Binding AddFilesCommand}"
-                Content="Add"
-                DockPanel.Dock="Right"
-                IsEnabled="{Binding IsConverting, Converter={StaticResource InvertBooleanConverter}}" />
-        </DockPanel>
+                IconKind="Add"
+                IsEnabled="{Binding IsConverting, Converter={StaticResource InvertBooleanConverter}}"
+                Style="{StaticResource IconButton}" />
+        </Grid>
 
         <!--  Element List  -->
         <ItemsControl
@@ -61,7 +63,7 @@
                         Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.SelectedItemChangedCommand}"
                         CommandParameter="{Binding SettingsFile}"
                         GroupName="Items">
-                        <Grid Height="45" Margin="0,0,0,4">
+                        <Grid Margin="0,0,0,4" Background="{StaticResource SurfaceContainerHighest}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -73,52 +75,107 @@
                                 Height="45"
                                 Margin="0,0,4,0"
                                 Source="../Resources/Images/logo_placeholder.png" />
-                            <DockPanel Grid.Column="1" Margin="0,0,4,0">
+                            <Grid Grid.Column="1" Margin="0,0,4,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
                                 <TextBlock
-                                    DockPanel.Dock="Top"
-                                    FontSize="14"
-                                    FontWeight="SemiBold"
+                                    Grid.Row="0"
+                                    Margin="0,0,0,12"
+                                    Style="{StaticResource TitleSmall_TBl}"
                                     Text="{Binding SettingsFile.FilenameSrc}" />
-                                <StackPanel
-                                    VerticalAlignment="Bottom"
-                                    DockPanel.Dock="Bottom"
-                                    Orientation="Horizontal">
+                                <Grid Grid.Row="1" VerticalAlignment="Bottom">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" MinWidth="100" />
+                                        <ColumnDefinition Width="Auto" MinWidth="100" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
                                     <TextBlock
-                                        Margin="0,0,4,0"
-                                        FontSize="12"
-                                        Text="{Binding Duration, StringFormat=Time: {0:hh\\:mm\\:ss}}" />
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        FontFamily="{StaticResource RobotoBold}"
+                                        Style="{StaticResource BodySmall_TBl}"
+                                        Text="Duration" />
                                     <TextBlock
-                                        Margin="24,0,4,0"
-                                        FontSize="12"
-                                        Text="{Binding PrimaryAudioStream.Codec, StringFormat=Audio Codec: {0}}" />
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        FontFamily="{StaticResource RobotoBold}"
+                                        Style="{StaticResource BodySmall_TBl}"
+                                        Text="Author" />
                                     <TextBlock
-                                        Margin="24,0,4,0"
-                                        FontSize="12"
-                                        Text="{Binding PrimaryAudioStream.SampleRate, StringFormat=Sample Rate: {0}}" />
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        FontFamily="{StaticResource RobotoBold}"
+                                        Style="{StaticResource BodySmall_TBl}"
+                                        Text="Format" />
+
                                     <TextBlock
-                                        Margin="24,0,4,0"
-                                        FontSize="12"
-                                        Text="{Binding PrimaryAudioStream.Bitrate, Converter={StaticResource DivideConverter}, ConverterParameter=1000, StringFormat=Audio Bitrate: {0} KBit/s}" />
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource BodySmall_TBl}"
+                                        Text="{Binding Duration, StringFormat=x {0:hh\\:mm\\:ss}}" />
                                     <TextBlock
-                                        Margin="24,0,4,0"
-                                        FontSize="12"
-                                        Text="{Binding PrimaryVideoStream.Codec, StringFormat=Video Codec: {0}}"
-                                        Visibility="{Binding IsAudioFile, Converter={StaticResource InvertAndVisibilityConverter}}" />
-                                    <TextBlock
-                                        Margin="24,0,4,0"
-                                        FontSize="12"
-                                        Text="{Binding PrimaryVideoStream.Bitrate, Converter={StaticResource DivideConverter}, ConverterParameter=1000000, StringFormat=Video Bitrate: {0} MBit/s}"
-                                        Visibility="{Binding IsAudioFile, Converter={StaticResource InvertAndVisibilityConverter}}" />
-                                </StackPanel>
-                            </DockPanel>
-                            <Button
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource BodySmall_TBl}"
+                                        Text="Blubl blub" />
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <materialIcons:MaterialIcon
+                                                Width="19"
+                                                VerticalAlignment="Center"
+                                                Kind="MusicNote" />
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                LineHeight="1"
+                                                Style="{StaticResource BodySmall_TBl}"
+                                                Text="{Binding PrimaryAudioStream.Codec}" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding IsAudioFile, Converter={StaticResource InvertAndVisibilityConverter}}">
+                                            <materialIcons:MaterialIcon
+                                                Width="19"
+                                                VerticalAlignment="Center"
+                                                Kind="MusicNote" />
+                                            <TextBlock
+                                                Margin="0,0,8,0"
+                                                VerticalAlignment="Center"
+                                                LineHeight="1"
+                                                Style="{StaticResource BodySmall_TBl}"
+                                                Text="{Binding PrimaryAudioStream.Codec}" />
+                                            <materialIcons:MaterialIcon VerticalAlignment="Center" Kind="VideoOutline" />
+                                            <TextBlock
+                                                VerticalAlignment="Center"
+                                                LineHeight="1"
+                                                Style="{StaticResource BodySmall_TBl}"
+                                                Text="{Binding PrimaryVideoStream.Codec}" />
+                                        </StackPanel>
+
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <styles:M3_Button
                                 Grid.Column="2"
-                                Width="45"
-                                Height="45"
+                                Background="{StaticResource Error}"
+                                ButtonType="Text"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.RemoveItemCommand}"
                                 CommandParameter="{Binding SettingsFile}"
                                 Content="Delete"
-                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.IsConverting, Converter={StaticResource InvertBooleanConverter}}" />
+                                Foreground="{StaticResource OnError}"
+                                IconKind="Bin"
+                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.IsConverting, Converter={StaticResource InvertBooleanConverter}}"
+                                Style="{StaticResource IconButton}" />
                         </Grid>
                     </RadioButton>
 
@@ -145,15 +202,18 @@
                 VerticalAlignment="Stretch"
                 Text="{Binding ProgressPercentage, StringFormat={}{0} %}"
                 Visibility="{Binding IsConverting, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            <Button
+            <styles:M3_Button
                 Grid.Column="3"
                 Command="{Binding ConvertFilesCommand}"
                 Content="Convert"
                 Visibility="{Binding IsConverting, Converter={StaticResource InvertAndVisibilityConverter}}" />
-            <Button
+            <styles:M3_Button
                 Grid.Column="4"
+                Background="{DynamicResource Error}"
+                ButtonType="Outlined"
                 Command="{Binding CancelConversionCommand}"
                 Content="Cancel"
+                Foreground="{DynamicResource OnError}"
                 Visibility="{Binding IsConverting, Converter={StaticResource InvertAndVisibilityConverter}}" />
         </Grid>
     </Grid>

@@ -95,7 +95,7 @@
                             LineHeight="1"
                             Style="{StaticResource BodyLarge_TBl}"
                             Text="{Binding SFile.DirDest}"
-                            TextWrapping="Wrap" />
+                            TextTrimming="CharacterEllipsis" />
                     </DockPanel>
                     <styles:M3_ComboBox
                         Grid.Row="2"
