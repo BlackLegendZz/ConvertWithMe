@@ -3,9 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:ConvertWithMe.Material3.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF">
-    
-    <DropShadowEffect x:Key="ShadowEffect" BlurRadius="12" ShadowDepth="2" Opacity="0.3" Direction="-90"/>
-    
+
+    <DropShadowEffect
+        x:Key="ShadowEffect"
+        BlurRadius="12"
+        Direction="-90"
+        Opacity="0.3"
+        ShadowDepth="2" />
+
     <Style x:Key="EmptyButton" TargetType="{x:Type Button}">
         <Setter Property="Template">
             <Setter.Value>
@@ -28,18 +33,26 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type local:M3_Button}">
+    <Style x:Key="CommonButton" TargetType="{x:Type local:M3_Button}">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:M3_Button}">
                     <Grid>
                         <Border
+                            x:Name="PART_Border_Shadow"
+                            Width="{Binding Width, ElementName=PART_Border}"
+                            Height="{Binding Height, ElementName=PART_Border}"
+                            Background="Red"
+                            BorderBrush="Transparent"
+                            BorderThickness="1"
+                            CornerRadius="{Binding CornerRadius, ElementName=PART_Border}" />
+                        <Border
                             x:Name="PART_Border"
                             Height="40"
                             Background="{DynamicResource Primary}"
                             CornerRadius="20">
-                            <Grid Margin="24,0">
+                            <Grid x:Name="grid_content" Margin="24,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
@@ -47,8 +60,8 @@
                                 <materialIcons:MaterialIcon
                                     x:Name="PART_Icon"
                                     Grid.Column="0"
-                                    Width="18"
-                                    Height="18"
+                                    Width="24"
+                                    Height="24"
                                     Margin="0,0,8,0"
                                     Foreground="{DynamicResource OnPrimary}"
                                     Kind="{TemplateBinding IconKind}"
@@ -58,7 +71,7 @@
                                     Grid.Column="1"
                                     HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                     VerticalAlignment="Center"
-                                    TextBlock.FontFamily="{StaticResource RobotoRegular}"
+                                    TextBlock.FontFamily="{StaticResource RobotoMedium}"
                                     TextBlock.FontSize="14"
                                     TextBlock.Foreground="{DynamicResource OnPrimary}" />
                             </Grid>
@@ -75,8 +88,15 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="PART_Border" Property="Effect" Value="{StaticResource ShadowEffect}"/>
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsPressed" Value="False" />
+                                <Condition Property="ButtonType" Value="Filled" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Border_Shadow" Property="Effect" Value="{StaticResource ShadowEffect}" />
+                        </MultiTrigger>
 
                         <!--  Different Button States  -->
                         <Trigger Property="ButtonType" Value="Outlined">
@@ -86,12 +106,14 @@
                             <Setter TargetName="PART_Content" Property="TextBlock.Foreground" Value="{DynamicResource Primary}" />
                             <Setter TargetName="PART_Icon" Property="Foreground" Value="{DynamicResource Primary}" />
                             <Setter TargetName="PART_StateLayer" Property="Background" Value="{DynamicResource Primary}" />
+                            <Setter TargetName="PART_Border_Shadow" Property="Background" Value="Transparent" />
                         </Trigger>
                         <Trigger Property="ButtonType" Value="Text">
                             <Setter TargetName="PART_Border" Property="Background" Value="Transparent" />
                             <Setter TargetName="PART_Content" Property="TextBlock.Foreground" Value="{DynamicResource Primary}" />
                             <Setter TargetName="PART_Icon" Property="Foreground" Value="{DynamicResource Primary}" />
                             <Setter TargetName="PART_StateLayer" Property="Background" Value="{DynamicResource Primary}" />
+                            <Setter TargetName="PART_Border_Shadow" Property="Background" Value="Transparent" />
                         </Trigger>
 
                         <!--#region Disabled-->
@@ -138,6 +160,7 @@
                         </Trigger>
                         <Trigger Property="DisplayIcon" Value="True">
                             <Setter TargetName="PART_Icon" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="grid_content" Property="Margin" Value="16,0,24,0" />
                         </Trigger>
 
                     </ControlTemplate.Triggers>
@@ -145,4 +168,107 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="IconButton" TargetType="{x:Type local:M3_Button}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:M3_Button}">
+                    <Grid>
+                        <Border
+                            x:Name="PART_Border"
+                            Width="40"
+                            Height="40"
+                            Background="{DynamicResource Primary}"
+                            CornerRadius="20" />
+                        <Border
+                            x:Name="PART_StateLayer"
+                            Height="40"
+                            Background="{DynamicResource OnPrimary}"
+                            CornerRadius="20"
+                            Opacity="0.08"
+                            Visibility="Collapsed" />
+                        <materialIcons:MaterialIcon
+                            x:Name="PART_Icon"
+                            Grid.Column="0"
+                            Width="24"
+                            Height="24"
+                            Foreground="{DynamicResource OnPrimary}"
+                            Kind="{TemplateBinding IconKind}" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsPressed" Value="False" />
+                                <Condition Property="ButtonType" Value="Filled" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Border" Property="Effect" Value="{StaticResource ShadowEffect}" />
+                        </MultiTrigger>
+
+                        <!--  Different Button States  -->
+                        <Trigger Property="ButtonType" Value="Outlined">
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{DynamicResource Outline}" />
+                            <Setter TargetName="PART_Border" Property="BorderThickness" Value="1" />
+                            <Setter TargetName="PART_Border" Property="Background" Value="Transparent" />
+                            <Setter TargetName="PART_Icon" Property="Foreground" Value="{DynamicResource Primary}" />
+                            <Setter TargetName="PART_StateLayer" Property="Background" Value="{DynamicResource Primary}" />
+                        </Trigger>
+                        <Trigger Property="ButtonType" Value="Text">
+                            <Setter TargetName="PART_Border" Property="Background" Value="Transparent" />
+                            <Setter TargetName="PART_Icon" Property="Foreground" Value="{DynamicResource Primary}" />
+                            <Setter TargetName="PART_StateLayer" Property="Background" Value="{DynamicResource Primary}" />
+                        </Trigger>
+
+                        <!--#region Disabled-->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_Icon" Property="Opacity" Value="0.38" />
+                            <Setter TargetName="PART_StateLayer" Property="Opacity" Value="0.12" />
+                            <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Border" Property="Background" Value="Transparent" />
+                            <Setter TargetName="PART_Icon" Property="Foreground" Value="{DynamicResource OnSurface}" />
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="ButtonType" Value="Filled" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_StateLayer" Property="Background" Value="{DynamicResource OnSurface}" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="ButtonType" Value="Outlined" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="Transparent" />
+                            <Setter TargetName="PART_StateLayer" Property="Background" Value="Transparent" />
+                            <Setter TargetName="PART_StateLayer" Property="BorderBrush" Value="{DynamicResource OnSurface}" />
+                            <Setter TargetName="PART_StateLayer" Property="BorderThickness" Value="1" />
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsEnabled" Value="False" />
+                                <Condition Property="ButtonType" Value="Text" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Collapsed" />
+                        </MultiTrigger>
+                        <!--#endregion-->
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_StateLayer" Property="Opacity" Value="0.16" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{DynamicResource Primary}" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource CommonButton}" TargetType="{x:Type local:M3_Button}" />
 </ResourceDictionary>
