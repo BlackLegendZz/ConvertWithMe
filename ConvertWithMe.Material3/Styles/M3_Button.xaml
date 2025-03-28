@@ -3,6 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:ConvertWithMe.Material3.Styles"
     xmlns:materialIcons="clr-namespace:Material.Icons.WPF;assembly=Material.Icons.WPF">
+    
+    <DropShadowEffect x:Key="ShadowEffect" BlurRadius="12" ShadowDepth="2" Opacity="0.3" Direction="-90"/>
+    
     <Style x:Key="EmptyButton" TargetType="{x:Type Button}">
         <Setter Property="Template">
             <Setter.Value>
@@ -36,13 +39,6 @@
                             Height="40"
                             Background="{DynamicResource Primary}"
                             CornerRadius="20">
-                            <Border.Effect>
-                                <DropShadowEffect
-                                    BlurRadius="12"
-                                    Direction="-90"
-                                    Opacity="{TemplateBinding DropShadowOpacity}"
-                                    ShadowDepth="2" />
-                            </Border.Effect>
                             <Grid Margin="24,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
@@ -79,6 +75,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="PART_StateLayer" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="PART_Border" Property="Effect" Value="{StaticResource ShadowEffect}"/>
                         </Trigger>
 
                         <!--  Different Button States  -->
